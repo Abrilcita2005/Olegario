@@ -22,7 +22,7 @@
       "favicon": "./assets/imagenes/favicon.png",
       "output": "single"
     },
-    "plugins": ["expo-router"],
+    "plugins": ["expo-router", "expo-font", "expo-asset"],
     "scheme": "olegario",
     "experiments": {
       "typedRoutes": true

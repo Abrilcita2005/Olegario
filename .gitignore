@@ -63,3 +63,7 @@ expo-env.d.ts
 # Carpetas nativas generadas (Continuous Native Generation)
 /ios
 /android
+
+# ===== Fuente comercial Vástago Grotesk (Sudtipos) =====
+# No se sube al repositorio público hasta confirmar la licencia (ver docs/DECISIONES_Y_PENDIENTES.md P-34).
+assets/fuentes/VastagoGrotesk-*.otf

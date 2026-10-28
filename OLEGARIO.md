@@ -17,6 +17,8 @@ Reglas e instrucciones del proyecto. Claude las lee a través de `CLAUDE.md`, qu
 - Diseño de referencia: Figma `OLEGARIO EN MOVIMIENTO - APP` (https://www.figma.com/design/QCRxB2u4qBf98oDDKhzteQ), página **"Alta fidelidad"**. Capturas en `docs/referencias/figma/`.
 - Idioma: español rioplatense con voseo.
 - Tecnologías: **React Native + Expo SDK 58 + TypeScript (estricto) + Expo Router**, para iOS y Android (aprobado 2026-10-28). Pruebas con Jest y Testing Library.
+- Diseño vigente: colores de los SVG de marca (`#FE016D`, `#F83B11`, `#CAF22C`, `#262020`), títulos en **Vástago Grotesk**, texto en **Inter**, sin modo oscuro. Todo color y tipografía sale de `src/theme/`; nunca valores sueltos. Componentes base en `src/components/ui/` y catálogo en la ruta `/catalogo`.
+- Fuentes Vástago: están fuera de Git (licencia pendiente, P-34). Si faltan en `assets/fuentes/`, hay que bajarlas de la carpeta de Drive de la responsable antes de compilar.
 - Entorno: la responsable trabaja solo en la nube (sesiones de Claude); la verificación visual se hace con la versión web y capturas.
 
 ## Documentación (fuente de referencia)

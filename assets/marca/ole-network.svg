@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 571.37 714.55">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#Degradado_sin_nombre_25);
+      }
+
+      .cls-2, .cls-3 {
+        fill: #262020;
+      }
+
+      .cls-3 {
+        font-family: Poppins-Black, Poppins;
+        font-size: 72.76px;
+        font-weight: 800;
+      }
+    </style>
+    <linearGradient id="Degradado_sin_nombre_25" data-name="Degradado sin nombre 25" x1="-7324.91" y1="-3000.72" x2="-6947.66" y2="-3000.72" gradientTransform="translate(3285.2098 -6854.5559) rotate(-90)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fe016d"/>
+      <stop offset=".52" stop-color="#f83b11"/>
+      <stop offset="1" stop-color="#caf22c"/>
+    </linearGradient>
+  </defs>
+  <g id="Capa_1-2" data-name="Capa 1">
+    <g>
+      <text class="cls-3" transform="translate(0 668.93)"><tspan x="0" y="0">OLE / NETWORK</tspan></text>
+      <circle class="cls-2" cx="285.05" cy="282.58" r="282.58"/>
+      <path class="cls-1" d="M284.49,264.06c51.89,0,93.96,8.07,93.96,18.02s-42.07,18.02-93.96,18.02-93.96-8.07-93.96-18.02,42.07-18.02,93.96-18.02ZM190.26,137.47c0,20.19,28.65,37.22,67.86,42.59-39.2,3.32-67.86,13.83-67.86,26.3,0,15.13,42.19,27.39,94.23,27.39s94.23-12.26,94.23-27.39c0-12.46-28.65-22.98-67.86-26.3,39.2-5.37,67.86-22.41,67.86-42.59,0-24.5-42.19-44.36-94.23-44.36s-94.23,19.86-94.23,44.36ZM284.49,470.35c52.04,0,94.23-19.86,94.23-44.36,0-20.19-28.65-37.22-67.86-42.59,39.2-3.32,67.86-13.83,67.86-26.3,0-15.13-42.19-27.39-94.23-27.39-52.04,0-94.23,12.26-94.23,27.39,0,12.46,28.65,22.98,67.86,26.3-39.2,5.37-67.86,22.41-67.86,42.59,0,24.5,42.19,44.36,94.23,44.36Z"/>
+    </g>
+  </g>
+</svg>

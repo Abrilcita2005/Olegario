@@ -7,6 +7,85 @@
 
 ---
 
+## Sistema de diseño vigente (Etapa 4, 2026-10-28)
+
+> **Esta sección manda.** Las secciones C.1 a C.11 que siguen son el relevamiento original de Figma y quedan como referencia histórica.
+> Código: `src/theme/` (tokens) y `src/components/` (componentes). Catálogo visual: ruta `/catalogo` y capturas en `docs/capturas-app/etapa-4/`.
+
+### Colores [DECIDIDO]
+
+Fuente: los SVG originales de la marca (carpeta de Drive "LOGOS"), elegidos por la responsable por sobre Figma.
+
+| Token                                     | HEX                                                                         | Uso                                          |
+| ----------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------- |
+| `marca.rosa` / `colores.acento`           | `#FE016D`                                                                   | Acento principal, chips de estado, errores   |
+| `marca.naranja` / `colores.acentoNaranja` | `#F83B11`                                                                   | Categorías, descuentos, advertencias         |
+| `marca.lima` / `colores.acentoLima`       | `#CAF22C`                                                                   | Etiquetas de campo, disponibilidad, éxito    |
+| `marca.negro` / `colores.superficie`      | `#262020`                                                                   | Tarjetas, botones oscuros, texto sobre claro |
+| `marca.grisLogo`                          | `#E6E6E6`                                                                   | Texto del logo sobre fondo oscuro            |
+| `colores.fondo`                           | `#DCDCDC`                                                                   | Fondo de pantalla (Figma)                    |
+| Neutros de interfaz                       | `#353439`, `#272732`, `#D4D4D8`, `#A1A1AA`, `#E4E1E7`, `#FFFAF9`, `#D9D9D9` | Tomados de las pantallas de Figma            |
+
+Degradados: **marca** `#FE016D → #F83B11 (52 %) → #CAF22C` · **acción** (botones principales) `#F83B11 → #FE016D` · **acento** `#FE016D → #F83B11`.
+Muestra del degradado de la marca: `docs/referencias/marca/degradado-marca.png`.
+
+**Tema único, sin modo oscuro** [DECIDIDO por la responsable]: `app.json` fija `userInterfaceStyle: "light"`.
+
+### Tipografías [DECIDIDO]
+
+| Uso                  | Familia                                                 | Pesos cargados                                    | Licencia                                    |
+| -------------------- | ------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------- |
+| Títulos y destacados | **Vástago Grotesk** (Andrés Felipe Ramírez / Sudtipos)  | Medium, SemiBold, Bold, Heavy, Black              | **Comercial, "All rights reserved"** (P-34) |
+| Texto continuo       | **Inter** (en lugar de San Francisco, en iOS y Android) | Regular, Medium, SemiBold, Bold, ExtraBold, Black | SIL Open Font License                       |
+
+Regla de conversión desde Figma: **Poppins → Vástago** y **Manrope / Montserrat / DM Sans → Inter**, con el mismo peso. Para destacar se usan los pesos de la familia que corresponda en ese lugar, guiándose siempre por Figma.
+La escala completa está en `src/theme/tipografia.ts` (variantes `display`, `tituloPantalla`, `tituloAcceso`, `tituloSeccion`, `tituloTarjeta`, `categoria`, `cita`, `cuerpo`, `chip`, `etiquetaCampo`, `input`, `boton`, `pestana`, `micro`, etc.).
+
+San Francisco: la carpeta de Drive solo tenía archivos de metadatos de macOS (`._*`, de 187 a 437 bytes), no las fuentes. Igualmente su licencia no permite usarla en Android.
+
+### Componentes base (Etapa 4)
+
+| Componente           | Archivo                       | Variantes / notas                                                                                                                      |
+| -------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `Texto`              | `src/components/ui/Texto.tsx` | Todas las variantes tipográficas; respeta el tamaño de letra del sistema                                                               |
+| `Boton`              | `ui/Boton.tsx`                | primario (degradado acción), secundario, contorno, siguienteClaro, siguienteOscuro · tamaños grande/mediano · cargando · deshabilitado |
+| `BotonIcono`         | `ui/BotonIcono.tsx`           | 44×44, etiqueta accesible obligatoria                                                                                                  |
+| `Chip`               | `ui/Chip.tsx`                 | estado (con punto), enlace, descuento, destacado                                                                                       |
+| `CampoFormulario`    | `ui/CampoFormulario.tsx`      | texto, correo, contraseña con mostrar/ocultar, error                                                                                   |
+| `IndicadorFortaleza` | `ui/IndicadorFortaleza.tsx`   | 4 barras (criterio en `utils/fortalezaContrasena.ts`, provisional)                                                                     |
+| `Casilla`            | `ui/Casilla.tsx`              | aceptación de términos, área táctil de toda la fila                                                                                    |
+| `SelectorSegmentado` | `ui/SelectorSegmentado.tsx`   | opción activa con degradado                                                                                                            |
+| `Tarjeta`            | `ui/Tarjeta.tsx`              | superficie oscura, opcional elevada                                                                                                    |
+| Estados              | `ui/Estados.tsx`              | cargando, esqueleto, vacío, error (**provisionales**)                                                                                  |
+| `Logo`               | `marca/Logo.tsx`              | horizontal negro (sobre claro) y blanco (sobre oscuro), vectoriales                                                                    |
+| `IconoSubmarca`      | `marca/IconoSubmarca.tsx`     | OLE/COWORK, STREAM, NETWORK, CAFÉ (sin el texto; el nombre va aparte)                                                                  |
+| Íconos genéricos     | `iconos/Iconos.tsx`           | ojo, ojo tachado, flecha volver (dibujados, sin librería)                                                                              |
+
+Quedan para la Etapa 5: barra de navegación, botón flotante Novedades y encabezado. Las tarjetas compuestas (reserva, espacio, evento, proyecto) se arman en la etapa de cada pantalla.
+
+### Diferencias con Figma aplicadas en esta etapa
+
+| Tema               | Figma                                      | App                                               | Aprobado por            |
+| ------------------ | ------------------------------------------ | ------------------------------------------------- | ----------------------- |
+| Colores de acento  | `#E11D48`, `#F97316`, `#EC6A06`, `#C5FD44` | `#FE016D`, `#F83B11`, `#CAF22C` (SVG de marca)    | Responsable, 2026-10-28 |
+| Títulos            | Poppins                                    | Vástago Grotesk                                   | Responsable, 2026-10-28 |
+| Texto continuo     | Manrope / Montserrat / DM Sans             | Inter                                             | Responsable, 2026-10-28 |
+| Íconos de servicio | PNG con aro de degradado (Recurso 13)      | SVG de la marca (círculo oscuro + marca, sin aro) | Pendiente de revisión   |
+
+### Contraste con los colores aprobados (WCAG)
+
+| Combinación                       | Ratio | Texto chico (4,5) | Texto grande (3) |
+| --------------------------------- | ----- | ----------------- | ---------------- |
+| Blanco sobre `#FE016D`            | 3,86  | ❌                | ✅               |
+| Blanco sobre `#F83B11`            | 3,73  | ❌                | ✅               |
+| `#FE016D` sobre `#DCDCDC` (chips) | 2,82  | ❌                | ❌               |
+| `#FE016D` sobre `#262020`         | 4,15  | ❌                | ✅               |
+| `#CAF22C` sobre `#262020`         | 12,40 | ✅                | ✅               |
+
+Ver L-05 en `DECISIONES_Y_PENDIENTES.md`.
+
+---
+
 ## C.1 Paleta de marca [CONFIRMADO: página "Diseño y componentes"]
 
 | Nombre propuesto (token) | HEX                                  | RGB          | Uso observado                                                                                              |

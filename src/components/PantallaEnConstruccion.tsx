@@ -1,5 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { Texto } from '@/components/ui';
+import { colores, espacio } from '@/theme';
 
 type Props = {
   titulo: string;
@@ -10,10 +13,10 @@ export function PantallaEnConstruccion({ titulo }: Props) {
   return (
     <SafeAreaView style={styles.contenedor}>
       <View style={styles.contenido}>
-        <Text accessibilityRole="header" style={styles.titulo}>
+        <Texto accessibilityRole="header" variante="tituloPantalla">
           {titulo}
-        </Text>
-        <Text style={styles.texto}>Pantalla en construcción</Text>
+        </Texto>
+        <Texto>Pantalla en construcción</Texto>
       </View>
     </SafeAreaView>
   );
@@ -22,18 +25,12 @@ export function PantallaEnConstruccion({ titulo }: Props) {
 const styles = StyleSheet.create({
   contenedor: {
     flex: 1,
+    backgroundColor: colores.fondo,
   },
   contenido: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
-  },
-  titulo: {
-    fontSize: 24,
-    fontWeight: '700',
-  },
-  texto: {
-    fontSize: 14,
+    gap: espacio.m,
   },
 });
