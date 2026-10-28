@@ -33,15 +33,17 @@ Muestra del degradado de la marca: `docs/referencias/marca/degradado-marca.png`.
 
 ### Tipografías [DECIDIDO]
 
-| Uso                  | Familia                                                 | Pesos cargados                                    | Licencia                                    |
-| -------------------- | ------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------- |
-| Títulos y destacados | **Vástago Grotesk** (Andrés Felipe Ramírez / Sudtipos)  | Medium, SemiBold, Bold, Heavy, Black              | **Comercial, "All rights reserved"** (P-34) |
-| Texto continuo       | **Inter** (en lugar de San Francisco, en iOS y Android) | Regular, Medium, SemiBold, Bold, ExtraBold, Black | SIL Open Font License                       |
+| Uso                  | Familia                                                 | Pesos cargados                                    | Licencia                         |
+| -------------------- | ------------------------------------------------------- | ------------------------------------------------- | -------------------------------- |
+| Títulos y destacados | **Poppins** (la misma de las pantallas de Figma)        | Bold, ExtraBold, Black, Black Italic              | SIL Open Font License (gratuita) |
+| Texto continuo       | **Inter** (en lugar de San Francisco, en iOS y Android) | Regular, Medium, SemiBold, Bold, ExtraBold, Black | SIL Open Font License (gratuita) |
 
-Regla de conversión desde Figma: **Poppins → Vástago** y **Manrope / Montserrat / DM Sans → Inter**, con el mismo peso. Para destacar se usan los pesos de la familia que corresponda en ese lugar, guiándose siempre por Figma.
-La escala completa está en `src/theme/tipografia.ts` (variantes `display`, `tituloPantalla`, `tituloAcceso`, `tituloSeccion`, `tituloTarjeta`, `categoria`, `cita`, `cuerpo`, `chip`, `etiquetaCampo`, `input`, `boton`, `pestana`, `micro`, etc.).
+Historial: primero se eligió Vástago Grotesk para títulos, pero es una fuente comercial de Sudtipos ("All rights reserved") y el repositorio es público, así que la responsable eligió reemplazarla por Poppins (2026-10-28). Comparación usada para decidir: `docs/referencias/marca/comparacion-fuentes-titulos.png`.
 
-San Francisco: la carpeta de Drive solo tenía archivos de metadatos de macOS (`._*`, de 187 a 437 bytes), no las fuentes. Igualmente su licencia no permite usarla en Android.
+Regla de conversión desde Figma: **Poppins se mantiene** y **Manrope / Montserrat / DM Sans → Inter**, con el mismo peso. Para destacar se usan los pesos de la familia que corresponda en ese lugar, guiándose siempre por Figma.
+La escala completa está en `src/theme/tipografia.ts` (variantes `display`, `tituloPantalla`, `tituloAcceso`, `tituloSeccion`, `tituloTarjeta`, `tituloDestacado`, `categoria`, `cita`, `cuerpo`, `chip`, `etiquetaCampo`, `input`, `boton`, `pestana`, `micro`, etc.).
+
+San Francisco: la carpeta de Drive solo tenía archivos de metadatos de macOS (`._*`), no las fuentes. Igualmente su licencia no permite usarla en Android.
 
 ### Componentes base (Etapa 4)
 
@@ -82,7 +84,7 @@ Quedan para la Etapa 5: barra de navegación, botón flotante Novedades y encabe
 | `#FE016D` sobre `#262020`         | 4,15  | ❌                | ✅               |
 | `#CAF22C` sobre `#262020`         | 12,40 | ✅                | ✅               |
 
-Ver L-05 en `DECISIONES_Y_PENDIENTES.md`.
+La responsable decidió **mantener los colores de marca** tal cual (2026-10-28): queda como limitación aceptada (L-05).
 
 ---
 

@@ -60,12 +60,12 @@
 
 - **Estado:** `Completada (pendiente de autorización)`, 2026-10-28
 - **Objetivo:** tokens y componentes reutilizables fieles a Figma.
-- **Resultado:** ✅ tokens de color (SVG de marca), tipografía (Vástago + Inter), espaciado, radios y sombras en `src/theme/` · ✅ fuentes cargadas al iniciar · ✅ logos y 4 submarcas vectoriales · ✅ componentes base (`DISENO.md`, sección vigente) · ✅ estados provisionales · ✅ catálogo en `/catalogo` · ⚠️ Vástago fuera de Git hasta resolver P-34 · ⏭️ barra de navegación, Novedades y encabezado pasan a la Etapa 5.
+- **Resultado:** ✅ tokens de color (SVG de marca), tipografía (Poppins + Inter), espaciado, radios y sombras en `src/theme/` · ✅ fuentes cargadas al iniciar · ✅ logos y 4 submarcas vectoriales · ✅ componentes base (`DISENO.md`, sección vigente) · ✅ estados provisionales · ✅ catálogo en `/catalogo` · ✅ correcciones de la revisión: Poppins en lugar de Vástago, aro en los íconos de servicio, contraste aceptado · ⏭️ barra de navegación, Novedades y encabezado pasan a la Etapa 5.
 - **Tareas:** tokens (colores, tipografía, espaciado, radios, sombras) · cargar fuentes · exportar e incorporar logo, isotipo e íconos de servicio · componentes de `DISENO.md` §C.6 · estados de carga, vacío, error y deshabilitado (provisionales, para aprobar) · pantalla de muestra con todos los componentes.
 - **Dependencias:** Etapa 3 y decisiones de diseño.
 - **Archivos:** `src/theme/`, `src/components/`, `assets/`.
 - **Entregables:** catálogo de componentes.
-- **Criterios de aceptación:** ✅ componentes comparados con las capturas de Figma (catálogo en `docs/capturas-app/etapa-4/`) con las diferencias aprobadas (colores y fuentes) · ✅ sin colores sueltos fuera de los tokens · ✅ áreas táctiles ≥ 44 pt · ✅ etiquetas accesibles · ⚠️ contraste del texto blanco sobre degradado (L-05).
+- **Criterios de aceptación:** ✅ componentes comparados con las capturas de Figma (catálogo en `docs/capturas-app/etapa-4/`) con las diferencias aprobadas (colores y fuentes) · ✅ sin colores sueltos fuera de los tokens · ✅ áreas táctiles ≥ 44 pt · ✅ etiquetas accesibles · ✅ contraste del texto blanco sobre degradado aceptado por la responsable (L-05, D-23).
 - **Pruebas:** pruebas de renderizado y comparación visual manual.
 - **Riesgos:** R-1, R-2, R-6.
 

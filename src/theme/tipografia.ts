@@ -3,34 +3,41 @@ import type { TextStyle } from 'react-native';
 import { familias } from './fuentes';
 
 // Escala tipográfica tomada de Figma (docs/DISENO.md §C.3).
-// Regla de conversión aprobada: Poppins → Vástago Grotesk y Manrope / Montserrat / DM Sans → Inter, con el mismo peso.
+// Títulos en Poppins (como en Figma). Manrope / Montserrat / DM Sans → Inter, con el mismo peso (decisión aprobada).
 // Las fuentes propias no admiten fontWeight: el peso lo da la familia.
 export const tipografia = {
-  // Títulos y destacados (Vástago)
-  display: { fontFamily: familias.vastagoBlack, fontSize: 30, lineHeight: 36 },
+  // Títulos y destacados (Poppins)
+  display: { fontFamily: familias.poppinsBlack, fontSize: 30, lineHeight: 36 },
   tituloPantalla: {
-    fontFamily: familias.vastagoBlack,
+    fontFamily: familias.poppinsBlack,
     fontSize: 26,
     lineHeight: 32.5,
     letterSpacing: -0.65,
   },
   tituloAcceso: {
-    fontFamily: familias.vastagoHeavy,
+    fontFamily: familias.poppinsExtraBold,
     fontSize: 28,
     lineHeight: 34,
     letterSpacing: -0.28,
   },
   tituloSeccion: {
-    fontFamily: familias.vastagoHeavy,
+    fontFamily: familias.poppinsExtraBold,
     fontSize: 16,
     lineHeight: 24,
     letterSpacing: -0.4,
     textTransform: 'uppercase',
   },
-  tituloTarjeta: { fontFamily: familias.vastagoBold, fontSize: 16, lineHeight: 24 },
-  tituloBienvenida: { fontFamily: familias.vastagoBold, fontSize: 17, lineHeight: 22 },
+  tituloTarjeta: { fontFamily: familias.poppinsBold, fontSize: 16, lineHeight: 24 },
+  tituloBienvenida: { fontFamily: familias.poppinsBold, fontSize: 17, lineHeight: 22 },
+  tituloDestacado: {
+    fontFamily: familias.poppinsBlackItalic,
+    fontSize: 25,
+    lineHeight: 25,
+    letterSpacing: -0.625,
+    textTransform: 'uppercase',
+  },
   categoria: {
-    fontFamily: familias.vastagoHeavy,
+    fontFamily: familias.poppinsExtraBold,
     fontSize: 11,
     lineHeight: 16.5,
     letterSpacing: 0.55,

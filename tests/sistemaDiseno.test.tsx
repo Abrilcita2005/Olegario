@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
+import { IconoSubmarca } from '@/components/marca/IconoSubmarca';
 import { Boton, CampoFormulario, Casilla, Chip, SelectorSegmentado } from '@/components/ui';
 import { colores, marca } from '@/theme';
 import { relacionDeContraste } from '@/utils/contraste';
@@ -103,5 +104,12 @@ describe('Componentes base', () => {
   it('Chip muestra su texto', async () => {
     await render(<Chip texto="En curso" />);
     expect(screen.getByText('En curso')).toBeTruthy();
+  });
+});
+
+describe('Marca', () => {
+  it('IconoSubmarca expone el nombre del servicio', async () => {
+    await render(<IconoSubmarca submarca="cowork" />);
+    expect(screen.getByLabelText('OLE/COWORK')).toBeTruthy();
   });
 });

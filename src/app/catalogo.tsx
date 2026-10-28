@@ -68,6 +68,12 @@ export default function CatalogoScreen() {
           </View>
         </Seccion>
 
+        <Seccion titulo="Íconos sin aro">
+          <View style={styles.fila}>
+            <IconoSubmarca submarca="cowork" conAro={false} />
+          </View>
+        </Seccion>
+
         <Seccion titulo="Tipografía">
           {(Object.keys(tipografia) as VarianteTexto[]).map((v) => (
             <Texto key={v} variante={v}>

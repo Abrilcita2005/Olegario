@@ -17,9 +17,8 @@ App móvil de **Olegario Coworking** (Mendoza) para iOS y Android: espacios, age
 
 1. Descargar el código: `git clone https://github.com/Abrilcita2005/Olegario.git` y entrar a la carpeta.
 2. Instalar dependencias: `npm install`
-3. Copiar las fuentes **Vástago Grotesk** (Medium, SemiBold, Bold, Heavy, Black, `.otf`) en `assets/fuentes/`. No están en el repositorio por su licencia (ver `docs/DECISIONES_Y_PENDIENTES.md` P-34); sin ellas la app no compila.
-4. Crear `.env` a partir de `.env.example` (por ahora no hace falta ninguna variable).
-5. Levantar: `npm start`
+3. Crear `.env` a partir de `.env.example` (por ahora no hace falta ninguna variable).
+4. Levantar: `npm start`
    - En el teléfono: escanear el código QR con Expo Go (el teléfono y la computadora en la misma red Wi‑Fi).
    - En el navegador: tecla `w`, o `npm run web`.
 

@@ -1,4 +1,8 @@
 // Cada peso se importa desde su propia ruta para que la app incluya solo los archivos que usa.
+import { Poppins_700Bold } from '@expo-google-fonts/poppins/700Bold';
+import { Poppins_800ExtraBold } from '@expo-google-fonts/poppins/800ExtraBold';
+import { Poppins_900Black } from '@expo-google-fonts/poppins/900Black';
+import { Poppins_900Black_Italic } from '@expo-google-fonts/poppins/900Black_Italic';
 import { Inter_400Regular } from '@expo-google-fonts/inter/400Regular';
 import { Inter_500Medium } from '@expo-google-fonts/inter/500Medium';
 import { Inter_600SemiBold } from '@expo-google-fonts/inter/600SemiBold';
@@ -8,11 +12,10 @@ import { Inter_900Black } from '@expo-google-fonts/inter/900Black';
 
 // Nombres con los que se registran las fuentes. Los componentes usan siempre estas constantes.
 export const familias = {
-  vastagoMedium: 'Vastago-Medium',
-  vastagoSemiBold: 'Vastago-SemiBold',
-  vastagoBold: 'Vastago-Bold',
-  vastagoHeavy: 'Vastago-Heavy',
-  vastagoBlack: 'Vastago-Black',
+  poppinsBold: 'Poppins-Bold',
+  poppinsExtraBold: 'Poppins-ExtraBold',
+  poppinsBlack: 'Poppins-Black',
+  poppinsBlackItalic: 'Poppins-BlackItalic',
   interRegular: 'Inter-Regular',
   interMedium: 'Inter-Medium',
   interSemiBold: 'Inter-SemiBold',
@@ -21,14 +24,12 @@ export const familias = {
   interBlack: 'Inter-Black',
 } as const;
 
-// Vástago Grotesk (títulos): archivos en assets/fuentes/ (ver docs/DISENO.md §C.3 sobre su licencia).
-// Inter (texto continuo): Google Fonts, licencia SIL Open Font License.
+// Poppins (títulos y destacados, como en Figma) e Inter (texto continuo): Google Fonts, licencia SIL Open Font License.
 export const archivosDeFuentes = {
-  [familias.vastagoMedium]: require('../../assets/fuentes/VastagoGrotesk-Medium.otf'),
-  [familias.vastagoSemiBold]: require('../../assets/fuentes/VastagoGrotesk-SemiBold.otf'),
-  [familias.vastagoBold]: require('../../assets/fuentes/VastagoGrotesk-Bold.otf'),
-  [familias.vastagoHeavy]: require('../../assets/fuentes/VastagoGrotesk-Heavy.otf'),
-  [familias.vastagoBlack]: require('../../assets/fuentes/VastagoGrotesk-Black.otf'),
+  [familias.poppinsBold]: Poppins_700Bold,
+  [familias.poppinsExtraBold]: Poppins_800ExtraBold,
+  [familias.poppinsBlack]: Poppins_900Black,
+  [familias.poppinsBlackItalic]: Poppins_900Black_Italic,
   [familias.interRegular]: Inter_400Regular,
   [familias.interMedium]: Inter_500Medium,
   [familias.interSemiBold]: Inter_600SemiBold,
