@@ -22,8 +22,8 @@ export function SubmarcaCafe({ ancho }: Props) {
           gradientUnits="userSpaceOnUse"
         >
           <Stop offset="0" stopColor="#FE016D" />
-          <Stop offset=".4" stopColor="#F83B11" />
-          <Stop offset=".79" stopColor="#CAF22C" />
+          <Stop offset="0.4" stopColor="#F83B11" />
+          <Stop offset="0.79" stopColor="#CAF22C" />
         </LinearGradient>
       </Defs>
       <Circle cx="281.81" cy="281.81" r="281.81" fill="#262020" />

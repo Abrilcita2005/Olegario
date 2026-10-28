@@ -23,7 +23,7 @@ export function SubmarcaNetwork({ ancho }: Props) {
           gradientUnits="userSpaceOnUse"
         >
           <Stop offset="0" stopColor="#FE016D" />
-          <Stop offset=".52" stopColor="#F83B11" />
+          <Stop offset="0.52" stopColor="#F83B11" />
           <Stop offset="1" stopColor="#CAF22C" />
         </LinearGradient>
       </Defs>

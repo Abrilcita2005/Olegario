@@ -21,9 +21,9 @@ export function SubmarcaCowork({ ancho }: Props) {
           y2="371.04"
           gradientUnits="userSpaceOnUse"
         >
-          <Stop offset=".18" stopColor="#FE016D" />
-          <Stop offset=".46" stopColor="#F83B11" />
-          <Stop offset=".9" stopColor="#CAF22C" />
+          <Stop offset="0.18" stopColor="#FE016D" />
+          <Stop offset="0.46" stopColor="#F83B11" />
+          <Stop offset="0.9" stopColor="#CAF22C" />
         </LinearGradient>
       </Defs>
       <Circle cx="282.87" cy="282.87" r="282.87" fill="#262020" />

@@ -27,6 +27,12 @@
 | D-21 | Vástago Grotesk se retira del proyecto (archivos borrados; nunca se subieron a GitHub).                                                                            | Licencia comercial y repositorio público.                                                                          | Repo privado + licencia.                                                | 2026-10-28 | Medio   | **Aprobada**                                                |
 | D-22 | Aro de degradado de marca alrededor de los íconos de servicio, como en Figma.                                                                                      | Pedido de la responsable.                                                                                          | Sin aro (como el SVG).                                                  | 2026-10-28 | Bajo    | **Aprobada**                                                |
 | D-23 | Se mantienen los colores de marca aunque el texto blanco sobre degradado y los chips rosa no lleguen a AA para texto chico.                                        | Decisión de la responsable.                                                                                        | Oscurecer acentos en botones y chips.                                   | 2026-10-28 | Medio   | **Aprobada** (L-05 aceptada)                                |
+| D-24 | Encabezado: isotipo → Home · ícono OLE/CAFÉ → carta del café · avatar → perfil de cuenta (no el de comunidad).                                                     | Definido por la responsable.                                                                                       | —                                                                       | 2026-10-28 | Medio   | **Aprobada** (resuelve P-24)                                |
+| D-25 | Novedades se abre como panel que sube desde abajo (`formSheet`); se cierra deslizando, con atrás o con "Cerrar".                                                   | Definido por la responsable.                                                                                       | Pantalla completa.                                                      | 2026-10-28 | Bajo    | **Aprobada** (resuelve P-30)                                |
+| D-26 | La bienvenida se muestra solo la primera vez; el estado se guarda con `@react-native-async-storage/async-storage` (sin datos sensibles).                           | Definido por la responsable; dependencia aprobada.                                                                 | Memoria temporal.                                                       | 2026-10-28 | Bajo    | **Aprobada**                                                |
+| D-27 | Rutas protegidas con `Stack.Protected`: bienvenida (sin ver) → acceso (sin sesión) → app (miembro o invitado). Un enlace directo a una zona no permitida redirige. | Seguridad básica de navegación y flujo de Figma.                                                                   | Redirecciones manuales en cada pantalla.                                | 2026-10-28 | Medio   | Aplicada (técnica)                                          |
+| D-28 | Ingreso simulado (sin credenciales) para probar la navegación, marcado como provisional.                                                                           | No hay backend todavía.                                                                                            | —                                                                       | 2026-10-28 | Medio   | Provisional hasta las Etapas 6 y 13                         |
+| D-29 | El isotipo del encabezado se arma con las píldoras del logo oficial sobre círculo oscuro con aro.                                                                  | No hay un SVG del isotipo; se reutiliza el vector oficial.                                                         | PNG de Figma.                                                           | 2026-10-28 | Bajo    | Aplicada; a revisar por la responsable                      |
 
 ---
 
@@ -60,10 +66,10 @@
 - **P-14** **Colores:** el rosa y el naranja de la paleta (`#FF0055`, `#F84600`) no coinciden con los de las pantallas (`#E11D48`, `#F97316`), y el violeta `#5850F5` no se usa. ¿Cuáles valen? Recomendación: D-10. Además, tres combinaciones no alcanzan el contraste mínimo de accesibilidad: ¿se ajustan?
 - **P-11** ¿La app debe tener **modo oscuro** según el teléfono, o un tema único como en Figma? Recomendación: D-11.
 - **P-12** **Textos:** hay mezcla de voseo y tuteo ("Busca tu mesa", "Reserva tu lugar", "Accede", "Viaja… conoce", "Califica", "para ti", "O CONTINÚA CON"), erratas ("nace para para crear", "CAFETERIA", "Ultimos", "Emprendedore") y "Bienvenido" en masculino. ¿Unificamos todo en voseo y corregimos? ¿Querés lenguaje inclusivo?
-- **P-24** ¿Qué hace el **ícono de tres píldoras** del encabezado, junto al avatar?
+- ~~**P-24**~~ **Definido (D-24).** ¿Qué hace el **ícono de tres píldoras** del encabezado, junto al avatar?
 - **P-25** ¿Para qué es el ícono de cámara del buscador de Espacios (¿escanear un QR?)?
 - **P-29** "Pedir al barista": ¿hace un pedido real o es informativo?
-- **P-30** Novedades, ¿es una pantalla completa o un panel que se abre encima? ¿Cómo se cierra?
+- ~~**P-30**~~ **Definido (D-25).** Novedades, ¿es una pantalla completa o un panel que se abre encima? ¿Cómo se cierra?
 - **P-31** Para las ~16 pantallas que no están diseñadas (recuperar contraseña, detalle de reserva, confirmaciones, publicar proyecto, editar perfil, ajustes, etc.), ¿las diseñás vos en Figma o aprobás diseños provisionales con el sistema existente?
 - **P-28** ¿Dónde van cerrar sesión, ajustes y eliminar cuenta? (Eliminar cuenta es obligatorio en App Store si hay registro.)
 
@@ -78,6 +84,11 @@
 - ~~**P-35**~~ **Definido (2026-10-28):** sí, con aro (D-22). ¿Querés el aro de degradado alrededor de los íconos de servicio, como en Figma? Los SVG de la marca no lo tienen.
 - **P-36** Faltan las submarcas OLE/EVENTO, OLE/AFTER OFFICE y OLE/ITINERANTE en el código (están en Drive); se incorporan en las etapas de Agenda y Novedades.
 - **P-37** La carpeta "COLORES" de Drive tiene muestras en PNG (no códigos); se tomaron los valores de los SVG.
+
+### Grupo 8 — Surgidas en la Etapa 5
+
+- **P-38** La **carta del café** no tiene diseño en Figma: ¿la diseñás o propongo una provisional con el sistema existente? ¿El contenido (productos y precios) quién lo carga?
+- **P-39** ¿El avatar del encabezado debe mostrar la foto o las iniciales de la persona? (En Figma es un círculo vacío.)
 
 ### Grupo 5 — Recursos que faltan
 
@@ -125,6 +136,8 @@
 | L-03 | `api.expo.dev` y `docs.expo.dev` bloqueados en el entorno en la nube: `expo-doctor` no corre y se instala con `EXPO_OFFLINE=1`.                                                                                                                   | Bajo                                                                  | Documentado en la guía §J.                                         |
 | L-05 | Contraste: el texto blanco sobre los botones de degradado (3,7–3,9:1) solo cumple AA para texto grande; los chips rosa sobre gris (2,82:1) no cumplen. No se modificaron los colores de marca sin autorización.                                   | Medio (accesibilidad)                                                 | Pendiente de decisión (P-14)                                       |
 | L-04 | Sin prueba en un teléfono real (iOS o Android).                                                                                                                                                                                                   | Medio                                                                 | Pendiente de un dispositivo (Etapa 14).                            |
+
+| L-07 | En la versión web, Novedades se ve como pantalla completa: el panel deslizante (`formSheet`) es propio de iOS y Android y no se pudo ver sin teléfono. | Bajo | Verificar en teléfono (L-04) |
 
 ## 6. Recursos pendientes
 

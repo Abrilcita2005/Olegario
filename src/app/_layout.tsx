@@ -27,10 +27,12 @@ function Navegacion() {
   return (
     <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colores.fondo } }}>
       <Stack.Protected guard={!bienvenidaVista}>
-        <Stack.Screen name="(bienvenida)" />
+        <Stack.Screen name="(bienvenida)/bienvenida" />
       </Stack.Protected>
       <Stack.Protected guard={bienvenidaVista && !tipoAcceso}>
-        <Stack.Screen name="(acceso)" />
+        <Stack.Screen name="(acceso)/acceso" />
+        <Stack.Screen name="(acceso)/iniciar-sesion" />
+        <Stack.Screen name="(acceso)/registro" />
       </Stack.Protected>
       <Stack.Protected guard={bienvenidaVista && !!tipoAcceso}>
         <Stack.Screen name="(tabs)" />
