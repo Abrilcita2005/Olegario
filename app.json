@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Olegario en Movimiento",
+    "slug": "olegario-en-movimiento",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/imagenes/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/imagenes/android-icon-foreground.png",
+        "backgroundImage": "./assets/imagenes/android-icon-background.png",
+        "monochromeImage": "./assets/imagenes/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/imagenes/favicon.png",
+      "output": "single"
+    },
+    "plugins": ["expo-router"],
+    "scheme": "olegario",
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

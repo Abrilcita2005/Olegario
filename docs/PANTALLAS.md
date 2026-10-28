@@ -6,26 +6,27 @@
 
 ## Resumen
 
-| ID | Pantalla | Frame Figma | Sección | Inspección |
-|---|---|---|---|---|
-| P01 | Bienvenida 1 — Consentimiento | BIENVENIDA 1 (3:1948) | Bienvenida | Completa |
-| P02 | Bienvenida 2 — Concepto | BIENVENIDA 2 (4:2039) | Bienvenida | Completa |
-| P03 | Bienvenida 3 — Servicios | BIENVENIDA 3 (4:2040) | Bienvenida | Completa |
-| P04 | Acceso | INICIO 1 (107:18) | Acceso | Completa |
-| P05 | Registro | INICIO 2 (107:300) | Acceso | Completa |
-| P06 | Inicio de sesión | INICIO 3 (108:726) | Acceso | Completa |
-| P07 | Home | HOME (24:267) | Home | Completa |
-| P08 | Espacios | ESPACIOS (46:766) | Espacios | Captura y textos |
-| P09 | Agenda | AGENDA (58:12) | Agenda | Solo captura (imagen plana) |
-| P10 | Comunidad | COMUNIDAD (71:39) | Comunidad | Captura y textos |
-| P11 | Perfil profesional (público) | COMUNIDAD (105:836) | Comunidad / Perfil | Solo textos y estructura |
-| P12 | Perfil de cuenta | PERFIL (109:1042) | Perfil | Solo textos y estructura |
-| P13 | Novedades | NOVEDADES FLOTANTES (77:940) | Novedades | Captura y textos |
-| P14+ | Pantallas sin diseño | — | Varias | Ver el final |
+| ID   | Pantalla                      | Frame Figma                  | Sección            | Inspección                  |
+| ---- | ----------------------------- | ---------------------------- | ------------------ | --------------------------- |
+| P01  | Bienvenida 1 — Consentimiento | BIENVENIDA 1 (3:1948)        | Bienvenida         | Completa                    |
+| P02  | Bienvenida 2 — Concepto       | BIENVENIDA 2 (4:2039)        | Bienvenida         | Completa                    |
+| P03  | Bienvenida 3 — Servicios      | BIENVENIDA 3 (4:2040)        | Bienvenida         | Completa                    |
+| P04  | Acceso                        | INICIO 1 (107:18)            | Acceso             | Completa                    |
+| P05  | Registro                      | INICIO 2 (107:300)           | Acceso             | Completa                    |
+| P06  | Inicio de sesión              | INICIO 3 (108:726)           | Acceso             | Completa                    |
+| P07  | Home                          | HOME (24:267)                | Home               | Completa                    |
+| P08  | Espacios                      | ESPACIOS (46:766)            | Espacios           | Captura y textos            |
+| P09  | Agenda                        | AGENDA (58:12)               | Agenda             | Solo captura (imagen plana) |
+| P10  | Comunidad                     | COMUNIDAD (71:39)            | Comunidad          | Captura y textos            |
+| P11  | Perfil profesional (público)  | COMUNIDAD (105:836)          | Comunidad / Perfil | Solo textos y estructura    |
+| P12  | Perfil de cuenta              | PERFIL (109:1042)            | Perfil             | Solo textos y estructura    |
+| P13  | Novedades                     | NOVEDADES FLOTANTES (77:940) | Novedades          | Captura y textos            |
+| P14+ | Pantallas sin diseño          | —                            | Varias             | Ver el final                |
 
 ---
 
 ## P01 · Bienvenida 1 — Consentimiento
+
 - **Objetivo:** presentar la app y pedir consentimiento para cookies y permisos de rastreo.
 - **Elementos visibles:** logo claro · título "¡Queremos ofrecerte la mejor experiencia!" · 3 filas ícono + texto: (1) cookies y rastreo para contenido relevante, (2) "Respetamos y protegemos tu privacidad en todo momento", (3) "Al aceptar, haremos de esta app un lugar genial para ti" · espacio para imagen vacío (151×153) · botón "SIGUIENTE" claro.
 - **Jerarquía:** logo → título → lista de beneficios → CTA abajo, centrado.
@@ -41,6 +42,7 @@
 - **Pendiente:** P-10 (qué se rastrea, opción de rechazar, texto "para ti" en tuteo), P-20 (imagen faltante).
 
 ## P02 · Bienvenida 2 — Concepto
+
 - **Objetivo:** transmitir el concepto de Olegario ("Donde las ideas encuentran su lugar").
 - **Elementos visibles:** fondo claro · logo oscuro · collage de 5 fotos rotadas con esquinas redondeadas (10) · título · texto con cierre destacado "tan interesantes como vos." · SIGUIENTE oscuro.
 - **Componentes:** `BotonSiguiente` (oscuro), collage de fotos.
@@ -53,6 +55,7 @@
 - **Pendiente:** errata "nace para para crear" (P-12) · derechos de las fotos (P-21).
 
 ## P03 · Bienvenida 3 — Servicios
+
 - **Objetivo:** contar qué se puede hacer en la app y dar la bienvenida.
 - **Elementos visibles:** fondo oscuro · logo claro · foto grande de un evento · "Tu experiencia empieza acá." · texto de servicios (reservar espacios, eventos y capacitaciones, novedades, beneficios) · "Bienvenido a Olegario." · SIGUIENTE claro.
 - **Acciones:** SIGUIENTE → P04.
@@ -61,6 +64,7 @@
 - **Pendiente:** "Bienvenido" en masculino; ¿preferís una forma inclusiva? (P-12).
 
 ## P04 · Acceso
+
 - **Objetivo:** elegir cómo entrar: iniciar sesión, crear cuenta o entrar como invitado.
 - **Elementos visibles:** logo oscuro · "ECOSISTEMA CREATIVO" (CREATIVO con degradado) · cita "Un espacio vivo para conectar personas, crear y expandir tu potencial profesional en el corazón de Mendoza." con barra lateral · botón degradado "INICIAR SESIÓN" (56 px) · botón oscuro "CREAR UNA CUENTA" · divisor "O CONTINÚA CON" · botón "Modo Invitado" · pie "Mendoza · Hub Creativo & Coworking / CAFÉ DE ESPECIALIDAD & CONEXIÓN 24/7".
 - **Componentes:** `BotonPrimario` grande, `BotonSecundario`, `BannerCita` (variante con borde), `PieHospitalidad`.
@@ -74,6 +78,7 @@
 - **Pendiente:** P-04 (qué ve el invitado) · "CONTINÚA" vs "CONTINUÁ" (P-12) · el frame contiene secciones ocultas fuera de pantalla que no se implementan.
 
 ## P05 · Registro
+
 - **Objetivo:** crear una cuenta de miembro.
 - **Elementos visibles:** flecha volver · isotipo · "Creá tu cuenta" · 4 campos en tarjetas oscuras con etiqueta lima: Nombre completo, Correo profesional, Profesión / Área de trabajo, Contraseña (con ojo y 4 barras de fortaleza) · checkbox "Acepto los términos de convivencia y manifiesto de la comunidad Olegario." con subtexto "Cuidamos el silencio productivo, la hospitalidad y la cultura de colaboración abierta." · CTA "CREAR CUENTA Y CONTINUAR" · "¿Ya tenés cuenta? Iniciar sesión" · pie.
 - **Componentes:** `Encabezado` (volver), `CampoFormulario` ×4, `Checkbox`, `BotonPrimario`, `PieHospitalidad`.
@@ -88,6 +93,7 @@
 - **Pendiente:** P-23 · ¿"correo profesional" admite cualquier correo? · ¿hace falta verificar el correo?
 
 ## P06 · Inicio de sesión
+
 - **Objetivo:** entrar con una cuenta existente.
 - **Elementos visibles:** volver · isotipo · "¡Qué bueno verte de nuevo!" · "Ingresá a tu espacio, sincronizá tu jornada y conectá con tu comunidad creativa." · selector "MIEMBRO COWORKER / INVITADO / EVENTO" · tarjeta con "Email o usuario", "Contraseña" + "¿Olvidaste tu contraseña?" (con candado y ojo) · "INICIAR SESIÓN" · "Ingresar con Face ID / Huella digital" · "O CONTINUÁ CON" · Google · Apple ID · "¿Todavía no sos miembro? Registrate y sumate a Olegario" · pie.
 - **Componentes:** `SelectorSegmentado`, `CampoFormulario`, `BotonPrimario`, `BotonSecundario` (biometría), `BotonSocial` ×2.
@@ -101,6 +107,7 @@
 - **Pendiente:** P-04 (diferencia entre roles) · P-05 (Google y Apple: si se ofrece Google en iOS, Apple exige ofrecer también "Iniciar sesión con Apple") · diseño de recuperación de contraseña.
 
 ## P07 · Home
+
 - **Objetivo:** resumen del día: reserva actual y acceso rápido a los espacios.
 - **Elementos visibles:** encabezado (isotipo, ícono de tres píldoras, avatar) · "¡Buen día, Sofi!" + "¿Cómo querés impulsar tu día hoy en Olegario?" · banner con la frase de marca · "TU RESERVA ACTUAL" + chip "En curso" · tarjeta de reserva (miniatura, "OLE/COWORK · PUESTO INDIVIDUAL", "Mesa con Luz Natural", "Hoy: 10:00 - 14:00 hs", "Sector Jardín · Puesto #14", botón "VER DETALLES Y CHECK-IN" con ícono QR, botón "cómo llegar") · "ESPACIOS OLEGARIO" + "Ver todo >" · 3 tarjetas de servicio (OLE/COWORK "4 Puestos Libres", OLE/STREAM "2 Salas Disponibles", OLE/NETWORK "Mesa Abierta") · botón Novedades "2 nuevas" · barra inferior (Inicio activa).
 - **Componentes:** `Encabezado`, `BannerCita`, `Chip`, `TarjetaReserva`, `BotonIcono`, `TarjetaServicio` ×3, `BotonNovedades`, `BarraNavegacion`.
@@ -114,6 +121,7 @@
 - **Pendiente:** P-06, P-07, P-24 (función del ícono de tres píldoras) · el frame tiene capas sobrantes (texto "Text", Frame 8 vacío).
 
 ## P08 · Espacios
+
 - **Objetivo:** buscar y reservar un espacio por día y horario, con disponibilidad en tiempo real.
 - **Elementos visibles:** encabezado · chip "14 PUESTOS LIBRES" · "TU RINCÓN PERFECTO" (PERFECTO con degradado) · selector de semana LUN 19 a DOM 25 (MIÉ 21 activo, puntos de colores bajo algunos días) · buscador "Busca tu mesa en tiempo real" con ícono de cámara · barra "HORARIO SELECCIONADO · Hoy, 10:00 - 14:00 (4 hrs)" + "CONFIRMAR ✓" · tarjetas:
   1. **OLE/COWORK · Rincón Botánico Zen** · "LIBRE" · etiquetas "Luz natural directa", "Silencio alto" · "Ala Oeste · Nivel 1 · Frente a jardín interior" · Tomas USB-C 65W, Herman Miller Sayl, Aire purificado · "Accede siempre que quieras · Gratis" · "RESERVA TU LUGAR".
@@ -130,6 +138,7 @@
 - **Pendiente:** P-06, P-25 · "Busca/Reserva/Accede" en tuteo frente al voseo del resto (P-12).
 
 ## P09 · Agenda
+
 - **Objetivo:** ver reservas, eventos y efemérides, e inscribirse en actividades.
 - **Elementos visibles (leídos de la imagen):** encabezado · chip "OLE / AGENDA CREATIVA" · "TU RINCÓN PERFECTO" · "Sincronizá tus espacios, conectá en workshops y activá la chispa del día en Olegario." · filtros "TODO", "MIS RESERVAS (1)", "EFEMÉRIDES" · semana LUN 19 a DOM 25 · tarjeta de reserva: ícono OLE/STREAM, "OLE / STREAM", "En 45 min", "Sala Acustica Focus", HORARIO 10:30 - 12:30 hs, UBICACIÓN Nivel 1 · Bloque B, "PIN ACCESO #8492" (copiable), "MODIFICAR" · tarjeta de efeméride: "OLE / INSPIRACIÓN", "21 DE MAYO", "DÍA MUNDIAL DEL DISEÑO GRÁFICO", cita, "BENEFICIO EN OLE/CAFÉ: Mostrá este pase y pedí tu Flat White de especialidad de regalo.", "CONOCER MANIFIESTO & COMUNIDAD →" · "NOVEDADES · Actividades abiertas de la comunidad Olegario" · eventos: "OLE / EVENTO · Jue 22 · 17:00 hs · Storytelling para Emprendedore[s] · Disertante: Sofía Valenzuela · Sala Principal… · +14 inscriptos · INSCRIPTO" y "OLE / AFTER OFFICE · Vie 23 · 18:30 hs · Sunset Beats & Vinyl Session · Terraza Abierta Olegario · DJ Set en vivo &… · +14 inscriptos · INSCRIPTO" · Novedades · barra inferior (Agenda activa).
 - **Acciones:** filtrar · elegir día · copiar PIN · modificar reserva (**sin diseño**) · conocer manifiesto (**sin diseño**) · inscribirse o desinscribirse.
@@ -141,6 +150,7 @@
 - **Pendiente:** **pedir el frame de Agenda con capas** (P-26) · P-07 (PIN) · el título "TU RINCÓN PERFECTO" repite el de Espacios (¿intencional?) · texto truncado "Emprendedore".
 
 ## P10 · Comunidad
+
 - **Objetivo:** descubrir oportunidades, talentos e iniciativas, y conectar.
 - **Elementos visibles:** encabezado · tarjeta "MODO ACTIVO": selector "Conexión Abierta / Modo Foco", "Visible para matches y charlas" · "OLE/NETWORK • COMUNIDAD" · "COLABORÁ, SUMATE, CONECTÁ" · bajada · "PUBLICAR PROYECTO O BÚSQUEDA" · "FILTRAR OPORTUNIDADES": Todos, Buscan Colaborador, Buscan S… (desplazable) · "3 Convocatorias activas · PROYECTOS & OPORTUNIDADES": EcoTrack (BUSCA: Diseñador/a UI/UX, etiquetas Figma, Design Systems, Mobile UX, "QUIERO APORTAR / POSTULARME", "VER DETALLES DEL PROYECTO"), Estudio Circular (BUSCA: Productor de Contenido y Audio, "ME INTERESA COLABORAR"), Lanzamiento de Marca de Café Sostenible (INICIATIVA COMUNITARIA, "SUMARME AL EQUIPO DE TESTING") · "Coworkers en línea · TALENTOS DISPONIBLES": Clara Méndez (Disponible, OFREZCO / BUSCO, "CONTACTAR") · "Iniciativas de la comunidad · TALLERES ENTRE PARES": Club de Lectura Tech & Diseño ("SUMARSE"), Mesa de Debate No-Code & Automatización ("ULTIMOS CUPOS DISPONIBLES") · Novedades · barra inferior (Comunidad activa).
 - **Acciones:** cambiar modo de visibilidad · publicar (**formulario sin diseño**) · filtrar · postularse · ver detalle (**sin diseño**) · contactar (**¿chat? P-08**) · sumarse a un taller.
@@ -151,6 +161,7 @@
 - **Pendiente:** P-08 (contacto y moderación de publicaciones) · P-17 (estilos exactos).
 
 ## P11 · Perfil profesional (público)
+
 - **Objetivo:** mostrar el perfil profesional de otro miembro.
 - **Estructura (sin captura):** contenido desplazable (`ScrollableContent`) · portada (`HeroCover`, 402×373) · encabezado con "Martina Rossi", "Diseñadora UI/UX & Brand Strategy Freelance", "En Ole/Café ahora", "Mesa 12" · sección "SOBRE MI" con texto · el frame mide 850 px, así que hay elementos debajo del contenido desplazable (¿barra de acciones?).
 - **Acciones:** [PENDIENTE] probablemente contactar o volver.
@@ -160,6 +171,7 @@
 - **Pendiente:** **captura y diseño** (P-27) · qué campos ve cada rol.
 
 ## P12 · Perfil de cuenta
+
 - **Objetivo:** información de la cuenta, membresía, horas y servicios.
 - **Estructura (sin captura):** encabezado (101 px) · "Sofía Valenzuela", "Diseñadora UI/UX & Brand Strategist Coworker activa", "Disponible para colaborar" · "MEMBRESÍA ACTUAL", "Suscripción al día", "ACTIVO", "Acceso 24/7 · Puesto Nómade", "42 / 80 hs", "CARGAR HORAS EXTRAS" · "GESTIÓN Y SERVICIOS": Recepción de Paquetes (Listo para retirar en recepción principal) · Beneficios y Descuentos (Cafeterías asociadas y convenios) · Historial y Próximas Reservas (Sala de Directorio mañana a las 10:00 hs) · Valoraciones de la Experiencia (Califica espacios y comparte opiniones) · Libro de Quejas y Sugerencias (Canal directo con el equipo) · Métodos de Pago y Facturación (Visa terminada en •••• 4092).
 - **Acciones:** cargar horas extras (**¿pago? P-03**) · abrir cada servicio (**6 pantallas sin diseño**) · editar perfil (sin diseño) · cerrar sesión (no aparece en los textos: P-28).
@@ -168,6 +180,7 @@
 - **Pendiente:** **captura y diseño** (P-27) · P-03 · P-28 · ¿cómo se llega? (avatar del encabezado, supuesto).
 
 ## P13 · Novedades
+
 - **Objetivo:** promociones y eventos destacados ("Pulso de Olegario").
 - **Elementos visibles:** encabezado · "● PULSO DE OLEGARIO" (rosa) + "Novedades y eventos" · tarjeta 1: foto de la barra, chip "20% OFF", "PROMO CAFETERIA", "Flat White de especialidad +Cookie casera de avena", "Pedir al barista →" · tarjeta 2: foto de mesa junto al lago, avatares MG, LR, +5, "20% OFF", "COWORKEO ITINERANTE", "Viaja con Olegario y conoce personas y lugares nuevos!", "Ultimos Cupos →" · barra inferior (Inicio activa).
 - **Acciones:** "Pedir al barista" (¿pedido real o solo informativo? P-29) · "Últimos cupos" → inscripción o detalle (sin diseño).
@@ -180,25 +193,26 @@
 ---
 
 ## Pantallas necesarias sin diseño en Figma [PENDIENTE P-31]
+
 Se detectaron a partir de botones que llevan a algún lado pero no tienen pantalla:
 
-| Pantalla | Disparada desde |
-|---|---|
-| Recuperar contraseña | P06 "¿Olvidaste tu contraseña?" |
-| Detalle de reserva y check-in | P07 "Ver detalles y check-in" |
-| Cómo llegar / mapa del coworking | P07 botón de ubicación |
-| Selector de horario | P08 barra de horario |
-| Confirmación de reserva | P08 "Reserva tu lugar" / "Agendar slot" |
-| Modificar o cancelar reserva | P09 "Modificar" |
-| Detalle de evento e inscripción | P09, P13 |
-| Manifiesto y comunidad | P09, P05 (términos) |
-| Publicar proyecto o búsqueda | P10 |
-| Detalle de proyecto / postulación | P10 |
-| Contacto entre miembros | P10 "Contactar" |
-| Editar perfil propio | P12 |
-| Servicios de la cuenta (6) | P12 |
-| Cargar horas extras / pago | P12 |
+| Pantalla                                | Disparada desde                                                          |
+| --------------------------------------- | ------------------------------------------------------------------------ |
+| Recuperar contraseña                    | P06 "¿Olvidaste tu contraseña?"                                          |
+| Detalle de reserva y check-in           | P07 "Ver detalles y check-in"                                            |
+| Cómo llegar / mapa del coworking        | P07 botón de ubicación                                                   |
+| Selector de horario                     | P08 barra de horario                                                     |
+| Confirmación de reserva                 | P08 "Reserva tu lugar" / "Agendar slot"                                  |
+| Modificar o cancelar reserva            | P09 "Modificar"                                                          |
+| Detalle de evento e inscripción         | P09, P13                                                                 |
+| Manifiesto y comunidad                  | P09, P05 (términos)                                                      |
+| Publicar proyecto o búsqueda            | P10                                                                      |
+| Detalle de proyecto / postulación       | P10                                                                      |
+| Contacto entre miembros                 | P10 "Contactar"                                                          |
+| Editar perfil propio                    | P12                                                                      |
+| Servicios de la cuenta (6)              | P12                                                                      |
+| Cargar horas extras / pago              | P12                                                                      |
 | Ajustes, cerrar sesión, eliminar cuenta | — (la eliminación de cuenta es obligatoria en App Store si hay registro) |
-| Administración de contenidos | — |
+| Administración de contenidos            | —                                                                        |
 
 **[RECOMENDACIÓN]** Para estas pantallas se pueden proponer diseños provisionales con el sistema de diseño existente, marcados como "provisional", y que vos los apruebes antes de darlos por buenos.

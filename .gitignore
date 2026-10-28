@@ -48,3 +48,18 @@ logs/
 tmp/
 .cache/
 coverage/
+
+# ===== Expo / React Native =====
+.expo/
+web-build/
+expo-env.d.ts
+.metro-health-check*
+*.tsbuildinfo
+*.jks
+*.p8
+*.mobileprovision
+*.orig.*
+.kotlin/
+# Carpetas nativas generadas (Continuous Native Generation)
+/ios
+/android
