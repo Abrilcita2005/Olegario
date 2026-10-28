@@ -52,11 +52,13 @@ San Francisco: la carpeta de Drive solo tenía archivos de metadatos de macOS (`
 | `Texto`              | `src/components/ui/Texto.tsx` | Todas las variantes tipográficas; respeta el tamaño de letra del sistema                                                               |
 | `Boton`              | `ui/Boton.tsx`                | primario (degradado acción), secundario, contorno, siguienteClaro, siguienteOscuro · tamaños grande/mediano · cargando · deshabilitado |
 | `BotonIcono`         | `ui/BotonIcono.tsx`           | 44×44, etiqueta accesible obligatoria                                                                                                  |
-| `Chip`               | `ui/Chip.tsx`                 | estado (con punto), enlace, descuento, destacado                                                                                       |
+| `Chip`               | `ui/Chip.tsx`                 | estado (con punto), enlace, descuento, destacado, etiqueta (borde lima)                                                                |
 | `CampoFormulario`    | `ui/CampoFormulario.tsx`      | texto, correo, contraseña con mostrar/ocultar, error                                                                                   |
 | `IndicadorFortaleza` | `ui/IndicadorFortaleza.tsx`   | 4 barras (criterio en `utils/fortalezaContrasena.ts`, provisional)                                                                     |
 | `Casilla`            | `ui/Casilla.tsx`              | aceptación de términos, área táctil de toda la fila                                                                                    |
-| `SelectorSegmentado` | `ui/SelectorSegmentado.tsx`   | opción activa con degradado                                                                                                            |
+| `SelectorSegmentado` | `ui/SelectorSegmentado.tsx`   | opción activa con degradado; ancho de cada opción según su texto                                                                       |
+| `MenuOpciones`       | `ui/MenuOpciones.tsx`         | menú que sube desde abajo ("Cambiar foto")                                                                                             |
+| `Avatar`             | `ui/Avatar.tsx`               | foto de perfil circular o círculo oscuro de Figma                                                                                      |
 | `Tarjeta`            | `ui/Tarjeta.tsx`              | superficie oscura, opcional elevada                                                                                                    |
 | Estados              | `ui/Estados.tsx`              | cargando, esqueleto, vacío, error (**provisionales**)                                                                                  |
 | `Logo`               | `marca/Logo.tsx`              | horizontal negro (sobre claro) y blanco (sobre oscuro), vectoriales                                                                    |
