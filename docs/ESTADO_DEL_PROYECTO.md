@@ -46,6 +46,13 @@
 - Resto de preguntas abiertas en `DECISIONES_Y_PENDIENTES.md`.
 - Prueba en un teléfono real (L-04).
 
+## Para retomar (sesión pausada el 2026-10-28)
+
+1. Leer este archivo, `OLEGARIO.md` y `docs/PLAN_DE_TRABAJO.md`.
+2. Correr `npm install` y `npm run verificar` (deben pasar 33 pruebas).
+3. Pregunta abierta para la responsable: **P-41**, ¿la cookie de la promo es de avena o de chocolate?
+4. La Etapa 5 está completada. **La Etapa 6 solo empieza con una autorización explícita.**
+
 ## Último informe de cierre
 
 2026-10-28: Etapa 5 (con la cuarta revisión aplicada), entregado en la conversación.
