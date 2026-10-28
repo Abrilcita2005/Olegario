@@ -1,3 +1,4 @@
+export * from './Avatar';
 export * from './Boton';
 export * from './BotonIcono';
 export * from './Casilla';

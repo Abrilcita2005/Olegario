@@ -22,7 +22,19 @@
       "favicon": "./assets/imagenes/favicon.png",
       "output": "single"
     },
-    "plugins": ["expo-router", "expo-font", "expo-asset"],
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-asset",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Olegario usa tus fotos solo para que elijas tu foto de perfil.",
+          "cameraPermission": "Olegario usa la cámara solo para que saques tu foto de perfil.",
+          "microphonePermission": false
+        }
+      ]
+    ],
     "scheme": "olegario",
     "experiments": {
       "typedRoutes": true

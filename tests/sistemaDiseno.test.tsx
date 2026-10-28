@@ -5,6 +5,7 @@ import { Boton, CampoFormulario, Casilla, Chip, SelectorSegmentado } from '@/com
 import { colores, marca } from '@/theme';
 import { relacionDeContraste } from '@/utils/contraste';
 import { calcularFortaleza } from '@/utils/fortalezaContrasena';
+import { formatearPrecio } from '@/utils/formatos';
 
 describe('Colores de marca (SVG originales)', () => {
   it('usa los valores aprobados', () => {
@@ -111,5 +112,16 @@ describe('Marca', () => {
   it('IconoSubmarca expone el nombre del servicio', async () => {
     await render(<IconoSubmarca submarca="cowork" />);
     expect(screen.getByLabelText('OLE/COWORK')).toBeTruthy();
+  });
+});
+
+describe('formatearPrecio', () => {
+  it.each([
+    [1500, '$ 1.500'],
+    [3800, '$ 3.800'],
+    [250, '$ 250'],
+    [1234567, '$ 1.234.567'],
+  ])('%i → %s', (valor, esperado) => {
+    expect(formatearPrecio(valor)).toBe(esperado);
   });
 });

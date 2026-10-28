@@ -118,4 +118,16 @@ describe('App principal', () => {
     await renderRouter('./src/app', { initialUrl: '/perfil' });
     await waitFor(() => expect(screen).toHavePathname('/acceso'));
   });
+
+  it('la carta del café filtra por categoría', async () => {
+    await abrirApp({ bienvenida: true, acceso: 'miembro' });
+    await waitFor(() => expect(screen).toHavePathname('/'));
+    await tocar(screen.getByRole('button', { name: 'Carta del café' }));
+    await waitFor(() => expect(screen.getByText('Cold brew')).toBeTruthy());
+
+    await tocar(screen.getByRole('radio', { name: 'PASTELERÍA' }));
+
+    expect(screen.queryByText('Cold brew')).toBeNull();
+    expect(screen.getByText('Cookie casera de avena')).toBeTruthy();
+  });
 });

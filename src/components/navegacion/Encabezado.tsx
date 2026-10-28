@@ -3,13 +3,16 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { IconoSubmarca } from '@/components/marca/IconoSubmarca';
 import { Isotipo } from '@/components/marca/Isotipo';
-import { colores, espacio, radios } from '@/theme';
+import { Avatar } from '@/components/ui';
+import { useSesion } from '@/estado/sesion';
+import { espacio } from '@/theme';
 
 const TAMANO = 49;
 
 // Encabezado de las pantallas principales (Figma, 101 px de alto). Navegación aprobada 2026-10-28:
 // isotipo → Home · ícono OLE/CAFÉ → carta del café · avatar → perfil de cuenta.
 export function Encabezado() {
+  const { fotoPerfil } = useSesion();
   return (
     <View style={styles.contenedor}>
       <Pressable
@@ -34,8 +37,9 @@ export function Encabezado() {
           accessibilityRole="button"
           accessibilityLabel="Mi perfil y membresía"
           hitSlop={4}
-          style={styles.avatar}
-        />
+        >
+          <Avatar foto={fotoPerfil} tamano={TAMANO} />
+        </Pressable>
       </View>
     </View>
   );
@@ -50,10 +54,4 @@ const styles = StyleSheet.create({
     paddingBottom: espacio.grande,
   },
   derecha: { flexDirection: 'row', gap: espacio.l },
-  avatar: {
-    width: TAMANO,
-    height: TAMANO,
-    borderRadius: radios.pastilla,
-    backgroundColor: colores.superficie,
-  },
 });
