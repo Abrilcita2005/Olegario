@@ -6,6 +6,7 @@ export * from './CampoFormulario';
 export * from './Chip';
 export * from './Estados';
 export * from './IndicadorFortaleza';
+export * from './MenuOpciones';
 export * from './SelectorSegmentado';
 export * from './Tarjeta';
 export * from './Texto';

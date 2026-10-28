@@ -4,7 +4,7 @@ import { colores, espacio, radios, type NombreColor } from '@/theme';
 
 import { Texto } from './Texto';
 
-type Variante = 'estado' | 'enlace' | 'descuento' | 'destacado';
+type Variante = 'estado' | 'enlace' | 'descuento' | 'destacado' | 'etiqueta';
 
 type Props = {
   texto: string;
@@ -16,10 +16,12 @@ const colorTexto: Record<Variante, NombreColor> = {
   enlace: 'acento',
   descuento: 'textoSobreOscuro',
   destacado: 'acentoLima',
+  etiqueta: 'acentoLima',
 };
 
 // Etiquetas de Figma: estado ("En curso", con punto), enlace ("Ver todo >"),
-// descuento ("20% OFF", fondo naranja) y destacado (texto lima sobre oscuro).
+// descuento ("20% OFF", fondo naranja), destacado (texto lima sobre oscuro) y etiqueta (borde lima,
+// para usar sobre tarjetas oscuras: "Vegano", "Sin TACC").
 export function Chip({ texto, variante = 'estado' }: Props) {
   return (
     <View style={[styles.base, estilosVariante[variante]]}>
@@ -44,6 +46,12 @@ const estilosVariante = StyleSheet.create({
   },
   descuento: { backgroundColor: colores.acentoNaranja },
   destacado: { backgroundColor: colores.superficie },
+  etiqueta: {
+    borderWidth: 1,
+    borderColor: colores.acentoLima,
+    paddingHorizontal: 8,
+    paddingVertical: 1,
+  },
 });
 
 const styles = StyleSheet.create({

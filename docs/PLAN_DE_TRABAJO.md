@@ -73,10 +73,10 @@
 
 - **Estado:** `Completada (pendiente de autorización)`, 2026-10-28
 - **Objetivo:** el esqueleto navegable completo.
-- **Resultado:** ✅ sesión simulada con almacenamiento local (`src/estado/sesion.tsx`, `src/services/almacenamiento.ts`) · ✅ rutas protegidas: bienvenida (solo la primera vez) → acceso → app · ✅ encabezado (isotipo → Home, OLE/CAFÉ → carta del café, avatar → perfil) · ✅ barra inferior de Figma, fija · ✅ botón flotante Novedades con contador (datos de prueba) que abre el panel · ✅ pantallas provisionales: bienvenida, acceso, iniciar sesión, registro, 4 pestañas, perfil, carta del café, novedades · ✅ pantalla de ruta inexistente · ✅ "volver" con la flecha y con el botón del sistema. · ✅ Revisión de la responsable aplicada: foto de perfil (galería o cámara) en el avatar y carta del café con diseño provisional.
+- **Resultado:** ✅ sesión simulada con almacenamiento local (`src/estado/sesion.tsx`, `src/services/almacenamiento.ts`) · ✅ rutas protegidas: bienvenida (solo la primera vez) → acceso → app · ✅ encabezado (isotipo → Home, OLE/CAFÉ → carta del café, avatar → perfil) · ✅ barra inferior de Figma, fija · ✅ botón flotante Novedades con contador (datos de prueba) que abre el panel · ✅ pantallas provisionales: bienvenida, acceso, iniciar sesión, registro, 4 pestañas, perfil, carta del café, novedades · ✅ pantalla de ruta inexistente · ✅ "volver" con la flecha y con el botón del sistema. · ✅ Revisiones de la responsable aplicadas: foto de perfil con un botón "Cambiar foto" y menú de opciones; carta del café provisional con foto (espacio reservado), etiquetas, sin aviso de ejemplo y márgenes verificados en 402, 360 y 320 px.
 - **Archivos:** `src/app/_layout.tsx`, `src/app/(tabs)/`, `src/app/(acceso)/`, `src/app/(bienvenida)/`, `src/app/perfil.tsx`, `src/app/carta-cafe.tsx`, `src/app/novedades.tsx`, `src/app/+not-found.tsx`, `src/components/navegacion/`, `src/components/marca/Isotipo.tsx`, `src/estado/`, `src/services/`, `data/mock/novedades.ts`, `tests/navegacion.test.tsx`, `jest.setup.js`.
 - **Criterios de aceptación:** ✅ la tabla de navegación funciona entera (11 pruebas automáticas + recorrido en el navegador) · ✅ la barra y Novedades quedan fijos al desplazar · ✅ la sesión y la bienvenida se recuerdan al recargar · ⚠️ el panel deslizante de Novedades solo se ve en iOS/Android (L-07).
-- **Pruebas:** 32 pruebas automáticas; recorrido web con capturas en `docs/capturas-app/etapa-5/`.
+- **Pruebas:** 33 pruebas automáticas; recorrido web con capturas en `docs/capturas-app/etapa-5/`.
 
 ## Etapa 6 — Bienvenida y acceso
 
@@ -186,4 +186,5 @@
 - [ ] Probada en el destino real (iOS y/o Android)
 - [ ] README probado desde cero
 - [ ] Sin contraseñas en Git; `.env.example` actualizado
+- [ ] Reemplazar los datos de ejemplo de la carta del café (sin aviso en pantalla, D-31)
 - [ ] Pendientes resueltos o documentados

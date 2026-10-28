@@ -45,6 +45,9 @@ export const colores = {
   exito: marca.lima,
   advertencia: marca.naranja,
 
+  // Fondo semitransparente detrás de menús y paneles
+  velo: 'rgba(38, 32, 32, 0.5)',
+
   transparente: 'transparent',
 } as const;
 

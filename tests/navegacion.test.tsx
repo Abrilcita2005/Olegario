@@ -129,5 +129,25 @@ describe('App principal', () => {
 
     expect(screen.queryByText('Cold brew')).toBeNull();
     expect(screen.getByText('Cookie casera de avena')).toBeTruthy();
+    await tocar(screen.getByRole('radio', { name: 'FRÍOS' }));
+    expect(screen.getAllByText('Vegano').length).toBeGreaterThan(0);
+  });
+});
+
+describe('Foto de perfil', () => {
+  it('"Cambiar foto" abre el menú con las opciones y se puede cancelar', async () => {
+    await abrirApp({ bienvenida: true, acceso: 'miembro' });
+    await waitFor(() => expect(screen).toHavePathname('/'));
+    await tocar(screen.getByRole('button', { name: 'Mi perfil y membresía' }));
+
+    await tocar(screen.getByRole('button', { name: 'Cambiar foto' }));
+    expect(screen.getByRole('button', { name: 'Elegir de la galería' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Sacar una foto' })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Quitar foto' })).toBeNull();
+
+    await tocar(screen.getByRole('button', { name: 'Cancelar' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('button', { name: 'Elegir de la galería' })).toBeNull(),
+    );
   });
 });

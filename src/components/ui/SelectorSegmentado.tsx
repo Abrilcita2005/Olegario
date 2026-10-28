@@ -50,6 +50,9 @@ export function SelectorSegmentado<T extends string>({
               variante="etiquetaCampo"
               color={activa ? 'textoBoton' : 'acentoLima'}
               style={styles.texto}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.75}
             >
               {opcion.etiqueta.toUpperCase()}
             </Texto>
@@ -68,13 +71,18 @@ const styles = StyleSheet.create({
     backgroundColor: colores.superficie,
   },
   opcion: {
-    flex: 1,
+    // El ancho de cada opción depende de su texto: así las palabras largas ("Pastelería") entran.
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 'auto',
+    minWidth: 0,
     minHeight: 44,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: espacio.m,
+    paddingHorizontal: espacio.xs,
     paddingVertical: espacio.l,
   },
   radioOpcion: { borderRadius: radios.sm },
-  texto: { textAlign: 'center' },
+  // En pantallas angostas el texto se achica un poco en lugar de salirse del margen.
+  texto: { textAlign: 'center', letterSpacing: 0.4 },
 });

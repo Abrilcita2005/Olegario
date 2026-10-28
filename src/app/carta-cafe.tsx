@@ -4,13 +4,18 @@ import { StyleSheet, View } from 'react-native';
 import { IconoSubmarca } from '@/components/marca/IconoSubmarca';
 import { PantallaSecundaria } from '@/components/navegacion/PantallaSecundaria';
 import { Chip, SelectorSegmentado, Tarjeta, Texto } from '@/components/ui';
-import { espacio } from '@/theme';
+import { colores, espacio, radios } from '@/theme';
 import { formatearPrecio } from '@/utils/formatos';
 
-import { productosDePrueba, type CategoriaCarta } from '../../data/mock/cartaCafe';
+import {
+  productosDePrueba,
+  type CategoriaCarta,
+  type EtiquetaProducto,
+} from '../../data/mock/cartaCafe';
 
 // Carta del café (OLE/CAFÉ). DISEÑO PROVISIONAL propuesto por el equipo (no está en Figma, P-38),
-// armado con el sistema de diseño. Productos y precios: datos de ejemplo.
+// armado con el sistema de diseño. Productos y precios: datos de ejemplo (marcados en data/mock;
+// la responsable pidió no mostrar el aviso en pantalla). Reemplazar antes de publicar (P-38).
 const FILTROS = [
   { valor: 'todo', etiqueta: 'Todo' },
   { valor: 'cafes', etiqueta: 'Cafés' },
@@ -19,6 +24,12 @@ const FILTROS = [
 ] as const;
 
 type Filtro = 'todo' | CategoriaCarta;
+
+const NOMBRE_ETIQUETA: Record<EtiquetaProducto, string> = {
+  vegano: 'Vegano',
+  sinTacc: 'Sin TACC',
+  sinLactosa: 'Sin lactosa',
+};
 
 export default function CartaCafeScreen() {
   const [filtro, setFiltro] = useState<Filtro>('todo');
@@ -43,7 +54,6 @@ export default function CartaCafeScreen() {
       <Texto variante="cuerpo" style={styles.bajada}>
         Café de especialidad para acompañar tu jornada en Olegario.
       </Texto>
-      <Chip texto="Carta de ejemplo · productos y precios a confirmar" variante="destacado" />
 
       <Tarjeta elevada style={styles.promo}>
         <View style={styles.filaChips}>
@@ -67,6 +77,10 @@ export default function CartaCafeScreen() {
       <View style={styles.lista}>
         {productos.map((producto) => (
           <Tarjeta key={producto.id} style={styles.producto}>
+            {/* Espacio reservado para la foto del producto (todavía no hay fotos reales, P-40). */}
+            <View style={styles.foto} accessibilityElementsHidden importantForAccessibility="no">
+              <IconoSubmarca submarca="cafe" tamano={40} conAro={false} />
+            </View>
             <View style={styles.textosProducto}>
               <Texto variante="tituloTarjeta" color="textoSobreOscuro">
                 {producto.nombre}
@@ -74,11 +88,18 @@ export default function CartaCafeScreen() {
               <Texto variante="cuerpoChico" color="textoSecundario">
                 {producto.descripcion}
               </Texto>
+              {producto.etiquetas.length > 0 ? (
+                <View style={styles.etiquetas}>
+                  {producto.etiquetas.map((etiqueta) => (
+                    <Chip key={etiqueta} texto={NOMBRE_ETIQUETA[etiqueta]} variante="etiqueta" />
+                  ))}
+                </View>
+              ) : null}
             </View>
             <Texto
               variante="tituloTarjeta"
               color="acentoLima"
-              accessibilityLabel={`Precio de ejemplo ${formatearPrecio(producto.precioDeEjemplo)}`}
+              accessibilityLabel={`Precio ${formatearPrecio(producto.precioDeEjemplo)}`}
             >
               {formatearPrecio(producto.precioDeEjemplo)}
             </Texto>
@@ -97,5 +118,14 @@ const styles = StyleSheet.create({
   filaChips: { flexDirection: 'row', alignItems: 'center', gap: espacio.m },
   lista: { gap: espacio.l, marginTop: espacio.base },
   producto: { flexDirection: 'row', alignItems: 'center', gap: espacio.xl },
+  foto: {
+    width: 64,
+    height: 64,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: radios.lg,
+    backgroundColor: colores.superficieElevada,
+  },
+  etiquetas: { flexDirection: 'row', flexWrap: 'wrap', gap: espacio.s, marginTop: espacio.xs },
   textosProducto: { flex: 1, gap: espacio.xs },
 });
