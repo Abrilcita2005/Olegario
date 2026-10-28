@@ -128,7 +128,7 @@ describe('App principal', () => {
     await tocar(screen.getByRole('radio', { name: 'PASTELERÍA' }));
 
     expect(screen.queryByText('Cold brew')).toBeNull();
-    expect(screen.getByText('Cookie casera de avena')).toBeTruthy();
+    expect(screen.getByText('Cookie de chocolate')).toBeTruthy();
     await tocar(screen.getByRole('radio', { name: 'FRÍOS' }));
     expect(screen.getAllByText('Vegano').length).toBeGreaterThan(0);
   });

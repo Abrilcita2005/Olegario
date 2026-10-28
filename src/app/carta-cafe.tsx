@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 import { IconoSubmarca } from '@/components/marca/IconoSubmarca';
 import { PantallaSecundaria } from '@/components/navegacion/PantallaSecundaria';
-import { IlustracionProducto } from '@/components/ilustraciones/IlustracionProducto';
 import { Chip, SelectorSegmentado, Tarjeta, Texto } from '@/components/ui';
 import { colores, espacio, radios } from '@/theme';
 import { formatearPrecio } from '@/utils/formatos';
 
 import {
+  fotoPromoCafeteria,
   productosDePrueba,
   type CategoriaCarta,
   type EtiquetaProducto,
@@ -57,7 +57,11 @@ export default function CartaCafeScreen() {
       </Texto>
 
       <Tarjeta elevada style={styles.promo}>
-        <IlustracionProducto ilustracion="promoFlatWhiteCookie" tamano={72} />
+        <Image
+          source={fotoPromoCafeteria}
+          style={styles.fotoPromo}
+          accessibilityLabel="Flat White y cookie"
+        />
         <View style={styles.textosPromo}>
           <View style={styles.filaChips}>
             <Chip texto="20% OFF" variante="descuento" />
@@ -82,7 +86,11 @@ export default function CartaCafeScreen() {
         {productos.map((producto) => (
           <View key={producto.id} style={styles.producto}>
             <View style={styles.cuerpoProducto}>
-              <IlustracionProducto ilustracion={producto.ilustracion} />
+              <Image
+                source={producto.foto}
+                style={styles.foto}
+                accessibilityLabel={producto.nombre}
+              />
               <View style={styles.textosProducto}>
                 <Texto variante="tituloTarjeta" color="textoSobreOscuro">
                   {producto.nombre}
@@ -126,6 +134,8 @@ const styles = StyleSheet.create({
     marginVertical: espacio.grande,
   },
   textosPromo: { flex: 1, gap: espacio.m },
+  fotoPromo: { width: 72, height: 72, borderRadius: radios.lg },
+  foto: { width: 64, height: 64, borderRadius: radios.lg },
   filaChips: { flexDirection: 'row', alignItems: 'center', gap: espacio.m },
   lista: { gap: espacio.l, marginTop: espacio.base },
   producto: { flexDirection: 'row' },

@@ -344,6 +344,10 @@ Estado: **todos están en Figma y faltan exportar** (el entorno no pudo descarga
 
 ---
 
+### Fotos de la carta del café (2026-10-28)
+
+Provistas por la responsable (carpeta de Drive). Optimizadas a 360×360 px JPG en `assets/imagenes/carta/`: `espresso`, `flat-white`, `cortado`, `cold-brew`, `limonada`, `cookie-chocolate`, `medialuna`, `promo-flat-white-cookie`. Estado: **disponibles**.
+
 ## Correspondencia Figma ↔ código (se completa durante la implementación)
 
 | Figma                                   | Código                                  | Estado    |
