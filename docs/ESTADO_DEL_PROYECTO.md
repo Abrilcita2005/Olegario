@@ -2,14 +2,14 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                                                                                 |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Última actualización     | 2026-10-28                                                                                                                                            |
-| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                           |
-| Etapa actual             | **Etapa 5 — Navegación y estructura general**                                                                                                         |
-| Estado                   | Completada, pendiente de autorización para continuar                                                                                                  |
-| Autorización de avance   | Etapa 5: concedida ("avanza", 2026-10-28). **Etapa 6: NO concedida.**                                                                                 |
-| Próxima acción permitida | Correcciones dentro de la Etapa 5 si la responsable las pide (dos revisiones ya aplicadas). **No** empezar la Etapa 6 sin una autorización explícita. |
+| Campo                    | Valor                                                                                                                                                  |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Última actualización     | 2026-10-28                                                                                                                                             |
+| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                            |
+| Etapa actual             | **Etapa 5 — Navegación y estructura general**                                                                                                          |
+| Estado                   | Completada, pendiente de autorización para continuar                                                                                                   |
+| Autorización de avance   | Etapa 5: concedida ("avanza", 2026-10-28). **Etapa 6: NO concedida.**                                                                                  |
+| Próxima acción permitida | Correcciones dentro de la Etapa 5 si la responsable las pide (tres revisiones ya aplicadas). **No** empezar la Etapa 6 sin una autorización explícita. |
 
 ## Historial de autorizaciones
 
@@ -30,6 +30,7 @@
 - Dependencias aprobadas: `@react-native-async-storage/async-storage`, `expo-image-picker`.
 - Revisión 1: avatar con foto personal (galería o cámara) · carta del café con diseño provisional propio.
 - Revisión 2: un solo botón "Cambiar foto" con menú · carta con foto y etiquetas, sin aviso de ejemplo, márgenes corregidos.
+- Revisión 3: ilustraciones de productos y promo en la carta · tarjeta con el precio en recuadro claro y texto negro.
 
 ## Tareas completadas
 
@@ -37,7 +38,7 @@
 - Etapa 3: proyecto Expo + Expo Router con 4 pestañas provisionales.
 - Etapa 4: tokens (`src/theme/`), fuentes Poppins e Inter, logos y submarcas vectoriales, componentes base (`src/components/`), catálogo `/catalogo`, 20 pruebas. Revisión aplicada: Poppins, aro en íconos, contraste aceptado. Capturas en `docs/capturas-app/etapa-4/`.
 
-- Etapa 5: navegación completa con sesión simulada, rutas protegidas, encabezado, barra inferior, Novedades y pantallas provisionales; 27 pruebas. Dos revisiones aplicadas; 33 pruebas. Capturas en `docs/capturas-app/etapa-5/`.
+- Etapa 5: navegación completa con sesión simulada, rutas protegidas, encabezado, barra inferior, Novedades y pantallas provisionales; 27 pruebas. Tres revisiones aplicadas; 33 pruebas. Capturas en `docs/capturas-app/etapa-5/`.
 
 ## Pendientes abiertos
 
@@ -46,4 +47,4 @@
 
 ## Último informe de cierre
 
-2026-10-28: Etapa 5 (con la segunda revisión aplicada), entregado en la conversación.
+2026-10-28: Etapa 5 (con la tercera revisión aplicada), entregado en la conversación.

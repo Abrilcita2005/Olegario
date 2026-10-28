@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { IconoSubmarca } from '@/components/marca/IconoSubmarca';
 import { PantallaSecundaria } from '@/components/navegacion/PantallaSecundaria';
+import { IlustracionProducto } from '@/components/ilustraciones/IlustracionProducto';
 import { Chip, SelectorSegmentado, Tarjeta, Texto } from '@/components/ui';
 import { colores, espacio, radios } from '@/theme';
 import { formatearPrecio } from '@/utils/formatos';
@@ -56,15 +57,18 @@ export default function CartaCafeScreen() {
       </Texto>
 
       <Tarjeta elevada style={styles.promo}>
-        <View style={styles.filaChips}>
-          <Chip texto="20% OFF" variante="descuento" />
-          <Texto variante="categoria" color="textoSobreOscuro">
-            Promo cafetería
+        <IlustracionProducto ilustracion="promoFlatWhiteCookie" tamano={72} />
+        <View style={styles.textosPromo}>
+          <View style={styles.filaChips}>
+            <Chip texto="20% OFF" variante="descuento" />
+            <Texto variante="categoria" color="textoSobreOscuro">
+              Promo cafetería
+            </Texto>
+          </View>
+          <Texto variante="cuerpoChico" color="textoSecundario">
+            Flat White de especialidad + Cookie casera de avena
           </Texto>
         </View>
-        <Texto variante="cuerpoChico" color="textoSecundario">
-          Flat White de especialidad + Cookie casera de avena
-        </Texto>
       </Tarjeta>
 
       <SelectorSegmentado
@@ -76,34 +80,35 @@ export default function CartaCafeScreen() {
 
       <View style={styles.lista}>
         {productos.map((producto) => (
-          <Tarjeta key={producto.id} style={styles.producto}>
-            {/* Espacio reservado para la foto del producto (todavía no hay fotos reales, P-40). */}
-            <View style={styles.foto} accessibilityElementsHidden importantForAccessibility="no">
-              <IconoSubmarca submarca="cafe" tamano={40} conAro={false} />
+          <View key={producto.id} style={styles.producto}>
+            <View style={styles.cuerpoProducto}>
+              <IlustracionProducto ilustracion={producto.ilustracion} />
+              <View style={styles.textosProducto}>
+                <Texto variante="tituloTarjeta" color="textoSobreOscuro">
+                  {producto.nombre}
+                </Texto>
+                <Texto variante="cuerpoChico" color="textoSecundario">
+                  {producto.descripcion}
+                </Texto>
+                {producto.etiquetas.length > 0 ? (
+                  <View style={styles.etiquetas}>
+                    {producto.etiquetas.map((etiqueta) => (
+                      <Chip key={etiqueta} texto={NOMBRE_ETIQUETA[etiqueta]} variante="etiqueta" />
+                    ))}
+                  </View>
+                ) : null}
+              </View>
             </View>
-            <View style={styles.textosProducto}>
-              <Texto variante="tituloTarjeta" color="textoSobreOscuro">
-                {producto.nombre}
+            {/* El precio va en un recuadro del color del fondo que continúa la forma de la tarjeta. */}
+            <View style={styles.precio}>
+              <Texto
+                variante="tituloTarjeta"
+                accessibilityLabel={`Precio ${formatearPrecio(producto.precioDeEjemplo)}`}
+              >
+                {formatearPrecio(producto.precioDeEjemplo)}
               </Texto>
-              <Texto variante="cuerpoChico" color="textoSecundario">
-                {producto.descripcion}
-              </Texto>
-              {producto.etiquetas.length > 0 ? (
-                <View style={styles.etiquetas}>
-                  {producto.etiquetas.map((etiqueta) => (
-                    <Chip key={etiqueta} texto={NOMBRE_ETIQUETA[etiqueta]} variante="etiqueta" />
-                  ))}
-                </View>
-              ) : null}
             </View>
-            <Texto
-              variante="tituloTarjeta"
-              color="acentoLima"
-              accessibilityLabel={`Precio ${formatearPrecio(producto.precioDeEjemplo)}`}
-            >
-              {formatearPrecio(producto.precioDeEjemplo)}
-            </Texto>
-          </Tarjeta>
+          </View>
         ))}
       </View>
     </PantallaSecundaria>
@@ -114,17 +119,36 @@ const styles = StyleSheet.create({
   cabecera: { flexDirection: 'row', alignItems: 'center', gap: espacio.base },
   titulos: { flex: 1, gap: espacio.xs },
   bajada: { marginTop: espacio.xl, marginBottom: espacio.m },
-  promo: { gap: espacio.m, marginVertical: espacio.grande },
+  promo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: espacio.base,
+    marginVertical: espacio.grande,
+  },
+  textosPromo: { flex: 1, gap: espacio.m },
   filaChips: { flexDirection: 'row', alignItems: 'center', gap: espacio.m },
   lista: { gap: espacio.l, marginTop: espacio.base },
-  producto: { flexDirection: 'row', alignItems: 'center', gap: espacio.xl },
-  foto: {
-    width: 64,
-    height: 64,
+  producto: { flexDirection: 'row' },
+  cuerpoProducto: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: espacio.xl,
+    padding: espacio.base,
+    borderTopLeftRadius: radios.xxl,
+    borderBottomLeftRadius: radios.xxl,
+    backgroundColor: colores.superficie,
+  },
+  precio: {
+    width: 92,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radios.lg,
-    backgroundColor: colores.superficieElevada,
+    borderWidth: 1.5,
+    borderLeftWidth: 0,
+    borderColor: colores.superficie,
+    borderTopRightRadius: radios.xxl,
+    borderBottomRightRadius: radios.xxl,
+    backgroundColor: colores.fondo,
   },
   etiquetas: { flexDirection: 'row', flexWrap: 'wrap', gap: espacio.s, marginTop: espacio.xs },
   textosProducto: { flex: 1, gap: espacio.xs },
