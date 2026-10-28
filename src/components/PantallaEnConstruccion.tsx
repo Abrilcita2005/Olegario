@@ -1,36 +1,34 @@
+import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Texto } from '@/components/ui';
-import { colores, espacio } from '@/theme';
+import { espacio } from '@/theme';
 
 type Props = {
   titulo: string;
+  etapa: string;
+  children?: ReactNode;
 };
 
-// Marcador temporal para las pestañas mientras se construyen sus etapas.
-export function PantallaEnConstruccion({ titulo }: Props) {
+// Contenido temporal de las pantallas que todavía no se construyeron.
+export function PantallaEnConstruccion({ titulo, etapa, children }: Props) {
   return (
-    <SafeAreaView style={styles.contenedor}>
-      <View style={styles.contenido}>
-        <Texto accessibilityRole="header" variante="tituloPantalla">
-          {titulo}
-        </Texto>
-        <Texto>Pantalla en construcción</Texto>
-      </View>
-    </SafeAreaView>
+    <View style={styles.contenido}>
+      <Texto accessibilityRole="header" variante="tituloPantalla">
+        {titulo}
+      </Texto>
+      <Texto>Pantalla en construcción ({etapa})</Texto>
+      {children}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  contenedor: {
-    flex: 1,
-    backgroundColor: colores.fondo,
-  },
   contenido: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: espacio.m,
+    gap: espacio.xl,
+    paddingVertical: espacio.grande,
   },
 });

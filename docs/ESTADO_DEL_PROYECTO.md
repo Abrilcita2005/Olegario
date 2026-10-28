@@ -2,14 +2,14 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                                                                                                   |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Última actualización     | 2026-10-28                                                                                                                                                              |
-| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                                             |
-| Etapa actual             | **Etapa 4 — Sistema de diseño y componentes base**                                                                                                                      |
-| Estado                   | Completada, pendiente de autorización para continuar                                                                                                                    |
-| Autorización de avance   | Etapa 4: concedida (2026-10-28). **Etapa 5: NO concedida.**                                                                                                             |
-| Próxima acción permitida | Correcciones dentro de la Etapa 4 si la responsable las pide (la primera revisión ya se aplicó). **No** empezar la Etapa 5 (navegación) sin una autorización explícita. |
+| Campo                    | Valor                                                                                                                                                                                                                                                                       |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Última actualización     | 2026-10-28                                                                                                                                                                                                                                                                  |
+| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                                                                                                                                                 |
+| Etapa actual             | **Etapa 5 — Navegación y estructura general**                                                                                                                                                                                                                               |
+| Estado                   | **En curso, pausada a pedido de la responsable.** Falta: corregir 3 pruebas de navegación (la redirección de la primera apertura va a /acceso en lugar de /bienvenida; aviso de Expo Router sobre los nombres de los grupos protegidos), capturas, documentación e informe. |
+| Autorización de avance   | Etapa 5: concedida ("avanza", 2026-10-28). Etapa 6: NO concedida.                                                                                                                                                                                                           |
+| Próxima acción permitida | Retomar la Etapa 5 donde quedó.                                                                                                                                                                                                                                             |
 
 ## Historial de autorizaciones
 
@@ -20,6 +20,13 @@
 | 2026-10-28 | "Sí, avanzá a la Etapa 4"                                                                                  | Empezar la Etapa 4 con colores de los SVG, Vástago + Inter y sin modo oscuro                                         |
 | 2026-10-28 | "Sí, instalá las 4"                                                                                        | `expo-font`, `@expo-google-fonts/inter`, `react-native-svg`, `expo-linear-gradient`                                  |
 | 2026-10-28 | "Primero corregir la Etapa 4" · "Usar otra fuente" → "Poppins" · "Sí, como en Figma" · "Dejarlo como está" | Corregir la Etapa 4 (no avanzar todavía): Poppins en lugar de Vástago, aro en íconos de servicio, contraste aceptado |
+
+## Decisiones de la Etapa 5 (2026-10-28)
+
+- Encabezado: isotipo → Home · ícono OLE/CAFÉ → carta del café · avatar → perfil de cuenta (no el de comunidad).
+- Novedades: panel que sube desde abajo.
+- Bienvenida: solo la primera vez.
+- Dependencia aprobada: `@react-native-async-storage/async-storage`.
 
 ## Tareas completadas
 

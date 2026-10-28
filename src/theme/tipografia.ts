@@ -77,6 +77,12 @@ export const tipografia = {
     letterSpacing: 0.45,
     textTransform: 'uppercase',
   },
+  botonFlotante: {
+    fontFamily: familias.interExtraBold,
+    fontSize: 12,
+    lineHeight: 14,
+    letterSpacing: -0.3,
+  },
   botonSecundario: { fontFamily: familias.interMedium, fontSize: 13, lineHeight: 20 },
   pestana: { fontFamily: familias.interMedium, fontSize: 10, lineHeight: 15, letterSpacing: -0.25 },
   pestanaActiva: {
