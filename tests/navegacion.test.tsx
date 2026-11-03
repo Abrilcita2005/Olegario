@@ -42,7 +42,9 @@ describe('Acceso', () => {
     await tocar(screen.getByRole('button', { name: 'Entrar en modo invitado' }));
 
     await waitFor(() => expect(screen).toHavePathname('/'));
-    expect(screen.getByRole('header', { name: 'Inicio' })).toBeTruthy();
+    expect(
+      screen.getByRole('header', { name: /^¡(Buen día|Buenas tardes|Buenas noches)/ }),
+    ).toBeTruthy();
   });
 
   it('iniciar sesión pide los datos y después entra como miembro', async () => {

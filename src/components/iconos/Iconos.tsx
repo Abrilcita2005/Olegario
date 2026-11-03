@@ -178,3 +178,42 @@ export function IconoUbicacion({ tamano = 13, color }: Props) {
     </Svg>
   );
 }
+
+// Íconos de la tarjeta de reserva del Home.
+
+export function IconoReloj({ tamano = 13, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Circle cx={12} cy={12} r={9.5} stroke={color} strokeWidth={2.2} />
+      <Path d="M12 7v5l3.5 2" stroke={color} strokeWidth={2.2} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+export function IconoQr({ tamano = 16, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M3 3h7v7H3V3Zm11 0h7v7h-7V3ZM3 14h7v7H3v-7Z"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinejoin="round"
+      />
+      <Path d="M6 6h1v1H6zM17 6h1v1h-1zM6 17h1v1H6z" fill={color} stroke={color} />
+      <Path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 20h2M20 14v2" stroke={color} strokeWidth={2} />
+    </Svg>
+  );
+}
+
+export function IconoNavegar({ tamano = 15, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M21 3 3 10.5l7.5 3 3 7.5L21 3Z"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}

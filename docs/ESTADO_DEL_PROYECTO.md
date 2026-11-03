@@ -2,14 +2,14 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                                                                                                     |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Última actualización     | 2026-11-03                                                                                                                                                                |
-| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                                               |
-| Etapa actual             | **Etapa 6 — Bienvenida y acceso**                                                                                                                                         |
-| Estado                   | Completada, pendiente de autorización para continuar                                                                                                                      |
-| Autorización de avance   | Etapa 6: concedida ("avancemos la etapa 6", 2026-11-03). **Etapa 7: NO concedida.**                                                                                       |
-| Próxima acción permitida | Correcciones dentro de la Etapa 6 si la responsable las pide (revisión 1 aplicada: collage tipo cartas). **No** empezar la Etapa 7 (Home) sin una autorización explícita. |
+| Campo                    | Valor                                                                                                                              |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Última actualización     | 2026-11-03                                                                                                                         |
+| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                        |
+| Etapa actual             | **Etapa 7 — Home**                                                                                                                 |
+| Estado                   | Completada, pendiente de autorización para continuar                                                                               |
+| Autorización de avance   | Etapa 7: concedida ("avanza", 2026-11-03). **Etapa 8: NO concedida.**                                                              |
+| Próxima acción permitida | Correcciones dentro de la Etapa 7 si la responsable las pide. **No** empezar la Etapa 8 (Espacios) sin una autorización explícita. |
 
 ## Historial de autorizaciones
 
@@ -20,6 +20,7 @@
 | 2026-10-28 | "Sí, avanzá a la Etapa 4"                                                                                  | Empezar la Etapa 4 con colores de los SVG, Vástago + Inter y sin modo oscuro                                                              |
 | 2026-10-28 | "Sí, instalá las 4"                                                                                        | `expo-font`, `@expo-google-fonts/inter`, `react-native-svg`, `expo-linear-gradient`                                                       |
 | 2026-10-28 | "Primero corregir la Etapa 4" · "Usar otra fuente" → "Poppins" · "Sí, como en Figma" · "Dejarlo como está" | Corregir la Etapa 4 (no avanzar todavía): Poppins en lugar de Vástago, aro en íconos de servicio, contraste aceptado                      |
+| 2026-11-03 | "avanza" (tras la revisión del collage)                                                                    | Etapa 7: Home                                                                                                                             |
 | 2026-11-03 | "avancemos la etapa 6" + respuestas                                                                        | Etapa 6: invitado mira e inscribe a eventos, sin Google/Apple/Face ID, Bienvenida 1 como Figma, términos provisorios, collage interactivo |
 | 2026-10-28 | "avanza" (Etapa 5) y "avanza" tras la pausa                                                                | Hacer y luego retomar la Etapa 5                                                                                                          |
 
@@ -43,6 +44,7 @@
 - Etapa 5: navegación completa con sesión simulada, rutas protegidas, encabezado, barra inferior, Novedades y pantallas provisionales; 27 pruebas. Cuatro revisiones aplicadas; 33 pruebas. Capturas en `docs/capturas-app/etapa-5/`.
 
 - Etapa 6: bienvenidas (collage interactivo), acceso, registro e inicio de sesión con validaciones; 45 pruebas. Capturas en `docs/capturas-app/etapa-6/`.
+- Etapa 7: Home con saludo, banner, reserva actual (en curso / próxima / sin reserva / invitado) y servicios; 60 pruebas. Capturas en `docs/capturas-app/etapa-7/`.
 
 ## Pendientes abiertos
 
@@ -57,4 +59,4 @@
 
 ## Último informe de cierre
 
-2026-11-03: Etapa 6, entregado en la conversación.
+2026-11-03: Etapa 7, entregado en la conversación.

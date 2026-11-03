@@ -39,6 +39,7 @@ function Navegacion() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="perfil" />
         <Stack.Screen name="carta-cafe" />
+        <Stack.Screen name="reserva/[id]" />
         <Stack.Screen
           name="novedades"
           options={{

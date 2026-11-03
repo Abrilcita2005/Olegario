@@ -89,12 +89,12 @@
 
 ## Etapa 7 — Home
 
-- **Estado:** `Pendiente`
+- **Estado:** `Completada (pendiente de autorización)`, 2026-11-03
 - **Objetivo:** P07 con datos de prueba.
-- **Tareas:** saludo por hora · banner · tarjeta de reserva (con reserva / sin reserva) · servicios con disponibilidad · contador de novedades.
-- **Dependencias:** Etapa 6 · modelos de datos de prueba.
-- **Criterios de aceptación:** coincide con la captura · estados con y sin reserva · navegación de cada acción.
-- **Pruebas:** unitarias del saludo · renderizado.
+- **Resultado:** ✅ saludo según la hora con el nombre del registro · ✅ banner de marca · ✅ "Tu reserva actual" con estado (en curso / próxima) y horario · ✅ miniatura con degradado como en Figma · ✅ estado sin reserva (miembro) y para invitado · ✅ "Espacios Olegario" con OLE/COWORK, STREAM y NETWORK y "Ver todo" · ✅ detalle de reserva provisorio.
+- **Archivos:** `src/app/(tabs)/index.tsx`, `src/app/reserva/[id].tsx`, `src/components/home/`, `src/hooks/useAhora.ts`, `src/utils/saludo.ts`, `src/utils/reservas.ts`, `src/models/reserva.ts`, `data/mock/reservas.ts`, `data/mock/espacios.ts`, `tests/home.test.tsx`.
+- **Criterios de aceptación:** ✅ coincide con la captura de Figma (comparación en `docs/capturas-app/etapa-7/comparacion-figma.png`) · ✅ estados con y sin reserva · ✅ cada acción navega · ✅ la barra y Novedades quedan fijos.
+- **Pruebas:** 60 pruebas automáticas (saludo, estado de reservas, horario, Home a las 9, 11 y 16 hs, invitado, navegación).
 
 ## Etapa 8 — Espacios
 

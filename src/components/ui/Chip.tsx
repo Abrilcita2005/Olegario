@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { colores, espacio, radios, type NombreColor } from '@/theme';
 
@@ -9,6 +9,7 @@ type Variante = 'estado' | 'enlace' | 'descuento' | 'destacado' | 'etiqueta';
 type Props = {
   texto: string;
   variante?: Variante;
+  onPress?: () => void;
 };
 
 const colorTexto: Record<Variante, NombreColor> = {
@@ -22,15 +23,28 @@ const colorTexto: Record<Variante, NombreColor> = {
 // Etiquetas de Figma: estado ("En curso", con punto), enlace ("Ver todo >"),
 // descuento ("20% OFF", fondo naranja), destacado (texto lima sobre oscuro) y etiqueta (borde lima,
 // para usar sobre tarjetas oscuras: "Vegano", "Sin TACC").
-export function Chip({ texto, variante = 'estado' }: Props) {
-  return (
-    <View style={[styles.base, estilosVariante[variante]]}>
+export function Chip({ texto, variante = 'estado', onPress }: Props) {
+  const contenido = (
+    <>
       {variante === 'estado' ? <View style={styles.punto} /> : null}
       <Texto variante="chip" color={colorTexto[variante]}>
         {texto}
       </Texto>
-    </View>
+    </>
   );
+  if (onPress) {
+    return (
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="link"
+        hitSlop={10}
+        style={[styles.base, estilosVariante[variante]]}
+      >
+        {contenido}
+      </Pressable>
+    );
+  }
+  return <View style={[styles.base, estilosVariante[variante]]}>{contenido}</View>;
 }
 
 const estilosVariante = StyleSheet.create({

@@ -18,6 +18,8 @@ export const colores = {
   superficie: marca.negro,
   superficieElevada: '#353439',
   superficieMiniatura: '#272732',
+  bordeMiniatura: '#353439',
+  superficieBanner: '#1B1219',
 
   // Texto
   textoSobreClaro: marca.negro,
