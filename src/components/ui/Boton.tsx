@@ -7,7 +7,7 @@ import { colores, degradados, espacio, radios, sombras, type NombreColor } from 
 import { Texto } from './Texto';
 
 type Variante = 'primario' | 'secundario' | 'contorno' | 'siguienteClaro' | 'siguienteOscuro';
-type Tamano = 'grande' | 'mediano';
+type Tamano = 'grande' | 'mediano' | 'chico';
 
 type Props = {
   texto: string;
@@ -44,12 +44,26 @@ export function Boton({
 }: Props) {
   const inactivo = deshabilitado || cargando;
   const esSiguiente = variante === 'siguienteClaro' || variante === 'siguienteOscuro';
-  const radio = esSiguiente ? radios.pastilla : tamano === 'grande' ? radios.md : radios.lg;
+  const radio = esSiguiente
+    ? radios.pastilla
+    : tamano === 'grande'
+      ? radios.md
+      : tamano === 'chico'
+        ? radios.sm
+        : radios.lg;
   const contenido = (
     <View style={styles.contenido}>
       {cargando ? <ActivityIndicator color={colores[colorTexto[variante]]} /> : icono}
       <Texto
-        variante={esSiguiente ? 'display' : tamano === 'grande' ? 'botonGrande' : 'boton'}
+        variante={
+          esSiguiente
+            ? 'display'
+            : tamano === 'grande'
+              ? 'botonGrande'
+              : tamano === 'chico'
+                ? 'botonSecundario'
+                : 'boton'
+        }
         color={colorTexto[variante]}
       >
         {texto}
@@ -66,7 +80,7 @@ export function Boton({
       accessibilityState={{ disabled: inactivo, busy: cargando }}
       style={({ pressed }) => [
         styles.base,
-        esSiguiente ? styles.siguiente : tamano === 'grande' ? styles.grande : styles.mediano,
+        esSiguiente ? styles.siguiente : styles[tamano],
         { borderRadius: radio },
         estilosVariante[variante],
         variante === 'primario' && !inactivo && sombras.accion,
@@ -109,6 +123,7 @@ const styles = StyleSheet.create({
   },
   grande: { minHeight: 56 },
   mediano: { minHeight: 44 },
+  chico: { minHeight: 44, paddingHorizontal: 30, alignSelf: 'center' },
   siguiente: { minHeight: 48, minWidth: 224 },
   contenido: { flexDirection: 'row', alignItems: 'center', gap: espacio.m },
   presionado: { opacity: 0.85 },

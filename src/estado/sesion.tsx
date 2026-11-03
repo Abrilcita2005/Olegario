@@ -11,8 +11,10 @@ import {
 import {
   guardarBienvenidaVista,
   guardarFotoPerfil,
+  guardarPerfilBasico,
   guardarTipoAcceso,
   leerEstadoGuardado,
+  type PerfilBasico,
   type TipoAcceso,
 } from '@/services/almacenamiento';
 
@@ -21,6 +23,9 @@ type Sesion = {
   bienvenidaVista: boolean;
   tipoAcceso: TipoAcceso | null;
   fotoPerfil: string | null;
+  perfilBasico: PerfilBasico | null;
+  // PROVISIONAL: registro simulado sin servidor. Guarda el perfil (sin contraseña) y entra como miembro.
+  registrarse: (perfil: PerfilBasico) => Promise<void>;
   cambiarFotoPerfil: (foto: string | null) => Promise<void>;
   marcarBienvenidaVista: () => Promise<void>;
   // PROVISIONAL (Etapa 5): ingreso simulado sin backend. Se reemplaza en la Etapa 6 y la Etapa 13.
@@ -35,6 +40,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
   const [bienvenidaVista, setBienvenidaVista] = useState(false);
   const [tipoAcceso, setTipoAcceso] = useState<TipoAcceso | null>(null);
   const [fotoPerfil, setFotoPerfil] = useState<string | null>(null);
+  const [perfilBasico, setPerfilBasico] = useState<PerfilBasico | null>(null);
 
   useEffect(() => {
     leerEstadoGuardado()
@@ -42,6 +48,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
         setBienvenidaVista(estado.bienvenidaVista);
         setTipoAcceso(estado.tipoAcceso);
         setFotoPerfil(estado.fotoPerfil);
+        setPerfilBasico(estado.perfilBasico);
       })
       // Si el almacenamiento falla, se arranca como primera vez en lugar de bloquear la app.
       .catch(() => {})
@@ -56,6 +63,12 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
   const ingresar = useCallback(async (tipo: TipoAcceso) => {
     setTipoAcceso(tipo);
     await guardarTipoAcceso(tipo);
+  }, []);
+
+  const registrarse = useCallback(async (perfil: PerfilBasico) => {
+    setPerfilBasico(perfil);
+    setTipoAcceso('miembro');
+    await Promise.all([guardarPerfilBasico(perfil), guardarTipoAcceso('miembro')]);
   }, []);
 
   const cambiarFotoPerfil = useCallback(async (foto: string | null) => {
@@ -74,6 +87,8 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
       bienvenidaVista,
       tipoAcceso,
       fotoPerfil,
+      perfilBasico,
+      registrarse,
       cambiarFotoPerfil,
       marcarBienvenidaVista,
       ingresar,
@@ -84,6 +99,8 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
       bienvenidaVista,
       tipoAcceso,
       fotoPerfil,
+      perfilBasico,
+      registrarse,
       cambiarFotoPerfil,
       marcarBienvenidaVista,
       ingresar,

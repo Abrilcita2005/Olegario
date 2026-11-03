@@ -29,6 +29,13 @@ export const tipografia = {
   },
   tituloTarjeta: { fontFamily: familias.poppinsBold, fontSize: 16, lineHeight: 24 },
   tituloBienvenida: { fontFamily: familias.poppinsBold, fontSize: 17, lineHeight: 22 },
+  tituloConsentimiento: { fontFamily: familias.poppinsExtraBold, fontSize: 20, lineHeight: 22 },
+  tituloReencuentro: {
+    fontFamily: familias.poppinsExtraBold,
+    fontSize: 22,
+    lineHeight: 30,
+    letterSpacing: -0.28,
+  },
   tituloDestacado: {
     fontFamily: familias.poppinsBlackItalic,
     fontSize: 25,
@@ -54,6 +61,23 @@ export const tipografia = {
   cuerpo: { fontFamily: familias.interRegular, fontSize: 14, lineHeight: 21 },
   cuerpoDestacado: { fontFamily: familias.interExtraBold, fontSize: 14, lineHeight: 21 },
   cuerpoChico: { fontFamily: familias.interRegular, fontSize: 13, lineHeight: 18 },
+  cuerpoChicoDestacado: { fontFamily: familias.interExtraBold, fontSize: 13, lineHeight: 18 },
+  cuerpoMedio: { fontFamily: familias.interSemiBold, fontSize: 14, lineHeight: 19 },
+  citaAcceso: { fontFamily: familias.interRegular, fontSize: 15, lineHeight: 20 },
+  enlace: { fontFamily: familias.poppinsBold, fontSize: 18, lineHeight: 26 },
+  enlaceChico: {
+    fontFamily: familias.interBold,
+    fontSize: 11,
+    lineHeight: 14,
+    letterSpacing: 0.55,
+  },
+  divisor: {
+    fontFamily: familias.interExtraBold,
+    fontSize: 12,
+    lineHeight: 16,
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+  },
   meta: { fontFamily: familias.interRegular, fontSize: 12, lineHeight: 18 },
   chip: { fontFamily: familias.interBold, fontSize: 11, lineHeight: 16.5 },
   etiquetaCampo: {

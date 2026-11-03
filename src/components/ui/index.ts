@@ -4,6 +4,7 @@ export * from './BotonIcono';
 export * from './Casilla';
 export * from './CampoFormulario';
 export * from './Chip';
+export * from './EnlaceTexto';
 export * from './Estados';
 export * from './IndicadorFortaleza';
 export * from './MenuOpciones';

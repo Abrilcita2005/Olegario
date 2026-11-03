@@ -33,6 +33,7 @@ function Navegacion() {
         <Stack.Screen name="(acceso)/acceso" />
         <Stack.Screen name="(acceso)/iniciar-sesion" />
         <Stack.Screen name="(acceso)/registro" />
+        <Stack.Screen name="(acceso)/recuperar-contrasena" />
       </Stack.Protected>
       <Stack.Protected guard={bienvenidaVista && !!tipoAcceso}>
         <Stack.Screen name="(tabs)" />
@@ -50,6 +51,7 @@ function Navegacion() {
           }}
         />
       </Stack.Protected>
+      <Stack.Screen name="terminos" />
       <Stack.Screen name="catalogo" />
     </Stack>
   );

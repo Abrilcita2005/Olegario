@@ -348,6 +348,10 @@ Estado: **todos están en Figma y faltan exportar** (el entorno no pudo descarga
 
 Provistas por la responsable (carpeta de Drive). Optimizadas a 360×360 px JPG en `assets/imagenes/carta/`: `espresso`, `flat-white`, `cortado`, `cold-brew`, `limonada`, `cookie-chocolate`, `medialuna`, `promo-flat-white-cookie`. Estado: **disponibles**.
 
+### Fotos de las bienvenidas (2026-11-03)
+
+Originales de la responsable (Drive), recortadas a la proporción de Figma en `assets/imagenes/bienvenida/`: `collage-1` a `collage-5` (600×777) y `evento` (900×990). Íconos de la Bienvenida 1 (lupa con estrella, candado, mano con corazón) redibujados en `src/components/iconos/Iconos.tsx`. Estado: **disponibles**.
+
 ## Correspondencia Figma ↔ código (se completa durante la implementación)
 
 | Figma                                   | Código                                  | Estado    |

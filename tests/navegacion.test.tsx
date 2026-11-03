@@ -20,7 +20,9 @@ describe('Primera apertura', () => {
     await abrirApp({});
     await waitFor(() => expect(screen).toHavePathname('/bienvenida'));
 
-    await tocar(screen.getByRole('button', { name: 'SIGUIENTE' }));
+    for (const paso of [1, 2, 3]) {
+      await tocar(screen.getByRole('button', { name: `Siguiente, paso ${paso} de 3` }));
+    }
 
     await waitFor(() => expect(screen).toHavePathname('/acceso'));
     expect(await AsyncStorage.getItem('olegario.bienvenidaVista')).toBe('si');
@@ -37,22 +39,77 @@ describe('Acceso', () => {
     await abrirApp({ bienvenida: true });
     await waitFor(() => expect(screen).toHavePathname('/acceso'));
 
-    await tocar(screen.getByRole('button', { name: 'Modo invitado' }));
+    await tocar(screen.getByRole('button', { name: 'Entrar en modo invitado' }));
 
     await waitFor(() => expect(screen).toHavePathname('/'));
     expect(screen.getByRole('header', { name: 'Inicio' })).toBeTruthy();
   });
 
-  it('iniciar sesión (simulado) entra a la app como miembro', async () => {
+  it('iniciar sesión pide los datos y después entra como miembro', async () => {
     await abrirApp({ bienvenida: true });
     await waitFor(() => expect(screen).toHavePathname('/acceso'));
 
     await tocar(screen.getByRole('button', { name: 'Iniciar sesión' }));
     await waitFor(() => expect(screen).toHavePathname('/iniciar-sesion'));
-    await tocar(screen.getByRole('button', { name: 'Entrar como miembro (simulado)' }));
+
+    await tocar(screen.getByRole('button', { name: 'Iniciar sesión' }));
+    expect(screen.getByText('Ingresá tu email o usuario.')).toBeTruthy();
+    expect(screen.getByText('Ingresá tu contraseña.')).toBeTruthy();
+    expect(screen).toHavePathname('/iniciar-sesion');
+
+    await act(async () => {
+      fireEvent.changeText(screen.getByLabelText('Email o usuario'), 'sofi@olegario.work');
+      fireEvent.changeText(screen.getByLabelText('Contraseña'), 'una-clave');
+    });
+    await tocar(screen.getByRole('button', { name: 'Iniciar sesión' }));
 
     await waitFor(() => expect(screen).toHavePathname('/'));
     expect(await AsyncStorage.getItem('olegario.tipoAcceso')).toBe('miembro');
+  });
+
+  it('el registro valida los datos, exige aceptar los términos y guarda el perfil sin la contraseña', async () => {
+    await abrirApp({ bienvenida: true });
+    await waitFor(() => expect(screen).toHavePathname('/acceso'));
+    await tocar(screen.getByRole('button', { name: 'Crear una cuenta' }));
+    await waitFor(() => expect(screen).toHavePathname('/registro'));
+
+    await act(async () => {
+      fireEvent.changeText(screen.getByLabelText('Nombre completo'), 'Sofía Prueba');
+      fireEvent.changeText(screen.getByLabelText('Correo profesional'), 'correo-mal');
+      fireEvent.changeText(screen.getByLabelText('Profesión / Área de trabajo'), 'Diseño');
+      fireEvent.changeText(screen.getByLabelText('Contraseña'), 'corta');
+    });
+    await tocar(screen.getByRole('button', { name: 'Crear cuenta y continuar' }));
+    expect(screen.getByText(/Ingresá un correo válido/)).toBeTruthy();
+    expect(screen.getByText(/al menos 8 caracteres/)).toBeTruthy();
+    expect(screen.getByText(/aceptá los términos/)).toBeTruthy();
+
+    await act(async () => {
+      fireEvent.changeText(screen.getByLabelText('Correo profesional'), 'sofia@estudio.design');
+      fireEvent.changeText(screen.getByLabelText('Contraseña'), 'Olegario2026!');
+    });
+    await tocar(screen.getByRole('checkbox'));
+    await tocar(screen.getByRole('button', { name: 'Crear cuenta y continuar' }));
+
+    await waitFor(() => expect(screen).toHavePathname('/'));
+    const guardado = await AsyncStorage.getItem('olegario.perfilBasico');
+    expect(JSON.parse(guardado ?? '{}')).toEqual({
+      nombre: 'Sofía Prueba',
+      correo: 'sofia@estudio.design',
+      profesion: 'Diseño',
+    });
+    expect(guardado).not.toContain('Olegario2026!');
+  });
+
+  it('el invitado no tiene perfil de cuenta y se le ofrece crear una', async () => {
+    await abrirApp({ bienvenida: true, acceso: 'invitado' });
+    await waitFor(() => expect(screen).toHavePathname('/'));
+    await tocar(screen.getByRole('button', { name: 'Mi perfil y membresía' }));
+
+    expect(screen.getByText('Tu perfil te está esperando')).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Cambiar foto' })).toBeNull();
+    await tocar(screen.getByRole('button', { name: 'Crear mi cuenta' }));
+    await waitFor(() => expect(screen).toHavePathname('/acceso'));
   });
 });
 

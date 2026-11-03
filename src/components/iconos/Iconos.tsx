@@ -112,3 +112,69 @@ export function IconoMegafono({ tamano = 14, color }: Props) {
     </Svg>
   );
 }
+
+// Íconos de la Bienvenida 1 y del pie de las pantallas de acceso (redibujados a partir de Figma).
+
+export function IconoLupaEstrella({ tamano = 29, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 29 29" fill="none">
+      <Circle cx={12} cy={12} r={9.5} stroke={color} strokeWidth={2.2} />
+      <Path d="m19 19 7.5 7.5" stroke={color} strokeWidth={2.6} strokeLinecap="round" />
+      <Path
+        d="m12 6.8 1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5Z"
+        stroke={color}
+        strokeWidth={1.4}
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function IconoCandado({ tamano = 30, color }: Props) {
+  return (
+    <Svg width={tamano * (25 / 35)} height={tamano} viewBox="0 0 25 35" fill="none">
+      <Path d="M5.5 14V9a7 7 0 0 1 14 0v5" stroke={color} strokeWidth={2.4} />
+      <Path
+        d="M2 15.5a1.5 1.5 0 0 1 1.5-1.5h18a1.5 1.5 0 0 1 1.5 1.5v15a1.5 1.5 0 0 1-1.5 1.5h-18A1.5 1.5 0 0 1 2 30.5v-15Z"
+        stroke={color}
+        strokeWidth={2.4}
+      />
+      <Circle cx={12.5} cy={22} r={2.2} fill={color} />
+      <Path d="M12.5 23.5v3.5" stroke={color} strokeWidth={2} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+export function IconoManoCorazon({ tamano = 29, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano * (27 / 29)} viewBox="0 0 29 27" fill="none">
+      <Path
+        d="M14.5 11.5s-5-3-5-6.2A2.8 2.8 0 0 1 14.5 3.6a2.8 2.8 0 0 1 5 1.7c0 3.2-5 6.2-5 6.2Z"
+        stroke={color}
+        strokeWidth={1.8}
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M2 18.5h4l4.5-2.5h5.5a2 2 0 0 1 0 4h-4.5M16 20l7-3.2a2 2 0 0 1 2 3.4L16.5 25H2"
+        stroke={color}
+        strokeWidth={1.8}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function IconoUbicacion({ tamano = 13, color }: Props) {
+  return (
+    <Svg width={tamano * (10 / 12.5)} height={tamano} viewBox="0 0 10 12.5" fill="none">
+      <Path
+        d="M5 12s4-4 4-7a4 4 0 0 0-8 0c0 3 4 7 4 7Z"
+        stroke={color}
+        strokeWidth={1.3}
+        strokeLinejoin="round"
+      />
+      <Circle cx={5} cy={5} r={1.4} stroke={color} strokeWidth={1.2} />
+    </Svg>
+  );
+}
