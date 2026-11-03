@@ -12,8 +12,9 @@ import {
 import { radios } from '@/theme';
 
 // Collage interactivo de la Bienvenida 2 (pedido de la responsable): las fotos están apiladas como en Figma;
-// la de arriba se arrastra con el dedo y, al soltarla lejos, vuelve a su lugar pero pasa al fondo
-// de la pila, dejando ver la siguiente.
+// la de arriba se arrastra con el dedo y las demás se mueven y giran levemente, cada una hacia un lado
+// distinto, como un juego de cartas que se desordena. Al soltar todas vuelven a su lugar y, si la de
+// arriba se soltó lejos, pasa al fondo de la pila, dejando ver la siguiente.
 
 export type FotoMazo = {
   fuente: ImageSourcePropType;
@@ -35,6 +36,17 @@ const ALTO_FOTO = 193;
 const ANCHO_FIGMA = 402;
 const DISTANCIA_PARA_PASAR = 60;
 const usarDriverNativo = Platform.OS !== 'web';
+
+// Cuánto acompaña cada foto al dedo según su profundidad en la pila (1 = la de abajo de la de arriba):
+// proporción del arrastre en X e Y y giro extra máximo en grados. Signos distintos = se desordenan.
+const MOVIMIENTO_POR_PROFUNDIDAD = [
+  { x: 1, y: 1, giro: 10 },
+  { x: 0.32, y: 0.22, giro: -7 },
+  { x: -0.2, y: 0.28, giro: 6 },
+  { x: 0.24, y: -0.16, giro: -5 },
+  { x: -0.14, y: -0.2, giro: 4 },
+];
+const RECORRIDO_PARA_GIRO = 200;
 
 export function MazoFotos({ fotos, ancho, alto }: Props) {
   // Orden de dibujo: el último índice queda arriba.
@@ -58,12 +70,15 @@ export function MazoFotos({ fotos, ancho, alto }: Props) {
         }),
         onPanResponderRelease: (_, g) => {
           const lejos = Math.hypot(g.dx, g.dy) > DISTANCIA_PARA_PASAR;
-          if (lejos) enviarAlFondo();
+          // Todas vuelven a su lugar; recién entonces la de arriba pasa al fondo (sin saltos).
           Animated.spring(arrastre, {
             toValue: { x: 0, y: 0 },
-            friction: 6,
+            friction: 7,
+            tension: 50,
             useNativeDriver: usarDriverNativo,
-          }).start();
+          }).start(() => {
+            if (lejos) enviarAlFondo();
+          });
         },
       }),
     [arrastre, enviarAlFondo],
@@ -81,9 +96,21 @@ export function MazoFotos({ fotos, ancho, alto }: Props) {
       accessibilityActions={[{ name: 'increment' }, { name: 'activate' }]}
       onAccessibilityAction={enviarAlFondo}
     >
-      {orden.map((indice) => {
+      {orden.map((indice, posicionEnPila) => {
         const foto = fotos[indice];
         const esArriba = indice === indiceArriba;
+        const profundidad = orden.length - 1 - posicionEnPila;
+        const movimiento =
+          MOVIMIENTO_POR_PROFUNDIDAD[profundidad % MOVIMIENTO_POR_PROFUNDIDAD.length];
+        const giroExtra = arrastre.x.interpolate({
+          inputRange: [-RECORRIDO_PARA_GIRO, 0, RECORRIDO_PARA_GIRO],
+          outputRange: [
+            `${foto.rotacion - movimiento.giro}deg`,
+            `${foto.rotacion}deg`,
+            `${foto.rotacion + movimiento.giro}deg`,
+          ],
+          extrapolate: 'clamp',
+        });
         const posicion = {
           left: desplazamiento + (foto.centroX - ANCHO_FOTO / 2) * escala,
           top: (foto.centroY - ALTO_FOTO / 2) * escala,
@@ -100,8 +127,9 @@ export function MazoFotos({ fotos, ancho, alto }: Props) {
               posicion,
               {
                 transform: [
-                  ...(esArriba ? arrastre.getTranslateTransform() : []),
-                  { rotate: `${foto.rotacion}deg` },
+                  { translateX: Animated.multiply(arrastre.x, movimiento.x) },
+                  { translateY: Animated.multiply(arrastre.y, movimiento.y) },
+                  { rotate: giroExtra },
                 ],
               },
             ]}

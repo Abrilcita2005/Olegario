@@ -2,14 +2,14 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                                                          |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| Última actualización     | 2026-11-03                                                                                                                     |
-| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                    |
-| Etapa actual             | **Etapa 6 — Bienvenida y acceso**                                                                                              |
-| Estado                   | Completada, pendiente de autorización para continuar                                                                           |
-| Autorización de avance   | Etapa 6: concedida ("avancemos la etapa 6", 2026-11-03). **Etapa 7: NO concedida.**                                            |
-| Próxima acción permitida | Correcciones dentro de la Etapa 6 si la responsable las pide. **No** empezar la Etapa 7 (Home) sin una autorización explícita. |
+| Campo                    | Valor                                                                                                                                                                     |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Última actualización     | 2026-11-03                                                                                                                                                                |
+| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                                               |
+| Etapa actual             | **Etapa 6 — Bienvenida y acceso**                                                                                                                                         |
+| Estado                   | Completada, pendiente de autorización para continuar                                                                                                                      |
+| Autorización de avance   | Etapa 6: concedida ("avancemos la etapa 6", 2026-11-03). **Etapa 7: NO concedida.**                                                                                       |
+| Próxima acción permitida | Correcciones dentro de la Etapa 6 si la responsable las pide (revisión 1 aplicada: collage tipo cartas). **No** empezar la Etapa 7 (Home) sin una autorización explícita. |
 
 ## Historial de autorizaciones
 
