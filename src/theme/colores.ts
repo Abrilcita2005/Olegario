@@ -12,6 +12,8 @@ export const marca = {
 export const colores = {
   // Fondos
   fondo: '#DCDCDC',
+  // El mismo gris del fondo, transparente (para fundir fotos con el fondo sin lavarlas).
+  fondoTransparente: 'rgba(220, 220, 220, 0)',
   fondoOscuro: marca.negro,
 
   // Superficies (tarjetas, campos, barra inferior)

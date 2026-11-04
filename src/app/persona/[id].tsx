@@ -61,10 +61,10 @@ export default function PersonaScreen() {
           )}
           {/* La foto se funde con el fondo, como en Figma. */}
           <LinearGradient
-            colors={[colores.transparente, colores.fondo]}
-            start={{ x: 0.5, y: 0.7 }}
+            colors={[colores.fondoTransparente, colores.fondo]}
+            start={{ x: 0.5, y: 0 }}
             end={{ x: 0.5, y: 1 }}
-            style={StyleSheet.absoluteFill}
+            style={styles.fundido}
           />
         </View>
 
@@ -143,9 +143,11 @@ const styles = StyleSheet.create({
   portada: { width: '100%', aspectRatio: 1 / PROPORCION_PORTADA, overflow: 'hidden' },
   // Tamaño explícito: en la web, absoluteFill solo no escala la imagen.
   imagen: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' },
+  // Solo el último cuarto de la foto se funde con el fondo, para que la foto se vea nítida.
+  fundido: { position: 'absolute', left: 0, right: 0, bottom: 0, height: '25%' },
   contenido: {
     gap: espacio.base,
-    marginTop: -espacio.grande,
+    marginTop: -espacio.m,
     paddingHorizontal: espacio.margenPantalla,
   },
   estados: { flexDirection: 'row', flexWrap: 'wrap', gap: espacio.grande },
