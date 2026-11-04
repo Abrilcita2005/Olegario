@@ -2,7 +2,7 @@ import type { Espacio } from '../../src/models/espacio';
 
 // DATOS DE PRUEBA (no reales): espacios y ocupación tomados de Figma (pantalla ESPACIOS), hasta el
 // servidor (Etapa 13). Las ocupaciones son relativas al día en que se abre la app.
-// Fotos provistas por la responsable (Drive, 2026-11-04); la Mesa con Luz Natural todavía no tiene.
+// Fotos provistas por la responsable (Drive, 2026-11-04).
 export function espaciosDePrueba(hoy: Date = new Date()): Espacio[] {
   const a = (hora: number, minuto = 0, dias = 0) => {
     const fecha = new Date(hoy);
@@ -25,6 +25,7 @@ export function espaciosDePrueba(hoy: Date = new Date()): Espacio[] {
     },
     {
       id: 'mesa-luz-natural',
+      foto: require('../../assets/imagenes/espacios/mesa-luz-natural.jpg'),
       servicio: 'cowork',
       nombre: 'Mesa con Luz Natural',
       tipo: 'Puesto individual',

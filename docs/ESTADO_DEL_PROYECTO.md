@@ -46,7 +46,7 @@
 
 - Etapa 6: bienvenidas (collage interactivo), acceso, registro e inicio de sesión con validaciones; 45 pruebas. Capturas en `docs/capturas-app/etapa-6/`.
 - Etapa 7: Home con saludo, banner, reserva actual (en curso / próxima / sin reserva / invitado) y servicios; 60 pruebas. Capturas en `docs/capturas-app/etapa-7/`.
-- Etapa 8: Espacios con semana, buscador, filtro por servicio, horario, tarjetas con estado, reserva y cancelación simuladas; 75 pruebas. Capturas en `docs/capturas-app/etapa-8/`. Revisión 1: fotos reales de los espacios (Drive); "CAMBIAR" y el pie con horas aprobados.
+- Etapa 8: Espacios con semana, buscador, filtro por servicio, horario, tarjetas con estado, reserva y cancelación simuladas; 75 pruebas. Capturas en `docs/capturas-app/etapa-8/`. Revisiones 1 y 2: fotos reales de los cuatro espacios (Drive); "CAMBIAR" y el pie con horas aprobados.
 
 ## Pendientes abiertos
 
@@ -58,7 +58,6 @@
 - P-41: ¿la cookie de la promo es de avena o de chocolate?
 - P-42: ¿"CREATIVO" con degradado (requiere una dependencia)?
 - P-43: ¿aprueba las correcciones de texto de D-42?
-- P-44: ¿hay foto de la Mesa con Luz Natural?
 - P-45: ¿qué indican los puntos de color bajo los días?
 
 ## Último informe de cierre
