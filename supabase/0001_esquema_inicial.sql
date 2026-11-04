@@ -78,9 +78,10 @@ create table public.reservas (
   fin timestamptz not null,
   cancelada boolean not null default false,
   creada_en timestamptz not null default now(),
-  check (fin > inicio),
+  constraint fin_despues_del_inicio check (fin > inicio),
   -- Pasos de 30 minutos (regla de la responsable, 2026-11-04).
-  check (extract(epoch from inicio)::int % 1800 = 0 and extract(epoch from fin)::int % 1800 = 0)
+  constraint pasos_de_30_minutos
+    check (extract(epoch from inicio)::int % 1800 = 0 and extract(epoch from fin)::int % 1800 = 0)
 );
 create index on public.reservas (espacio_id, inicio, fin) where not cancelada;
 
@@ -267,10 +268,10 @@ alter table public.beneficios enable row level security;
 alter table public.valoraciones enable row level security;
 alter table public.mensajes_equipo enable row level security;
 
--- Perfiles: cada uno edita el suyo; los demás solo ven a quienes están en "Conexión abierta"
--- (Modo Foco oculta a la persona, D-59). El rol no se puede autoasignar.
+-- Perfiles: cada uno edita el suyo; los demás solo ven a miembros en "Conexión abierta" (Modo Foco
+-- oculta a la persona, D-59; los invitados no forman parte de la Comunidad). El rol no se puede autoasignar.
 create policy "ver perfiles visibles" on public.perfiles for select to authenticated
-  using (id = auth.uid() or modo_comunidad = 'abierta' or public.es_equipo());
+  using (id = auth.uid() or (modo_comunidad = 'abierta' and rol <> 'invitado') or public.es_equipo());
 create policy "editar mi perfil" on public.perfiles for update to authenticated
   using (id = auth.uid())
   with check (id = auth.uid() and rol = (select rol from public.perfiles where id = auth.uid()));

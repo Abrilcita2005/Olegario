@@ -21,6 +21,7 @@
 | 2026-10-28 | "Sí, instalá las 4"                                                                                        | `expo-font`, `@expo-google-fonts/inter`, `react-native-svg`, `expo-linear-gradient`                                                                                              |
 | 2026-10-28 | "Primero corregir la Etapa 4" · "Usar otra fuente" → "Poppins" · "Sí, como en Figma" · "Dejarlo como está" | Corregir la Etapa 4 (no avanzar todavía): Poppins en lugar de Vástago, aro en íconos de servicio, contraste aceptado                                                             |
 | 2026-11-03 | "avanza" (tras la revisión del collage)                                                                    | Etapa 7: Home                                                                                                                                                                    |
+| 2026-11-04 | Respuestas y "aprobado"                                                                                    | Supabase, pagos simulados, contenido desde el panel, sin sistema previo; instalar `@supabase/supabase-js` y `expo-secure-store`; esquema aprobado                                |
 | 2026-11-04 | "avancemos" (tras la Etapa 12)                                                                             | Etapa 13: Integraciones, persistencia y backend                                                                                                                                  |
 | 2026-11-04 | Respuestas de la Etapa 12                                                                                  | Fotos por Drive, "Pedir al barista" abre la carta, "Últimos cupos" inscribe, contador siempre activo                                                                             |
 | 2026-11-04 | "avancemos a la etapa 12"                                                                                  | Etapa 12: Novedades                                                                                                                                                              |
@@ -41,7 +42,7 @@
 - Encabezado: isotipo → Home · ícono OLE/CAFÉ → carta del café · avatar → perfil de cuenta (no el de comunidad).
 - Novedades: panel que sube desde abajo.
 - Bienvenida: solo la primera vez.
-- Dependencias aprobadas: `@react-native-async-storage/async-storage`, `expo-image-picker`. Etapa 8: `@react-native-masked-view/masked-view`. Etapa 9: `expo-clipboard`.
+- Dependencias aprobadas: `@react-native-async-storage/async-storage`, `expo-image-picker`. Etapa 8: `@react-native-masked-view/masked-view`. Etapa 9: `expo-clipboard`. Etapa 13: `@supabase/supabase-js`, `expo-secure-store`.
 - Revisión 1: avatar con foto personal (galería o cámara) · carta del café con diseño provisional propio.
 - Revisión 2: un solo botón "Cambiar foto" con menú · carta con foto y etiquetas, sin aviso de ejemplo, márgenes corregidos.
 - Revisión 3: ilustraciones de productos y promo en la carta · tarjeta con el precio en recuadro claro y texto negro.

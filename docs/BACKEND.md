@@ -42,6 +42,7 @@ Las reglas de reserva (pasos de 30 min, hasta 3 días, lugar libre, horas sufici
 
 - [x] Herramientas instaladas (aprobadas): `@supabase/supabase-js`, `expo-secure-store`.
 - [x] Conexión preparada (`src/services/supabase.ts`): se activa sola con las dos variables.
-- [x] Esquema escrito (`supabase/0001_esquema_inicial.sql`) — **pendiente de aprobación**.
-- [ ] Proyecto creado y datos de conexión cargados (responsable).
+- [x] Esquema escrito (`supabase/0001_esquema_inicial.sql`) — **aprobado por la responsable (2026-11-04)** y probado en un PostgreSQL local con `supabase/pruebas/` (19 comprobaciones: reservas, horas, privacidad, Modo Foco, invitado, cancelación y eliminar cuenta).
+- [x] Proyecto de Supabase creado por la responsable (región West US).
+- [ ] Ingreso con correo y anónimo activados, esquema ejecutado y datos de conexión cargados (responsable).
 - [ ] Pasar cada pantalla de los datos de prueba al servidor y cargar el contenido inicial.
