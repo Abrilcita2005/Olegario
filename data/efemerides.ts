@@ -1,9 +1,9 @@
 import type { EfemerideAnual } from '../src/models/agenda';
 
 // Calendario de efemérides de la Agenda (pedido de la responsable, 2026-11-04: "recolectá efemérides y
-// que esté programado todos los días; si no hay ninguna, no aparece"). Fechas internacionales y de
-// Argentina vinculadas al trabajo, la creatividad, la cultura y la comunidad. Textos redactados para la
-// app, A REVISAR por la responsable. Sin beneficios: los define Olegario.
+// que esté programado todos los días; si no hay ninguna, no aparece"). Fechas internacionales, de
+// Argentina y de Mendoza vinculadas al trabajo, la creatividad, la cultura y la comunidad. Textos
+// redactados para la app, A REVISAR por la responsable. Sin beneficios: los define Olegario.
 export const efemerides: EfemerideAnual[] = [
   {
     id: 'braille',
@@ -12,6 +12,21 @@ export const efemerides: EfemerideAnual[] = [
     titulo: 'Día mundial del Braille',
     texto:
       'Un recordatorio de que la información y la creatividad tienen que llegar a todas las personas.',
+  },
+  {
+    id: 'san-martin-natalicio',
+    mes: 2,
+    dia: 25,
+    titulo: 'Natalicio del General San Martín',
+    texto:
+      'Desde Mendoza organizó el Ejército de los Andes: una historia de visión y trabajo en equipo.',
+  },
+  {
+    id: 'fundacion-mendoza',
+    mes: 3,
+    dia: 2,
+    titulo: 'Aniversario de la fundación de Mendoza',
+    texto: 'Mendoza fue fundada en 1561. Celebramos la ciudad que nos inspira y nos reúne.',
   },
   {
     id: 'mujer',
@@ -47,6 +62,13 @@ export const efemerides: EfemerideAnual[] = [
     dia: 15,
     titulo: 'Día mundial del arte',
     texto: 'El arte inspira ideas nuevas: dejá que se cuele en tu jornada de trabajo.',
+  },
+  {
+    id: 'malbec',
+    mes: 4,
+    dia: 17,
+    titulo: 'Día mundial del Malbec',
+    texto: 'La cepa que hizo conocida a Mendoza en el mundo. Un orgullo de nuestra tierra.',
   },
   {
     id: 'creatividad',
@@ -142,11 +164,25 @@ export const efemerides: EfemerideAnual[] = [
     texto: 'Aprender algo nuevo siempre suma: compartí lo que sabés con quienes recién empiezan.',
   },
   {
+    id: 'santiago-apostol',
+    mes: 7,
+    dia: 25,
+    titulo: 'Día de Santiago Apóstol, patrono de Mendoza',
+    texto: 'Feriado provincial en Mendoza: un día para disfrutar de la ciudad.',
+  },
+  {
     id: 'juventud',
     mes: 8,
     dia: 12,
     titulo: 'Día internacional de la juventud',
     texto: 'Las nuevas generaciones traen ideas frescas a la forma de trabajar.',
+  },
+  {
+    id: 'san-martin-inmortalidad',
+    mes: 8,
+    dia: 17,
+    titulo: 'Paso a la inmortalidad del General San Martín',
+    texto: 'Recordamos al libertador que hizo de Mendoza el punto de partida de su gesta.',
   },
   {
     id: 'fotografia',
@@ -203,6 +239,13 @@ export const efemerides: EfemerideAnual[] = [
     dia: 16,
     titulo: 'Día internacional para la tolerancia',
     texto: 'Escuchar ideas distintas a las nuestras nos hace crecer como comunidad.',
+  },
+  {
+    id: 'vino-argentino',
+    mes: 11,
+    dia: 24,
+    titulo: 'Día del vino argentino, bebida nacional',
+    texto: 'Mendoza es tierra de vinos: brindamos por el trabajo de quienes lo hacen posible.',
   },
   {
     id: 'discapacidad',

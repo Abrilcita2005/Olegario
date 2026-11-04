@@ -54,6 +54,14 @@ describe('lógica de la agenda', () => {
     );
   });
 
+  it('incluye las fechas de Mendoza', () => {
+    const titulos = (mes: number, dia: number) =>
+      efemeridesDelDia(efemerides, new Date(2026, mes - 1, dia)).map((e) => e.titulo);
+    expect(titulos(3, 2)).toEqual(['Aniversario de la fundación de Mendoza']);
+    expect(titulos(4, 17)).toEqual(['Día mundial del Malbec']);
+    expect(titulos(11, 24)).toEqual(['Día del vino argentino, bebida nacional']);
+  });
+
   it('las efemérides tienen fechas válidas y sin repetir', () => {
     const ids = new Set(efemerides.map((e) => e.id));
     expect(ids.size).toBe(efemerides.length);
