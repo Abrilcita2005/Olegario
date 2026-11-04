@@ -21,6 +21,7 @@
 | 2026-10-28 | "Sí, instalá las 4"                                                                                        | `expo-font`, `@expo-google-fonts/inter`, `react-native-svg`, `expo-linear-gradient`                                                                               |
 | 2026-10-28 | "Primero corregir la Etapa 4" · "Usar otra fuente" → "Poppins" · "Sí, como en Figma" · "Dejarlo como está" | Corregir la Etapa 4 (no avanzar todavía): Poppins en lugar de Vástago, aro en íconos de servicio, contraste aceptado                                              |
 | 2026-11-03 | "avanza" (tras la revisión del collage)                                                                    | Etapa 7: Home                                                                                                                                                     |
+| 2026-11-04 | Revisión 2 de la Etapa 9                                                                                   | Sumar fechas de Mendoza a las efemérides                                                                                                                          |
 | 2026-11-04 | Revisión de la Etapa 9                                                                                     | Puntos por color aprobados; calendario de efemérides reales (solo en su día)                                                                                      |
 | 2026-11-04 | "si avancemos" + respuestas                                                                                | Etapa 9: PIN de prueba copiable (instalar `expo-clipboard`), "MODIFICAR" abre el detalle, tocar un día muestra lo de ese día, fotos de eventos y personas (Drive) |
 | 2026-11-04 | Respuestas a P-41 a P-45                                                                                   | Cookie de chocolate, puntos = reserva o evento, instalar `@react-native-masked-view/masked-view` para el degradado, aprobar textos de D-42                        |
@@ -58,6 +59,9 @@
 - Prueba en un teléfono real (L-04).
 
 ## Preguntas abiertas para la responsable
+
+- ¿Alguna efeméride lleva beneficio en OLE/CAFÉ? ¿Aprobás los textos de `data/efemerides.ts`?
+- P-46: ¿sumamos la Vendimia (fecha variable)?
 
 ## Último informe de cierre
 
