@@ -29,6 +29,9 @@ Las reglas de reserva (pasos de 30 min, hasta 3 días, lugar libre, horas sufici
    (para el Modo invitado).
 3. Cuando el esquema esté aprobado: SQL Editor → New query → pegar `supabase/0001_esquema_inicial.sql`
    → Run.
+   3b. Cargar el contenido inicial: SQL Editor → New query → pegar `supabase/0002_contenido_inicial.sql`
+   → Run (espacios, efemérides, eventos, novedades, talleres y beneficios que hoy usa la app; se
+   pueden editar después desde Table Editor).
 4. En Project Settings → API copiar **Project URL** y la clave **anon public** (nunca la
    `service_role`). Cargarlas en la configuración del entorno de la sesión de Claude (menú del entorno
    en la barra del título → Edit → variables de entorno) con estos nombres:
@@ -44,5 +47,7 @@ Las reglas de reserva (pasos de 30 min, hasta 3 días, lugar libre, horas sufici
 - [x] Conexión preparada (`src/services/supabase.ts`): se activa sola con las dos variables.
 - [x] Esquema escrito (`supabase/0001_esquema_inicial.sql`) — **aprobado por la responsable (2026-11-04)** y probado en un PostgreSQL local con `supabase/pruebas/` (19 comprobaciones: reservas, horas, privacidad, Modo Foco, invitado, cancelación y eliminar cuenta).
 - [x] Proyecto de Supabase creado por la responsable (región West US).
-- [ ] Ingreso con correo y anónimo activados, esquema ejecutado y datos de conexión cargados (responsable).
+- [x] Esquema ejecutado en Supabase por la responsable (Paso 2, 2026-11-04).
+- [x] Contenido inicial escrito (`supabase/0002_contenido_inicial.sql`) y probado; se puede ejecutar más de una vez.
+- [ ] Contenido inicial cargado y datos de conexión en la configuración del entorno (responsable).
 - [ ] Pasar cada pantalla de los datos de prueba al servidor y cargar el contenido inicial.
