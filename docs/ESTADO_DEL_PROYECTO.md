@@ -2,14 +2,14 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                                                                                             |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Última actualización     | 2026-11-04                                                                                                                                                        |
-| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                                       |
-| Etapa actual             | **Etapa 12 — Novedades**                                                                                                                                          |
-| Estado                   | Completada, pendiente de autorización para continuar                                                                                                              |
-| Autorización de avance   | Etapa 12: concedida ("avancemos a la etapa 12", 2026-11-04). **Etapa 13: NO concedida.**                                                                          |
-| Próxima acción permitida | Correcciones dentro de la Etapa 12 si la responsable las pide. **No** empezar la Etapa 13 (Integraciones, persistencia y backend) sin una autorización explícita. |
+| Campo                    | Valor                                                                                                                                             |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Última actualización     | 2026-11-04                                                                                                                                        |
+| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                       |
+| Etapa actual             | **Etapa 13 — Integraciones, persistencia y backend**                                                                                              |
+| Estado                   | En curso: definiendo servidor y pagos con la responsable                                                                                          |
+| Autorización de avance   | Etapa 13: concedida ("avancemos", 2026-11-04). **Etapa 14: NO concedida.**                                                                        |
+| Próxima acción permitida | Definir con la responsable el servidor y los pagos antes de instalar o contratar nada. **No** empezar la Etapa 14 sin una autorización explícita. |
 
 ## Historial de autorizaciones
 
@@ -21,6 +21,7 @@
 | 2026-10-28 | "Sí, instalá las 4"                                                                                        | `expo-font`, `@expo-google-fonts/inter`, `react-native-svg`, `expo-linear-gradient`                                                                                              |
 | 2026-10-28 | "Primero corregir la Etapa 4" · "Usar otra fuente" → "Poppins" · "Sí, como en Figma" · "Dejarlo como está" | Corregir la Etapa 4 (no avanzar todavía): Poppins en lugar de Vástago, aro en íconos de servicio, contraste aceptado                                                             |
 | 2026-11-03 | "avanza" (tras la revisión del collage)                                                                    | Etapa 7: Home                                                                                                                                                                    |
+| 2026-11-04 | "avancemos" (tras la Etapa 12)                                                                             | Etapa 13: Integraciones, persistencia y backend                                                                                                                                  |
 | 2026-11-04 | Respuestas de la Etapa 12                                                                                  | Fotos por Drive, "Pedir al barista" abre la carta, "Últimos cupos" inscribe, contador siempre activo                                                                             |
 | 2026-11-04 | "avancemos a la etapa 12"                                                                                  | Etapa 12: Novedades                                                                                                                                                              |
 | 2026-11-04 | "revisemos" + referencia del perfil de Comunidad                                                           | Rehacer el perfil público como en Figma con la foto de Martina Rossi                                                                                                             |

@@ -33,7 +33,8 @@
           "cameraPermission": "Olegario usa la cámara solo para que saques tu foto de perfil.",
           "microphonePermission": false
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "scheme": "olegario",
     "experiments": {
