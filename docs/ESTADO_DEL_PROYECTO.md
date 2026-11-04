@@ -31,7 +31,7 @@
 - Encabezado: isotipo → Home · ícono OLE/CAFÉ → carta del café · avatar → perfil de cuenta (no el de comunidad).
 - Novedades: panel que sube desde abajo.
 - Bienvenida: solo la primera vez.
-- Dependencias aprobadas: `@react-native-async-storage/async-storage`, `expo-image-picker`.
+- Dependencias aprobadas: `@react-native-async-storage/async-storage`, `expo-image-picker`. Etapa 8: `@react-native-masked-view/masked-view`.
 - Revisión 1: avatar con foto personal (galería o cámara) · carta del café con diseño provisional propio.
 - Revisión 2: un solo botón "Cambiar foto" con menú · carta con foto y etiquetas, sin aviso de ejemplo, márgenes corregidos.
 - Revisión 3: ilustraciones de productos y promo en la carta · tarjeta con el precio en recuadro claro y texto negro.
