@@ -64,6 +64,8 @@ export const degradados = {
   marca: { colores: [marca.rosa, marca.naranja, marca.lima], posiciones: [0, 0.52, 1] },
   accion: { colores: [marca.naranja, marca.rosa], posiciones: [0, 1] },
   acento: { colores: [marca.rosa, marca.naranja], posiciones: [0, 1] },
+  // Palabra destacada de los títulos ("PERFECTO", "CREATIVO"): valores exactos de Figma, a 161,5°.
+  titulo: { colores: ['#E11D48', '#F97316'], posiciones: [0, 1], angulo: 161.5 },
 } as const;
 
 export type NombreColor = keyof typeof colores;

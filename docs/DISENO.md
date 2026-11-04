@@ -26,7 +26,7 @@ Fuente: los SVG originales de la marca (carpeta de Drive "LOGOS"), elegidos por 
 | `colores.fondo`                           | `#DCDCDC`                                                                   | Fondo de pantalla (Figma)                    |
 | Neutros de interfaz                       | `#353439`, `#272732`, `#D4D4D8`, `#A1A1AA`, `#E4E1E7`, `#FFFAF9`, `#D9D9D9` | Tomados de las pantallas de Figma            |
 
-Degradados: **marca** `#FE016D → #F83B11 (52 %) → #CAF22C` · **acción** (botones principales) `#F83B11 → #FE016D` · **acento** `#FE016D → #F83B11`.
+Degradados: **marca** `#FE016D → #F83B11 (52 %) → #CAF22C` · **acción** (botones principales) `#F83B11 → #FE016D` · **acento** `#FE016D → #F83B11` · **título** ("PERFECTO", "CREATIVO") `#E11D48 → #F97316` a 161,5°, exacto de Figma.
 Muestra del degradado de la marca: `docs/referencias/marca/degradado-marca.png`.
 
 **Tema único, sin modo oscuro** [DECIDIDO por la responsable]: `app.json` fija `userInterfaceStyle: "light"`.

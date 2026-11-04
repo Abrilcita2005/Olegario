@@ -1,5 +1,5 @@
 import MaskedViewOriginal from '@react-native-masked-view/masked-view';
-import type { ComponentType, ReactElement } from 'react';
+import { useState, type ComponentType, type ReactElement } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Platform, StyleSheet, type TextStyle, type ViewProps } from 'react-native';
 
@@ -17,15 +17,30 @@ type Props = {
   variante?: VarianteTexto;
 };
 
-// Texto con el degradado de acento de Figma (rosa → naranja), p. ej. "CREATIVO" y "PERFECTO".
+// Puntos de inicio y fin (relativos a la caja) de un degradado lineal de CSS con ese ángulo, para que
+// expo-linear-gradient se vea igual que Figma en cajas de cualquier proporción.
+export function puntosDeAngulo(angulo: number, ancho: number, alto: number) {
+  const radianes = (angulo * Math.PI) / 180;
+  const dx = Math.sin(radianes);
+  const dy = -Math.cos(radianes);
+  const mitadLargo = (Math.abs(ancho * dx) + Math.abs(alto * dy)) / 2;
+  const x = ancho > 0 ? (dx * mitadLargo) / ancho : 0;
+  const y = alto > 0 ? (dy * mitadLargo) / alto : 0;
+  return { start: { x: 0.5 - x, y: 0.5 - y }, end: { x: 0.5 + x, y: 0.5 + y } };
+}
+
+// Palabra destacada de los títulos con el degradado exacto de Figma (p. ej. "CREATIVO" y "PERFECTO").
 // En iOS y Android se recorta el degradado con la forma de las letras (masked-view, aprobado 2026-11-04);
 // en la web se usa el recorte de fondo de CSS, porque masked-view no lo soporta ahí.
 export function TextoDegradado({ children, variante = 'tituloDestacado' }: Props) {
-  const [desde, hasta] = degradados.acento.colores;
+  const { colores: listaColores, posiciones, angulo } = degradados.titulo;
+  const [desde, hasta] = listaColores;
+  const [tamano, setTamano] = useState({ ancho: 1, alto: 1 });
+  const puntos = puntosDeAngulo(angulo, tamano.ancho, tamano.alto);
 
   if (Platform.OS === 'web') {
     const estiloWeb = {
-      backgroundImage: `linear-gradient(90deg, ${desde}, ${hasta})`,
+      backgroundImage: `linear-gradient(${angulo}deg, ${desde} 0%, ${hasta} 100%)`,
       backgroundClip: 'text',
       WebkitBackgroundClip: 'text',
       color: 'transparent',
@@ -41,6 +56,9 @@ export function TextoDegradado({ children, variante = 'tituloDestacado' }: Props
     <MaskedView
       accessible
       accessibilityLabel={children}
+      onLayout={(e) =>
+        setTamano({ ancho: e.nativeEvent.layout.width, alto: e.nativeEvent.layout.height })
+      }
       maskElement={
         <Texto variante={variante} style={styles.margenCursiva}>
           {children}
@@ -48,9 +66,10 @@ export function TextoDegradado({ children, variante = 'tituloDestacado' }: Props
       }
     >
       <LinearGradient
-        colors={[desde, hasta]}
-        start={{ x: 0, y: 0.5 }}
-        end={{ x: 1, y: 0.5 }}
+        colors={listaColores}
+        locations={posiciones}
+        start={puntos.start}
+        end={puntos.end}
         style={StyleSheet.absoluteFill}
       />
       {/* Copia invisible: da el tamaño al degradado. */}

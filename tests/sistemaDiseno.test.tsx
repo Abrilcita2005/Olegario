@@ -125,3 +125,18 @@ describe('formatearPrecio', () => {
     expect(formatearPrecio(valor)).toBe(esperado);
   });
 });
+
+describe('degradado de los títulos', () => {
+  it('convierte el ángulo de Figma en puntos de inicio y fin', () => {
+    const { puntosDeAngulo } = jest.requireActual('@/components/ui/TextoDegradado');
+    // 180° = de arriba hacia abajo, 90° = de izquierda a derecha.
+    const vertical = puntosDeAngulo(180, 100, 20);
+    expect(vertical.start.x).toBeCloseTo(0.5);
+    expect(vertical.start.y).toBeCloseTo(0);
+    expect(vertical.end.y).toBeCloseTo(1);
+    const horizontal = puntosDeAngulo(90, 100, 20);
+    expect(horizontal.start.x).toBeCloseTo(0);
+    expect(horizontal.end.x).toBeCloseTo(1);
+    expect(horizontal.start.y).toBeCloseTo(0.5);
+  });
+});
