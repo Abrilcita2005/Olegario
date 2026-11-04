@@ -1,7 +1,5 @@
-// Las pruebas nunca usan un servidor real: sin estas variables, la app usa los datos de prueba.
-// (El entorno de la nube todavía puede tener cargadas variables de Supabase.)
-delete process.env.EXPO_PUBLIC_SUPABASE_URL;
-delete process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+// Las pruebas nunca usan un servidor real: sin esta variable, la app usa los datos de prueba
+// (aunque el entorno la tenga cargada). Las pruebas de la API simulan fetch (tests/api.test.tsx).
 delete process.env.EXPO_PUBLIC_API_URL;
 
 // Almacenamiento local simulado en memoria para las pruebas.

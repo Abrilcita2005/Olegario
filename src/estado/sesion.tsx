@@ -28,7 +28,7 @@ import {
   registrarCuenta,
   type ResultadoCuenta,
 } from '@/services/cuentaServidor';
-import { supabaseConfigurado } from '@/services/supabase';
+import { apiConfigurada } from '@/services/api';
 
 const OK: ResultadoCuenta = { ok: true };
 
@@ -38,12 +38,12 @@ type Sesion = {
   tipoAcceso: TipoAcceso | null;
   fotoPerfil: string | null;
   perfilBasico: PerfilBasico | null;
-  // Con Supabase (Etapa 13) crea la cuenta real; sin servidor, simula el registro en el teléfono.
+  // Con la API (Etapa 13) crea la cuenta real; sin servidor, simula el registro en el teléfono.
   // La contraseña nunca se guarda en la app.
   registrarse: (perfil: PerfilBasico, contrasena: string) => Promise<ResultadoCuenta>;
   cambiarFotoPerfil: (foto: string | null) => Promise<void>;
   marcarBienvenidaVista: () => Promise<void>;
-  // Con Supabase: miembro con correo y contraseña, invitado con ingreso anónimo. Sin servidor: simulado.
+  // Con la API: miembro con correo y contraseña, invitado sin correo. Sin servidor: simulado.
   ingresar: (
     tipo: TipoAcceso,
     credenciales?: { correo: string; contrasena: string },
@@ -72,11 +72,14 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
         setTipoAcceso(estado.tipoAcceso);
         setFotoPerfil(estado.fotoPerfil);
         setPerfilBasico(estado.perfilBasico);
-        // Con servidor, la sesión real manda: si no hay sesión válida, se vuelve a Acceso.
-        if (supabaseConfigurado) {
-          const cuenta = await leerCuentaActual().catch(() => null);
-          setTipoAcceso(cuenta?.tipoAcceso ?? null);
-          if (cuenta?.perfil) setPerfilBasico(cuenta.perfil);
+        // Con servidor, la sesión real manda: si no hay sesión válida, se vuelve a Acceso. Sin conexión,
+        // se mantiene lo guardado en el teléfono (no se cierra la sesión por un corte de internet).
+        if (apiConfigurada) {
+          const cuenta = await leerCuentaActual();
+          if (cuenta !== 'sin_conexion') {
+            setTipoAcceso(cuenta?.tipoAcceso ?? null);
+            if (cuenta?.perfil) setPerfilBasico(cuenta.perfil);
+          }
         }
       })
       // Si el almacenamiento falla, se arranca como primera vez en lugar de bloquear la app.
@@ -91,13 +94,13 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
 
   const ingresar = useCallback(
     async (tipo: TipoAcceso, credenciales?: { correo: string; contrasena: string }) => {
-      if (supabaseConfigurado) {
+      if (apiConfigurada) {
         const resultado =
           tipo === 'invitado'
             ? await ingresarComoInvitado()
             : await ingresarConCorreo(credenciales?.correo ?? '', credenciales?.contrasena ?? '');
         if (!resultado.ok) return resultado;
-        const cuenta = await leerCuentaActual();
+        const cuenta = resultado.cuenta;
         if (cuenta?.perfil) {
           setPerfilBasico(cuenta.perfil);
           await guardarPerfilBasico(cuenta.perfil);
@@ -112,10 +115,9 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
   );
 
   const registrarse = useCallback(async (perfil: PerfilBasico, contrasena: string) => {
-    if (supabaseConfigurado) {
+    if (apiConfigurada) {
       const resultado = await registrarCuenta(perfil, contrasena);
-      // Si hay que confirmar el correo, todavía no se entra a la app.
-      if (!resultado.ok || resultado.requiereConfirmacion) return resultado;
+      if (!resultado.ok) return resultado;
     }
     setPerfilBasico(perfil);
     setTipoAcceso('miembro');
@@ -136,7 +138,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
   const [versionDatos, setVersionDatos] = useState(0);
 
   const actualizarPerfil = useCallback(async (perfil: PerfilBasico) => {
-    if (supabaseConfigurado) {
+    if (apiConfigurada) {
       const resultado = await actualizarPerfilServidor(perfil);
       if (!resultado.ok) return resultado;
     }
@@ -146,7 +148,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
   }, []);
 
   const eliminarCuenta = useCallback(async () => {
-    if (supabaseConfigurado) {
+    if (apiConfigurada) {
       const resultado = await eliminarCuentaServidor();
       if (!resultado.ok) return resultado;
     }

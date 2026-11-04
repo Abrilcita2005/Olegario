@@ -1,6 +1,7 @@
 -- Olegario en Movimiento · Contenido inicial MySQL (Etapa 13).
 -- Docker lo carga solo la primera vez (después de 01_esquema.sql). También se puede ejecutar a mano
 -- desde phpMyAdmin (pestaña SQL) más de una vez: si un dato ya existe, se actualiza.
+-- Compatible con MySQL 8 y MariaDB (Hostinger puede usar cualquiera de los dos).
 -- IMPORTANTE: espacios, eventos, novedades, talleres y beneficios son los EJEMPLOS de Figma que usa la
 -- app hoy; el equipo de Olegario los reemplaza por los reales desde phpMyAdmin. Las efemérides son
 -- fechas reales (data/efemerides.ts). Las fotos se suben más adelante (foto_url vacío por ahora).
@@ -14,7 +15,7 @@ INSERT INTO espacios (id, servicio, nombre, tipo, ubicacion, ambiente, equipamie
   ('mesa-luz-natural', 'cowork', 'Mesa con Luz Natural', 'Puesto individual', 'Sector Jardín · Puesto #14', JSON_ARRAY('Luz natural directa'), JSON_ARRAY('Tomas USB-C 65W', 'WiFi 6E Mesh 500Mbps'), NULL, 1),
   ('mesa-comunitaria-cafe', 'cafe', 'Mesa Comunitaria Barra Cafetería', 'Mesa compartida', 'Planta Alta', JSON_ARRAY('Murmullo alegre', 'Barra de especialidad'), JSON_ARRAY('WiFi 6E Mesh 500Mbps', 'Espresso bar libre', 'Pérgola bioclimática'), 'Comunidad', 3),
   ('sala-acustica-focus', 'stream', 'Sala Acústica Focus', 'Sala de stream y llamadas', 'Sala Central · Pods de Stream & Calls', JSON_ARRAY('-32dB aislación', 'Ilum. Broadcast'), JSON_ARRAY('Cámara 4K + Brazo Elgato', 'Mic Rode PodMic'), NULL, 1)
-AS nuevo ON DUPLICATE KEY UPDATE servicio = nuevo.servicio, nombre = nuevo.nombre, tipo = nuevo.tipo, ubicacion = nuevo.ubicacion, ambiente = nuevo.ambiente, equipamiento = nuevo.equipamiento, etiqueta = nuevo.etiqueta, capacidad = nuevo.capacidad;
+ON DUPLICATE KEY UPDATE servicio = VALUES(servicio), nombre = VALUES(nombre), tipo = VALUES(tipo), ubicacion = VALUES(ubicacion), ambiente = VALUES(ambiente), equipamiento = VALUES(equipamiento), etiqueta = VALUES(etiqueta), capacidad = VALUES(capacidad);
 
 INSERT INTO efemerides (id, mes, dia, titulo, texto) VALUES
   ('braille', 1, 4, 'Día mundial del Braille', 'Un recordatorio de que la información y la creatividad tienen que llegar a todas las personas.'),
@@ -54,25 +55,25 @@ INSERT INTO efemerides (id, mes, dia, titulo, texto) VALUES
   ('discapacidad', 12, 3, 'Día internacional de las personas con discapacidad', 'Espacios y herramientas accesibles hacen que todas las personas puedan sumarse.'),
   ('voluntariado', 12, 5, 'Día internacional del voluntariado', 'Gracias a quienes donan su tiempo y su talento a causas que nos importan.'),
   ('derechos-humanos', 12, 10, 'Día de los derechos humanos', 'Un día para recordar los derechos que nos igualan a todas las personas.')
-AS nuevo ON DUPLICATE KEY UPDATE mes = nuevo.mes, dia = nuevo.dia, titulo = nuevo.titulo, texto = nuevo.texto;
+ON DUPLICATE KEY UPDATE mes = VALUES(mes), dia = VALUES(dia), titulo = VALUES(titulo), texto = VALUES(texto);
 
 -- Eventos de ejemplo de Figma, a partir de mañana (hora de Mendoza, guardada en UTC).
 INSERT INTO eventos (id, submarca, titulo, detalle, inicio) VALUES
   ('evento-storytelling', 'evento', 'Storytelling para Emprendedores', 'Disertante: Sofía Valenzuela · Sala Principal', TIMESTAMP(DATE(UTC_TIMESTAMP() - INTERVAL 3 HOUR) + INTERVAL 1 DAY, '20:00:00')),
   ('evento-sunset-beats', 'afterOffice', 'Sunset Beats & Vinyl Session', 'Terraza Abierta Olegario · DJ Set en vivo', TIMESTAMP(DATE(UTC_TIMESTAMP() - INTERVAL 3 HOUR) + INTERVAL 2 DAY, '21:30:00')),
   ('coworkeo-itinerante', 'itinerante', 'Coworkeo itinerante', '¡Viajá con Olegario y conocé personas y lugares nuevos!', TIMESTAMP(DATE(UTC_TIMESTAMP() - INTERVAL 3 HOUR) + INTERVAL 7 DAY, '12:00:00'))
-AS nuevo ON DUPLICATE KEY UPDATE submarca = nuevo.submarca, titulo = nuevo.titulo, detalle = nuevo.detalle, inicio = nuevo.inicio;
+ON DUPLICATE KEY UPDATE submarca = VALUES(submarca), titulo = VALUES(titulo), detalle = VALUES(detalle), inicio = VALUES(inicio);
 
 INSERT INTO novedades (id, titulo, texto, descuento, accion, evento_id, orden) VALUES
   ('promo-cafeteria', 'Promo cafetería', 'Flat White de especialidad + Cookie casera de chocolate', '20% OFF', 'carta', NULL, 1),
   ('coworkeo-itinerante', 'Coworkeo itinerante', '¡Viajá con Olegario y conocé personas y lugares nuevos!', '20% OFF', 'inscripcion', 'coworkeo-itinerante', 2)
-AS nuevo ON DUPLICATE KEY UPDATE titulo = nuevo.titulo, texto = nuevo.texto, descuento = nuevo.descuento, accion = nuevo.accion, evento_id = nuevo.evento_id, orden = nuevo.orden;
+ON DUPLICATE KEY UPDATE titulo = VALUES(titulo), texto = VALUES(texto), descuento = VALUES(descuento), accion = VALUES(accion), evento_id = VALUES(evento_id), orden = VALUES(orden);
 
 INSERT INTO talleres (id, tipo, cuando, titulo, descripcion, accion) VALUES
   ('club-lectura', 'Grupo de interés', 'Miércoles · 18:30 hs', 'Club de Lectura Tech & Diseño', 'Espacio quincenal para debatir ensayos de diseño, sistemas complejos e IA aplicada al trabajo independiente.', 'Sumarse'),
   ('debate-no-code', 'Workshop co-aprendizaje', 'Jueves · 17:00 hs', 'Mesa de Debate No-Code & Automatización', 'Mostramos flujos de trabajo reales con Make, Airtable y Supabase creados por coworkers de la comunidad.', 'Últimos cupos disponibles')
-AS nuevo ON DUPLICATE KEY UPDATE tipo = nuevo.tipo, cuando = nuevo.cuando, titulo = nuevo.titulo, descripcion = nuevo.descripcion, accion = nuevo.accion;
+ON DUPLICATE KEY UPDATE tipo = VALUES(tipo), cuando = VALUES(cuando), titulo = VALUES(titulo), descripcion = VALUES(descripcion), accion = VALUES(accion);
 
 INSERT INTO beneficios (id, titulo, detalle, lugar) VALUES
   ('promo-cafeteria', '20% OFF en la cafetería', 'Flat White de especialidad + Cookie casera de chocolate', 'OLE/CAFÉ')
-AS nuevo ON DUPLICATE KEY UPDATE titulo = nuevo.titulo, detalle = nuevo.detalle, lugar = nuevo.lugar;
+ON DUPLICATE KEY UPDATE titulo = VALUES(titulo), detalle = VALUES(detalle), lugar = VALUES(lugar);

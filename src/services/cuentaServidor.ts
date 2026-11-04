@@ -1,124 +1,70 @@
 import type { PerfilBasico, TipoAcceso } from './almacenamiento';
-import { supabase } from './supabase';
+import { guardarToken, pedirApi } from './api';
 
-// Cuentas reales con Supabase Auth (Etapa 13). La contraseña la recibe y la guarda cifrada Supabase:
-// la app nunca la guarda. Solo se usa cuando Supabase está configurado (ver services/supabase.ts).
+// Cuentas reales con la API de Olegario (Etapa 13, D-68). La contraseña viaja solo al servidor, que la
+// guarda cifrada: la app nunca la guarda. Solo se usa cuando la API está configurada (ver services/api.ts).
+// Los mensajes de error ya vienen en español desde la API (servidor/api/src/).
 
-export type ResultadoCuenta =
-  { ok: true; requiereConfirmacion?: boolean } | { ok: false; error: string };
+export type ResultadoCuenta = { ok: true } | { ok: false; error: string };
 
-export type CuentaActual = { tipoAcceso: TipoAcceso; perfil: PerfilBasico | null };
+export type CuentaActual = { id: string; tipoAcceso: TipoAcceso; perfil: PerfilBasico | null };
 
-// Mensajes de Supabase → español rioplatense (sin detalles técnicos).
-export function mensajeDeError(error: { message?: string; status?: number } | null): string {
-  const texto = (error?.message ?? '').toLowerCase();
-  if (texto.includes('invalid login credentials')) return 'Correo o contraseña incorrectos.';
-  if (texto.includes('already registered') || texto.includes('already been registered'))
-    return 'Ya existe una cuenta con ese correo. Probá iniciar sesión.';
-  if (texto.includes('email not confirmed'))
-    return 'Confirmá tu correo con el enlace que te mandamos y volvé a intentar.';
-  if (texto.includes('password') && (texto.includes('weak') || texto.includes('least')))
-    return 'Elegí una contraseña más segura (al menos 8 caracteres, con letras y números).';
-  if (texto.includes('rate limit') || error?.status === 429)
-    return 'Hiciste muchos intentos seguidos. Esperá unos minutos y probá de nuevo.';
-  if (texto.includes('anonymous') && texto.includes('disabled'))
-    return 'El modo invitado no está disponible por ahora.';
-  if (texto.includes('fetch') || texto.includes('network'))
-    return 'No pudimos conectarnos. Revisá tu conexión a internet.';
-  return 'No pudimos completar la operación. Probá de nuevo en unos minutos.';
+type RespuestaSesion = { token: string; cuenta: CuentaActual };
+
+async function abrirSesion(
+  ruta: string,
+  datos?: unknown,
+): Promise<ResultadoCuenta & { cuenta?: CuentaActual }> {
+  const respuesta = await pedirApi<RespuestaSesion>('POST', ruta, datos);
+  if (!respuesta.ok) return { ok: false, error: respuesta.error };
+  await guardarToken(respuesta.datos.token);
+  return { ok: true, cuenta: respuesta.datos.cuenta };
 }
 
-const SIN_SERVIDOR: ResultadoCuenta = { ok: false, error: 'El servidor no está configurado.' };
-
-export async function registrarCuenta(
-  perfil: PerfilBasico,
-  contrasena: string,
-): Promise<ResultadoCuenta> {
-  if (!supabase) return SIN_SERVIDOR;
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email: perfil.correo,
-      password: contrasena,
-      options: { data: { nombre: perfil.nombre, profesion: perfil.profesion } },
-    });
-    if (error) return { ok: false, error: mensajeDeError(error) };
-    // Si Supabase pide confirmar el correo, todavía no hay sesión.
-    return { ok: true, requiereConfirmacion: !data.session };
-  } catch (e) {
-    return { ok: false, error: mensajeDeError(e as Error) };
-  }
+export function registrarCuenta(perfil: PerfilBasico, contrasena: string) {
+  return abrirSesion('/cuentas/registro', {
+    nombre: perfil.nombre,
+    profesion: perfil.profesion,
+    correo: perfil.correo,
+    contrasena,
+  });
 }
 
-export async function ingresarConCorreo(
-  correo: string,
-  contrasena: string,
-): Promise<ResultadoCuenta> {
-  if (!supabase) return SIN_SERVIDOR;
-  try {
-    const { error } = await supabase.auth.signInWithPassword({
-      email: correo,
-      password: contrasena,
-    });
-    return error ? { ok: false, error: mensajeDeError(error) } : { ok: true };
-  } catch (e) {
-    return { ok: false, error: mensajeDeError(e as Error) };
-  }
+export function ingresarConCorreo(correo: string, contrasena: string) {
+  return abrirSesion('/cuentas/ingreso', { correo, contrasena });
 }
 
-// Modo invitado: ingreso anónimo de Supabase (el servidor le asigna el rol "invitado").
-export async function ingresarComoInvitado(): Promise<ResultadoCuenta> {
-  if (!supabase) return SIN_SERVIDOR;
-  try {
-    const { error } = await supabase.auth.signInAnonymously();
-    return error ? { ok: false, error: mensajeDeError(error) } : { ok: true };
-  } catch (e) {
-    return { ok: false, error: mensajeDeError(e as Error) };
-  }
+// Modo invitado (D-34): el servidor crea una cuenta sin correo con rol invitado.
+export function ingresarComoInvitado() {
+  return abrirSesion('/cuentas/invitado');
 }
 
 export async function cerrarSesionServidor(): Promise<void> {
-  if (!supabase) return;
-  await supabase.auth.signOut().catch(() => {});
+  await pedirApi('POST', '/cuentas/salir');
+  await guardarToken(null);
 }
 
-// Borra la cuenta y todos sus datos en el servidor (función eliminar_mi_cuenta del esquema).
+// Borra la cuenta y, en cascada, todos sus datos en el servidor.
 export async function eliminarCuentaServidor(): Promise<ResultadoCuenta> {
-  if (!supabase) return SIN_SERVIDOR;
-  const { error } = await supabase.rpc('eliminar_mi_cuenta');
-  if (error) return { ok: false, error: mensajeDeError(error) };
-  await supabase.auth.signOut().catch(() => {});
+  const respuesta = await pedirApi('DELETE', '/cuentas/yo');
+  if (!respuesta.ok) return { ok: false, error: respuesta.error };
+  await guardarToken(null);
   return { ok: true };
 }
 
 export async function actualizarPerfilServidor(perfil: PerfilBasico): Promise<ResultadoCuenta> {
-  if (!supabase) return SIN_SERVIDOR;
-  const { data } = await supabase.auth.getUser();
-  if (!data.user) return { ok: false, error: 'Tu sesión venció. Volvé a ingresar.' };
-  const { error } = await supabase
-    .from('perfiles')
-    .update({ nombre: perfil.nombre, profesion: perfil.profesion })
-    .eq('id', data.user.id);
-  return error ? { ok: false, error: mensajeDeError(error) } : { ok: true };
+  const respuesta = await pedirApi('PATCH', '/cuentas/yo', {
+    nombre: perfil.nombre,
+    profesion: perfil.profesion,
+  });
+  return respuesta.ok ? { ok: true } : { ok: false, error: respuesta.error };
 }
 
-// Sesión guardada al abrir la app: quién es y con qué rol.
-export async function leerCuentaActual(): Promise<CuentaActual | null> {
-  if (!supabase) return null;
-  const { data } = await supabase.auth.getSession();
-  const usuario = data.session?.user;
-  if (!usuario) return null;
-  const { data: perfil } = await supabase
-    .from('perfiles')
-    .select('nombre, profesion, rol')
-    .eq('id', usuario.id)
-    .maybeSingle();
-  const tipoAcceso: TipoAcceso =
-    perfil?.rol === 'invitado' || usuario.is_anonymous ? 'invitado' : 'miembro';
-  return {
-    tipoAcceso,
-    perfil:
-      tipoAcceso === 'miembro' && perfil
-        ? { nombre: perfil.nombre, profesion: perfil.profesion, correo: usuario.email ?? '' }
-        : null,
-  };
+// Sesión guardada al abrir la app. null si no hay sesión válida (venció o se eliminó la cuenta).
+// Si no hay conexión, devuelve 'sin_conexion' para no cerrar la sesión por un corte de internet.
+export async function leerCuentaActual(): Promise<CuentaActual | null | 'sin_conexion'> {
+  const respuesta = await pedirApi<CuentaActual>('GET', '/cuentas/yo');
+  if (respuesta.ok) return respuesta.datos;
+  if (respuesta.estado === 401) await guardarToken(null);
+  return respuesta.estado === 401 ? null : 'sin_conexion';
 }

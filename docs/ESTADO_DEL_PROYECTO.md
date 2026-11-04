@@ -2,19 +2,20 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                                                                                                                                                            |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Última actualización     | 2026-11-04                                                                                                                                                                                                                       |
-| Rama de trabajo          | `claude/gallant-fermi-66n1rh`                                                                                                                                                                                                    |
-| Etapa actual             | **Etapa 13 — Integraciones, persistencia y backend**                                                                                                                                                                             |
-| Estado                   | En curso: servidor cambiado a Docker + PHP + MySQL + phpMyAdmin (D-68); API de cuentas, reservas y agenda probada en la nube; esquema MySQL pendiente de aprobación                                                              |
-| Autorización de avance   | Etapa 13: concedida ("avancemos", 2026-11-04). **Etapa 14: NO concedida.**                                                                                                                                                       |
-| Próxima acción permitida | Esperar la aprobación del esquema MySQL y la prueba de `docker compose up` en la computadora de la responsable (`docs/BACKEND.md`); después conectar la app a la API. **No** empezar la Etapa 14 sin una autorización explícita. |
+| Campo                    | Valor                                                                                                                                                                               |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Última actualización     | 2026-11-04                                                                                                                                                                          |
+| Rama de trabajo          | `claude/gallant-fermi-66n1rh`                                                                                                                                                       |
+| Etapa actual             | **Etapa 13 — Integraciones, persistencia y backend**                                                                                                                                |
+| Estado                   | En curso: servidor Docker + PHP + MySQL (esquema aprobado), Supabase eliminado, cuentas de la app conectadas a la API; faltan reservas, agenda, comunidad y servicios en la app     |
+| Autorización de avance   | Etapa 13: concedida ("avancemos", 2026-11-04). **Etapa 14: NO concedida.**                                                                                                          |
+| Próxima acción permitida | Seguir la Etapa 13 en local según `docs/BACKEND.md` (reservas y agenda de la app desde la API). Hostinger, más adelante. **No** empezar la Etapa 14 sin una autorización explícita. |
 
 ## Historial de autorizaciones
 
 | Fecha      | Mensaje de la responsable                                                                                  | Qué autorizó                                                                                                                                                                     |
 | ---------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-04 | "SI" (esquema) · "SI" (Supabase) · Hostinger                                                               | Esquema MySQL aprobado; borrar Supabase y desinstalar `@supabase/supabase-js`; servidor final en Hostinger (base `U275204779_Olegario`), por ahora en local                      |
 | 2026-11-04 | "Olvida supabase, vamos a utilizar Docker… php, mysql, phpmyadmin"                                         | Cambiar el servidor a Docker + PHP + MySQL + phpMyAdmin (D-68). El esquema MySQL queda pendiente de aprobación                                                                   |
 | 2026-10-28 | "Avanza"                                                                                                   | Cerrar la Etapa 2 con pendientes abiertos y empezar la Etapa 3                                                                                                                   |
 | 2026-10-28 | Respuestas al cuestionario                                                                                 | Stack Expo + React Native, iOS y Android, trabajo en la nube, dependencias base                                                                                                  |
@@ -43,7 +44,7 @@
 - Encabezado: isotipo → Home · ícono OLE/CAFÉ → carta del café · avatar → perfil de cuenta (no el de comunidad).
 - Novedades: panel que sube desde abajo.
 - Bienvenida: solo la primera vez.
-- Dependencias aprobadas: `@react-native-async-storage/async-storage`, `expo-image-picker`. Etapa 8: `@react-native-masked-view/masked-view`. Etapa 9: `expo-clipboard`. Etapa 13: `@supabase/supabase-js`, `expo-secure-store`.
+- Dependencias aprobadas: `@react-native-async-storage/async-storage`, `expo-image-picker`. Etapa 8: `@react-native-masked-view/masked-view`. Etapa 9: `expo-clipboard`. Etapa 13: `expo-secure-store` (`@supabase/supabase-js` se desinstaló al dejar Supabase, D-68).
 - Revisión 1: avatar con foto personal (galería o cámara) · carta del café con diseño provisional propio.
 - Revisión 2: un solo botón "Cambiar foto" con menú · carta con foto y etiquetas, sin aviso de ejemplo, márgenes corregidos.
 - Revisión 3: ilustraciones de productos y promo en la carta · tarjeta con el precio en recuadro claro y texto negro.
@@ -72,20 +73,17 @@
 
 ## Cómo retomar la Etapa 13 (para la próxima sesión)
 
-1. Leer `docs/BACKEND.md` (servidor con Docker + PHP + MySQL + phpMyAdmin en `servidor/`).
-2. Ya hecho y probado en la nube: esquema y contenido en MySQL, API de cuentas, reservas, agenda y
-   contenido (`servidor/pruebas/probar_api.php`: 36 de 36 comprobaciones correctas).
-3. Pendiente de la responsable: aprobar el esquema MySQL y probar `docker compose up` en su computadora.
-4. Después: conectar la app a la API (`EXPO_PUBLIC_API_URL`, con datos de prueba si no hay servidor),
-   sumar Comunidad y servicios del Perfil a la API y decidir dónde se aloja el servidor.
-5. Las pruebas de la app (`jest.setup.js`) ignoran las variables de servidor del entorno: siempre usan
-   los datos de prueba.
+1. Leer `docs/BACKEND.md` (servidor con Docker + PHP + MySQL + phpMyAdmin en `servidor/`; Hostinger más adelante).
+2. Hecho: esquema aprobado, API de cuentas, reservas, agenda y contenido (36/36), Supabase eliminado,
+   cuentas de la app conectadas a la API (`EXPO_PUBLIC_API_URL`; sin ella, datos de prueba).
+3. Siguiente: reservas y agenda de la app desde la API; después Comunidad y servicios del Perfil.
+4. Para probar en la nube sin Docker: instalar `mysql-server-8.0` con apt, cargar `servidor/db/` y
+   correr la API con `php -S` (ver el informe del 2026-11-04). Las pruebas de la app ignoran las
+   variables de servidor del entorno.
 
 ## Preguntas abiertas para la responsable
 
-- ¿Aprobás el esquema MySQL (`servidor/db/01_esquema.sql`)?
-- ¿Borro los archivos de Supabase y desinstalo `@supabase/supabase-js`?
-- ¿Dónde se va a alojar el servidor para usarlo desde los teléfonos (hosting propio, VPS, otro)?
+- Hostinger: ¿el nombre exacto de la base es `U275204779_Olegario` o en minúsculas? ¿Usa MySQL o MariaDB?
 
 - ¿Alguna efeméride lleva beneficio en OLE/CAFÉ? ¿Aprobás los textos de `data/efemerides.ts`?
 - P-46: ¿sumamos la Vendimia (fecha variable)?

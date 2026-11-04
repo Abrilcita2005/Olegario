@@ -47,10 +47,6 @@ export default function RegistroScreen() {
     );
     setEnviando(false);
     if (!resultado.ok) setAvisoServidor(resultado.error);
-    else if (resultado.requiereConfirmacion)
-      setAvisoServidor(
-        'Te mandamos un correo para confirmar tu cuenta. Confirmalo y después ingresá.',
-      );
   }
 
   return (
