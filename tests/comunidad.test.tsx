@@ -130,7 +130,10 @@ describe('pantalla Comunidad', () => {
     await abrir('miembro', '/persona/martina-rossi');
     expect(await screen.findByRole('header', { name: 'Martina Rossi' })).toBeTruthy();
     expect(screen.getByText(/Apasionada por crear interfaces elegantes/)).toBeTruthy();
-    expect(screen.getByText('En Ole/Café ahora · Mesa 12')).toBeTruthy();
+    expect(screen.getByText('En Ole/Café ahora')).toBeTruthy();
+    expect(screen.getByText('Mesa 12')).toBeTruthy();
+    // Como en Figma, se ve la barra inferior con Comunidad activa.
+    expect(screen.getByRole('tab', { name: 'Comunidad', selected: true })).toBeTruthy();
   });
 
   it('el invitado no usa Comunidad', async () => {

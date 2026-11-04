@@ -1,7 +1,8 @@
 import type { Persona, Publicacion, Taller } from '../../src/models/comunidad';
 
 // DATOS DE PRUEBA (no reales): textos de Figma (pantallas COMUNIDAD y PERFIL PÚBLICO) hasta el servidor
-// (Etapa 13). Las fotos son de personas ficticias provistas por la responsable (Drive, 2026-11-04).
+// (Etapa 13). Las fotos son de personas ficticias provistas por la responsable (Drive, 2026-11-04);
+// la de Martina Rossi es la de la referencia de Figma que pasó la responsable.
 // Solo se cargan los datos que están en Figma: no se inventa información de las personas.
 
 export const personasDePrueba: Persona[] = [
@@ -10,13 +11,15 @@ export const personasDePrueba: Persona[] = [
     nombre: 'Lucas Benítez',
     profesion: 'Tech Lead',
     foto: require('../../assets/imagenes/personas/persona-4.jpg'),
+    portada: require('../../assets/imagenes/personas/portada-lucas-benitez.jpg'),
     ubicacion: 'Cowork Mesa 04',
   },
   {
     id: 'martina-rossi',
     nombre: 'Martina Rossi',
     profesion: 'Diseñadora UI/UX & Brand Strategy Freelance',
-    foto: require('../../assets/imagenes/personas/persona-1.jpg'),
+    foto: require('../../assets/imagenes/personas/martina-rossi.jpg'),
+    portada: require('../../assets/imagenes/personas/portada-martina-rossi.jpg'),
     ubicacion: 'En Ole/Café ahora · Mesa 12',
     sobreMi:
       'Apasionada por crear interfaces elegantes y estrategias de marca que dejen huella. Combino diseño visual sofisticado con investigación de usuario. Buscando siempre nuevos desafíos y colaboradores interesantes en Olegario.',
@@ -26,12 +29,14 @@ export const personasDePrueba: Persona[] = [
     nombre: 'Gonzalo Vera',
     profesion: '',
     foto: require('../../assets/imagenes/personas/persona-6.jpg'),
+    portada: require('../../assets/imagenes/personas/portada-gonzalo-vera.jpg'),
   },
   {
     id: 'clara-mendez',
     nombre: 'Clara Méndez',
     profesion: 'Desarrolladora Fullstack',
     foto: require('../../assets/imagenes/personas/persona-3.jpg'),
+    portada: require('../../assets/imagenes/personas/portada-clara-mendez.jpg'),
     disponible: true,
     ofrezco: 'Asesoría técnica en arquitectura web, integración de pagos y APIs escalables.',
     busco: 'Aprender branding, validación comercial y diseño de producto para ideas SaaS.',

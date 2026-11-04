@@ -21,6 +21,7 @@
 | 2026-10-28 | "Sí, instalá las 4"                                                                                        | `expo-font`, `@expo-google-fonts/inter`, `react-native-svg`, `expo-linear-gradient`                                                                                              |
 | 2026-10-28 | "Primero corregir la Etapa 4" · "Usar otra fuente" → "Poppins" · "Sí, como en Figma" · "Dejarlo como está" | Corregir la Etapa 4 (no avanzar todavía): Poppins en lugar de Vástago, aro en íconos de servicio, contraste aceptado                                                             |
 | 2026-11-03 | "avanza" (tras la revisión del collage)                                                                    | Etapa 7: Home                                                                                                                                                                    |
+| 2026-11-04 | "revisemos" + referencia del perfil de Comunidad                                                           | Rehacer el perfil público como en Figma con la foto de Martina Rossi                                                                                                             |
 | 2026-11-04 | Respuestas + captura del Perfil                                                                            | Pagos y horas extras simulados, 6 servicios provisorios, editar perfil/cerrar sesión/eliminar cuenta al final; captura de PERFIL por Drive                                       |
 | 2026-11-04 | "avanza" (tras la Etapa 10)                                                                                | Etapa 11: Perfil de cuenta y membresías                                                                                                                                          |
 | 2026-11-04 | "Avancemos" + respuestas                                                                                   | Etapa 10: solicitudes simuladas para contactar/postularse/sumarse, formulario provisorio para publicar, Modo Foco oculta de las listas y la ubicación, perfil público provisorio |
@@ -71,4 +72,4 @@
 
 ## Último informe de cierre
 
-2026-11-04: Etapa 11, entregado en la conversación.
+2026-11-04: Etapa 11, entregado en la conversación. En revisión: perfil público de Comunidad rehecho como en Figma.

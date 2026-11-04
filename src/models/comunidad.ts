@@ -6,6 +6,8 @@ export type Persona = {
   // Vacía si no se conoce (no se inventa).
   profesion: string;
   foto?: ImageSourcePropType;
+  // Foto grande del perfil público (Figma: PERFIL PÚBLICO, "HeroCover").
+  portada?: ImageSourcePropType;
   // Dónde está ahora en Olegario (solo si la persona está en "Conexión Abierta").
   ubicacion?: string;
   sobreMi?: string;
