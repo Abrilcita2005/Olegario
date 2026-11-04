@@ -74,7 +74,7 @@
 1. Comprobar que existan las variables `EXPO_PUBLIC_SUPABASE_URL` y `EXPO_PUBLIC_SUPABASE_ANON_KEY` y que
    `https://cpzudtvilwmaqxhqgupc.supabase.co` responda (la responsable configuró variables y red en el entorno
    "Default" el 2026-11-04). Si faltan, crear `.env` desde `.env.example` (nunca subirlo).
-2. Confirmar con la responsable que cargó `supabase/0002_contenido_inicial.sql` (el esquema 0001 ya está).
+2. El esquema (`0001`) y el contenido inicial (`0002`) ya están cargados en Supabase (confirmado por la responsable, 2026-11-04).
 3. Probar el registro, el ingreso y el modo invitado reales (`src/services/cuentaServidor.ts`, ya conectado a
    `src/estado/sesion.tsx`). Revisar si Supabase pide confirmar el correo.
 4. Pasar reservas, agenda, comunidad y servicios del perfil de los datos de prueba al servidor.
