@@ -1,0 +1,7 @@
+# Todas las direcciones pasan por index.php (el "enrutador" de la API).
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [QSA,L]
+# El encabezado Authorization tiene que llegar a PHP (lleva el token de sesión).
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

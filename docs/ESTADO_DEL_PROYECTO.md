@@ -2,19 +2,20 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                                                                                                                                                 |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Última actualización     | 2026-11-04                                                                                                                                                                                                            |
-| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                                                                                           |
-| Etapa actual             | **Etapa 13 — Integraciones, persistencia y backend**                                                                                                                                                                  |
-| Estado                   | En curso: Supabase creado, esquema y contenido inicial cargados; falta probar la conexión desde una sesión nueva                                                                                                      |
-| Autorización de avance   | Etapa 13: concedida ("avancemos", 2026-11-04). **Etapa 14: NO concedida.**                                                                                                                                            |
-| Próxima acción permitida | En una sesión nueva: comprobar la conexión con Supabase (variables y red ya configuradas por la responsable) y seguir la Etapa 13 según `docs/BACKEND.md`. **No** empezar la Etapa 14 sin una autorización explícita. |
+| Campo                    | Valor                                                                                                                                                                                                                            |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Última actualización     | 2026-11-04                                                                                                                                                                                                                       |
+| Rama de trabajo          | `claude/gallant-fermi-66n1rh`                                                                                                                                                                                                    |
+| Etapa actual             | **Etapa 13 — Integraciones, persistencia y backend**                                                                                                                                                                             |
+| Estado                   | En curso: servidor cambiado a Docker + PHP + MySQL + phpMyAdmin (D-68); API de cuentas, reservas y agenda probada en la nube; esquema MySQL pendiente de aprobación                                                              |
+| Autorización de avance   | Etapa 13: concedida ("avancemos", 2026-11-04). **Etapa 14: NO concedida.**                                                                                                                                                       |
+| Próxima acción permitida | Esperar la aprobación del esquema MySQL y la prueba de `docker compose up` en la computadora de la responsable (`docs/BACKEND.md`); después conectar la app a la API. **No** empezar la Etapa 14 sin una autorización explícita. |
 
 ## Historial de autorizaciones
 
 | Fecha      | Mensaje de la responsable                                                                                  | Qué autorizó                                                                                                                                                                     |
 | ---------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-04 | "Olvida supabase, vamos a utilizar Docker… php, mysql, phpmyadmin"                                         | Cambiar el servidor a Docker + PHP + MySQL + phpMyAdmin (D-68). El esquema MySQL queda pendiente de aprobación                                                                   |
 | 2026-10-28 | "Avanza"                                                                                                   | Cerrar la Etapa 2 con pendientes abiertos y empezar la Etapa 3                                                                                                                   |
 | 2026-10-28 | Respuestas al cuestionario                                                                                 | Stack Expo + React Native, iOS y Android, trabajo en la nube, dependencias base                                                                                                  |
 | 2026-10-28 | "Sí, avanzá a la Etapa 4"                                                                                  | Empezar la Etapa 4 con colores de los SVG, Vástago + Inter y sin modo oscuro                                                                                                     |
@@ -71,15 +72,20 @@
 
 ## Cómo retomar la Etapa 13 (para la próxima sesión)
 
-1. Comprobar que existan las variables `EXPO_PUBLIC_SUPABASE_URL` y `EXPO_PUBLIC_SUPABASE_ANON_KEY` y que
-   `https://cpzudtvilwmaqxhqgupc.supabase.co` responda (la responsable configuró variables y red en el entorno
-   "Default" el 2026-11-04). Si faltan, crear `.env` desde `.env.example` (nunca subirlo).
-2. El esquema (`0001`) y el contenido inicial (`0002`) ya están cargados en Supabase (confirmado por la responsable, 2026-11-04).
-3. Probar el registro, el ingreso y el modo invitado reales (`src/services/cuentaServidor.ts`, ya conectado a
-   `src/estado/sesion.tsx`). Revisar si Supabase pide confirmar el correo.
-4. Pasar reservas, agenda, comunidad y servicios del perfil de los datos de prueba al servidor.
+1. Leer `docs/BACKEND.md` (servidor con Docker + PHP + MySQL + phpMyAdmin en `servidor/`).
+2. Ya hecho y probado en la nube: esquema y contenido en MySQL, API de cuentas, reservas, agenda y
+   contenido (`servidor/pruebas/probar_api.php`: 36 de 36 comprobaciones correctas).
+3. Pendiente de la responsable: aprobar el esquema MySQL y probar `docker compose up` en su computadora.
+4. Después: conectar la app a la API (`EXPO_PUBLIC_API_URL`, con datos de prueba si no hay servidor),
+   sumar Comunidad y servicios del Perfil a la API y decidir dónde se aloja el servidor.
+5. Las pruebas de la app (`jest.setup.js`) ignoran las variables de servidor del entorno: siempre usan
+   los datos de prueba.
 
 ## Preguntas abiertas para la responsable
+
+- ¿Aprobás el esquema MySQL (`servidor/db/01_esquema.sql`)?
+- ¿Borro los archivos de Supabase y desinstalo `@supabase/supabase-js`?
+- ¿Dónde se va a alojar el servidor para usarlo desde los teléfonos (hosting propio, VPS, otro)?
 
 - ¿Alguna efeméride lleva beneficio en OLE/CAFÉ? ¿Aprobás los textos de `data/efemerides.ts`?
 - P-46: ¿sumamos la Vendimia (fecha variable)?

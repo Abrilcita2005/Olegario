@@ -1,0 +1,57 @@
+# Olegario en Movimiento · Servidor local con Docker (Etapa 13).
+# Cómo se usa (desde la carpeta servidor/):
+#   1. cp .env.example .env   y completar las contraseñas en .env (ese archivo no se sube a GitHub)
+#   2. docker compose up -d
+#   3. API:        http://localhost:8080/salud
+#      phpMyAdmin: http://localhost:8082   (usuario y contraseña de MySQL de .env)
+# La primera vez, MySQL crea las tablas y carga el contenido inicial de db/ solo.
+# Para empezar de cero (BORRA todos los datos): docker compose down -v
+
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Falta MYSQL_ROOT_PASSWORD en .env}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-olegario}
+      MYSQL_USER: ${MYSQL_USER:-olegario}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Falta MYSQL_PASSWORD en .env}
+      TZ: UTC
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_0900_ai_ci']
+    volumes:
+      - datos_mysql:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h localhost -u root -p"$$MYSQL_ROOT_PASSWORD" --silent']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: ./api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_NAME: ${MYSQL_DATABASE:-olegario}
+      DB_USER: ${MYSQL_USER:-olegario}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - '8080:80'
+    volumes:
+      - ./api:/var/www/html
+
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+    ports:
+      - '8082:80'
+
+volumes:
+  datos_mysql:
