@@ -63,5 +63,6 @@ export function espaciosDePrueba(hoy: Date = new Date()): Espacio[] {
   ];
 }
 
-// Horas del plan (Figma, Perfil: "42 / 80 hs"). DATO DE PRUEBA.
-export const planDePrueba = { horasTotales: 80, horasUsadasPrevias: 42 };
+// Horas del plan (Figma, PERFIL: "BALANCE DISPONIBLE 42 / 80 hs", 53% libre). DATO DE PRUEBA: 34 hs ya
+// usadas antes + las 4 hs de la reserva de prueba = 38 usadas → 42 disponibles.
+export const planDePrueba = { horasTotales: 80, horasUsadasPrevias: 34 };

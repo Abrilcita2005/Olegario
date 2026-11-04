@@ -1,6 +1,7 @@
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import type { ReactNode } from 'react';
 
 import { ProveedorAgenda } from '@/estado/agenda';
 import { ProveedorComunidad } from '@/estado/comunidad';
@@ -15,15 +16,23 @@ export default function RootLayout() {
 
   return (
     <ProveedorSesion>
-      <ProveedorReservas>
-        <ProveedorAgenda>
-          <ProveedorComunidad>
-            <StatusBar style="dark" />
-            <Navegacion />
-          </ProveedorComunidad>
-        </ProveedorAgenda>
-      </ProveedorReservas>
+      <ProveedoresDeDatos>
+        <StatusBar style="dark" />
+        <Navegacion />
+      </ProveedoresDeDatos>
     </ProveedorSesion>
+  );
+}
+
+// Datos de la persona (reservas, agenda, comunidad). Se vuelven a crear desde cero al eliminar la cuenta.
+function ProveedoresDeDatos({ children }: { children: ReactNode }) {
+  const { versionDatos } = useSesion();
+  return (
+    <ProveedorReservas key={versionDatos}>
+      <ProveedorAgenda>
+        <ProveedorComunidad>{children}</ProveedorComunidad>
+      </ProveedorAgenda>
+    </ProveedorReservas>
   );
 }
 
@@ -51,6 +60,8 @@ function Navegacion() {
         <Stack.Screen name="reserva/[id]" />
         <Stack.Screen name="persona/[id]" />
         <Stack.Screen name="publicar" />
+        <Stack.Screen name="editar-perfil" />
+        <Stack.Screen name="servicio/[id]" />
         <Stack.Screen
           name="novedades"
           options={{

@@ -365,3 +365,63 @@ export function IconoMasCirculo({ tamano = 16, color }: Props) {
     </Svg>
   );
 }
+
+// Íconos de Gestión y servicios (Figma: PERFIL).
+
+export function IconoCaja({ tamano = 18, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M3 4h18v4H3V4Zm2 4v12h14V8M10 12h4"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function IconoRegalo({ tamano = 18, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M3 9h18v4H3V9Zm2 4v8h14v-8M12 9v12M12 9S10.5 4 8 5s1 4 4 4Zm0 0s1.5-5 4-4-1 4-4 4Z"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function IconoEstrella({ tamano = 18, color, relleno }: Props & { relleno?: string }) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"
+        stroke={color}
+        fill={relleno ?? 'none'}
+        strokeWidth={2}
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function IconoMensaje({ tamano = 18, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path d="M4 4h16v12H8l-4 4V4Z" stroke={color} strokeWidth={2} strokeLinejoin="round" />
+    </Svg>
+  );
+}
+
+export function IconoTarjeta({ tamano = 18, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path d="M3 5h18v14H3V5Zm0 4h18" stroke={color} strokeWidth={2} strokeLinejoin="round" />
+    </Svg>
+  );
+}

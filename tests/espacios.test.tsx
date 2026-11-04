@@ -150,7 +150,7 @@ describe('pantalla Espacios', () => {
     await fireEvent.press(
       screen.getByRole('button', { name: 'Reservá tu lugar: Rincón Botánico Zen' }),
     );
-    expect(screen.getByText('Descuenta 2 hs de tu plan (te quedan 34 hs).')).toBeTruthy();
+    expect(screen.getByText('Descuenta 2 hs de tu plan (te quedan 42 hs).')).toBeTruthy();
     await fireEvent.press(screen.getByRole('button', { name: 'Confirmar reserva' }));
     await waitFor(() =>
       expect(screen.getByRole('header', { name: '¡Reserva lista!' })).toBeTruthy(),

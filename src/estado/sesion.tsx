@@ -9,6 +9,7 @@ import {
 } from 'react';
 
 import {
+  borrarDatosDeCuenta,
   guardarBienvenidaVista,
   guardarFotoPerfil,
   guardarPerfilBasico,
@@ -31,6 +32,11 @@ type Sesion = {
   // PROVISIONAL (Etapa 5): ingreso simulado sin backend. Se reemplaza en la Etapa 6 y la Etapa 13.
   ingresar: (tipo: TipoAcceso) => Promise<void>;
   salir: () => Promise<void>;
+  actualizarPerfil: (perfil: PerfilBasico) => Promise<void>;
+  // Eliminar cuenta (simulado, Etapa 11): borra los datos del teléfono y vuelve a Acceso.
+  eliminarCuenta: () => Promise<void>;
+  // Cambia al eliminar la cuenta, para que los demás estados se vuelvan a cargar desde cero.
+  versionDatos: number;
 };
 
 const ContextoSesion = createContext<Sesion | null>(null);
@@ -81,6 +87,21 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
     await guardarTipoAcceso(null);
   }, []);
 
+  const [versionDatos, setVersionDatos] = useState(0);
+
+  const actualizarPerfil = useCallback(async (perfil: PerfilBasico) => {
+    setPerfilBasico(perfil);
+    await guardarPerfilBasico(perfil);
+  }, []);
+
+  const eliminarCuenta = useCallback(async () => {
+    await borrarDatosDeCuenta();
+    setPerfilBasico(null);
+    setFotoPerfil(null);
+    setTipoAcceso(null);
+    setVersionDatos((v) => v + 1);
+  }, []);
+
   const valor = useMemo(
     () => ({
       cargando,
@@ -93,6 +114,9 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
       marcarBienvenidaVista,
       ingresar,
       salir,
+      actualizarPerfil,
+      eliminarCuenta,
+      versionDatos,
     }),
     [
       cargando,
@@ -105,6 +129,9 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
       marcarBienvenidaVista,
       ingresar,
       salir,
+      actualizarPerfil,
+      eliminarCuenta,
+      versionDatos,
     ],
   );
 

@@ -65,6 +65,7 @@ export function Boton({
                 : 'boton'
         }
         color={colorTexto[variante]}
+        style={styles.texto}
       >
         {texto}
       </Texto>
@@ -126,6 +127,7 @@ const styles = StyleSheet.create({
   chico: { minHeight: 44, paddingHorizontal: 30, alignSelf: 'center' },
   siguiente: { minHeight: 48, minWidth: 224 },
   contenido: { flexDirection: 'row', alignItems: 'center', gap: espacio.m },
+  texto: { textAlign: 'center', flexShrink: 1 },
   presionado: { opacity: 0.85 },
   inactivo: { opacity: 0.4 },
 });

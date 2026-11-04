@@ -10,6 +10,8 @@ const CLAVES = {
   reservas: 'olegario.reservas',
   inscripciones: 'olegario.inscripciones',
   comunidad: 'olegario.comunidad',
+  horasExtra: 'olegario.horasExtra',
+  opiniones: 'olegario.opiniones',
 } as const;
 
 export type TipoAcceso = 'miembro' | 'invitado';
@@ -198,4 +200,61 @@ export async function leerComunidad(): Promise<ComunidadGuardada> {
 
 export async function guardarComunidad(datos: ComunidadGuardada): Promise<void> {
   await AsyncStorage.setItem(CLAVES.comunidad, JSON.stringify(datos));
+}
+
+// Horas extras cargadas en la SIMULACIÓN de compra (Etapa 11): no se cobra nada.
+export async function leerHorasExtra(): Promise<number> {
+  const valor = Number(await AsyncStorage.getItem(CLAVES.horasExtra));
+  return Number.isFinite(valor) && valor > 0 ? valor : 0;
+}
+
+export async function guardarHorasExtra(horas: number): Promise<void> {
+  await AsyncStorage.setItem(CLAVES.horasExtra, String(horas));
+}
+
+// Valoraciones y mensajes al equipo (Etapa 11, simulados: no se envían a nadie hasta el servidor).
+export type Valoracion = {
+  id: string;
+  espacioId: string;
+  estrellas: number;
+  comentario: string;
+  fecha: string;
+};
+export type MensajeEquipo = {
+  id: string;
+  tipo: 'queja' | 'sugerencia';
+  texto: string;
+  fecha: string;
+};
+export type Opiniones = { valoraciones: Valoracion[]; mensajes: MensajeEquipo[] };
+
+export async function leerOpiniones(): Promise<Opiniones> {
+  const texto = await AsyncStorage.getItem(CLAVES.opiniones);
+  if (!texto) return { valoraciones: [], mensajes: [] };
+  try {
+    const datos = JSON.parse(texto) as Partial<Opiniones>;
+    return {
+      valoraciones: Array.isArray(datos.valoraciones)
+        ? datos.valoraciones.filter(
+            (v) => typeof v?.espacioId === 'string' && typeof v.estrellas === 'number',
+          )
+        : [],
+      mensajes: Array.isArray(datos.mensajes)
+        ? datos.mensajes.filter((m) => typeof m?.texto === 'string')
+        : [],
+    };
+  } catch {
+    return { valoraciones: [], mensajes: [] };
+  }
+}
+
+export async function guardarOpiniones(opiniones: Opiniones): Promise<void> {
+  await AsyncStorage.setItem(CLAVES.opiniones, JSON.stringify(opiniones));
+}
+
+// Eliminar cuenta (simulado): borra todos los datos de la persona guardados en el teléfono.
+// Se conserva solo que ya vio la bienvenida.
+export async function borrarDatosDeCuenta(): Promise<void> {
+  const claves = Object.values(CLAVES).filter((clave) => clave !== CLAVES.bienvenidaVista);
+  await AsyncStorage.multiRemove(claves);
 }

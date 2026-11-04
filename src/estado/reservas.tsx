@@ -12,7 +12,9 @@ import { useAhora } from '@/hooks/useAhora';
 import type { Espacio } from '@/models/espacio';
 import type { Reserva } from '@/models/reserva';
 import {
+  guardarHorasExtra,
   guardarReservas,
+  leerHorasExtra,
   leerReservas,
   type ReservaGuardada,
   type ReservasGuardadas,
@@ -42,6 +44,8 @@ type EstadoReservas = {
   horas: HorasPlan;
   reservar: (espacio: Espacio, inicio: Date, fin: Date) => Promise<ResultadoReserva>;
   cancelar: (id: string) => Promise<boolean>;
+  // SIMULACIÓN de compra de horas extras (decisión de la responsable, 2026-11-04): no se cobra nada.
+  cargarHorasExtra: (horas: number) => Promise<void>;
 };
 
 const ContextoReservas = createContext<EstadoReservas | null>(null);
@@ -68,9 +72,14 @@ export function ProveedorReservas({ children }: { children: ReactNode }) {
   const ahora = useAhora();
   const [guardadas, setGuardadas] = useState<ReservasGuardadas>(SIN_RESERVAS);
 
+  const [horasExtra, setHorasExtra] = useState(0);
+
   useEffect(() => {
     leerReservas()
       .then(setGuardadas)
+      .catch(() => {});
+    leerHorasExtra()
+      .then(setHorasExtra)
       .catch(() => {});
   }, []);
 
@@ -90,13 +99,19 @@ export function ProveedorReservas({ children }: { children: ReactNode }) {
   }, [claveDia, guardadas, espacios]);
 
   const usadas = planDePrueba.horasUsadasPrevias + horasUsadas(reservas);
+  const totales = planDePrueba.horasTotales + horasExtra;
   const horas = useMemo(
-    () => ({
-      totales: planDePrueba.horasTotales,
-      usadas,
-      disponibles: Math.max(0, planDePrueba.horasTotales - usadas),
-    }),
-    [usadas],
+    () => ({ totales, usadas, disponibles: Math.max(0, totales - usadas) }),
+    [totales, usadas],
+  );
+
+  const cargarHorasExtra = useCallback(
+    async (cantidad: number) => {
+      const siguiente = horasExtra + cantidad;
+      setHorasExtra(siguiente);
+      await guardarHorasExtra(siguiente);
+    },
+    [horasExtra],
   );
 
   const actualizar = useCallback(async (siguientes: ReservasGuardadas) => {
@@ -145,8 +160,8 @@ export function ProveedorReservas({ children }: { children: ReactNode }) {
   );
 
   const valor = useMemo(
-    () => ({ espacios, reservas, horas, reservar, cancelar }),
-    [espacios, reservas, horas, reservar, cancelar],
+    () => ({ espacios, reservas, horas, reservar, cancelar, cargarHorasExtra }),
+    [espacios, reservas, horas, reservar, cancelar, cargarHorasExtra],
   );
 
   return <ContextoReservas.Provider value={valor}>{children}</ContextoReservas.Provider>;

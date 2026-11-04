@@ -125,11 +125,12 @@
 
 ## Etapa 11 — Perfil de cuenta y membresías
 
-- **Estado:** `Pendiente`
+- **Estado:** `Completada (pendiente de autorización)`, 2026-11-04
 - **Objetivo:** P12 y sus servicios.
-- **Tareas:** datos de la membresía y barra de horas · listado de servicios · historial de reservas · edición de perfil · cerrar sesión y eliminar cuenta · carga de horas según P-03.
-- **Dependencias:** Etapa 10 · P-03, P-27, P-28.
-- **Criterios de aceptación:** las horas reflejan las reservas · los datos de pago solo se muestran enmascarados.
+- **Resultado:** ✅ Perfil según la captura de Figma que pasó la responsable (`docs/referencias/figma/12-perfil.png`): foto con aro (tocarla la cambia), "Disponible para colaborar" (o "Modo Foco"), nombre y profesión · ✅ membresía actual con vencimiento, renovación y factura · ✅ "Administrar plan" (detalle) y "Ver planes" (aviso) · ✅ bolsa de horas con anillo "53% LIBRE" y "42 / 80 hs" que reflejan las reservas · ✅ cargar horas extras SIMULADO (sin cobrar) · ✅ 6 servicios provisorios: paquetes, beneficios (promo de la carta), historial y próximas reservas (reales), valoraciones y quejas/sugerencias (se guardan), pagos (tarjeta enmascarada) · ✅ editar perfil, cerrar sesión y eliminar cuenta (con confirmación; borra los datos del teléfono).
+- **Archivos:** `src/app/perfil.tsx`, `src/app/servicio/[id].tsx`, `src/app/editar-perfil.tsx`, `src/components/perfil/`, `src/utils/perfil.ts`, `src/estado/sesion.tsx`, `src/estado/reservas.tsx`, `src/services/almacenamiento.ts`, `data/mock/membresia.ts`, `tests/perfil.test.tsx`.
+- **Criterios de aceptación:** ✅ las horas reflejan las reservas (y las extras) · ✅ los datos de pago solo se muestran enmascarados y nunca se guardan datos de tarjeta · ✅ coincide con la captura (comparación en `docs/capturas-app/etapa-11/comparacion-figma.png`) salvo D-61 a D-64.
+- **Pruebas:** 108 pruebas automáticas (porcentaje, fechas, próxima reserva, membresía, horas extras, editar perfil, eliminar cuenta, historial, valoraciones, pagos) y recorrido web.
 
 ## Etapa 12 — Novedades
 

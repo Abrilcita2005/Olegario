@@ -55,6 +55,11 @@ export const colores = {
   bordeNaranja: 'rgba(248, 59, 17, 0.6)',
   bordeLima: 'rgba(202, 242, 44, 0.6)',
 
+  // Círculos de los íconos de servicios (Figma: PERFIL)
+  fondoIconoNaranja: 'rgba(248, 59, 17, 0.2)',
+  fondoIconoRosa: 'rgba(254, 1, 109, 0.2)',
+  fondoIconoLima: 'rgba(202, 242, 44, 0.2)',
+
   // Fondo semitransparente detrás de menús y paneles
   velo: 'rgba(38, 32, 32, 0.5)',
 
