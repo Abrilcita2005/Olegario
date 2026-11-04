@@ -117,17 +117,17 @@ describe('Acceso', () => {
 
 describe('App principal', () => {
   it.each([
-    ['Espacios', '/espacios'],
-    ['Agenda', '/agenda'],
-    ['Comunidad', '/comunidad'],
-  ])('la pestaña %s abre %s', async (etiqueta, ruta) => {
+    ['Espacios', '/espacios', 'Tu rincón perfecto'],
+    ['Agenda', '/agenda', 'Agenda'],
+    ['Comunidad', '/comunidad', 'Comunidad'],
+  ])('la pestaña %s abre %s', async (etiqueta, ruta, titulo) => {
     await abrirApp({ bienvenida: true, acceso: 'miembro' });
     await waitFor(() => expect(screen).toHavePathname('/'));
 
     await tocar(screen.getByRole('tab', { name: etiqueta }));
 
     expect(screen).toHavePathname(ruta);
-    expect(screen.getByRole('header', { name: etiqueta })).toBeTruthy();
+    expect(screen.getByRole('header', { name: titulo })).toBeTruthy();
   });
 
   it('el encabezado lleva al perfil, a la carta del café y de vuelta al inicio', async () => {

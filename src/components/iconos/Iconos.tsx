@@ -217,3 +217,57 @@ export function IconoNavegar({ tamano = 15, color }: Props) {
     </Svg>
   );
 }
+
+// Íconos de Espacios (Figma: ESPACIOS).
+
+export function IconoCamara({ tamano = 18, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M3 7h12v10H3V7Zm12 3.5L21 7v10l-6-3.5"
+        stroke={color}
+        strokeWidth={1.8}
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function IconoCronometro({ tamano = 20, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Circle cx={12} cy={13.5} r={7.5} stroke={color} strokeWidth={2} />
+      <Path d="M10 2.5h4M12 9.5v4l2.5 1.5" stroke={color} strokeWidth={2} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+export function IconoCheck({ tamano = 14, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="m4 12.5 5 5L20 6.5"
+        stroke={color}
+        strokeWidth={2.6}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function IconoMas({ tamano = 18, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path d="M12 5v14M5 12h14" stroke={color} strokeWidth={2.4} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+export function IconoMenos({ tamano = 18, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path d="M5 12h14" stroke={color} strokeWidth={2.4} strokeLinecap="round" />
+    </Svg>
+  );
+}

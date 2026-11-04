@@ -11,3 +11,4 @@ export * from './MenuOpciones';
 export * from './SelectorSegmentado';
 export * from './Tarjeta';
 export * from './Texto';
+export * from './PanelInferior';

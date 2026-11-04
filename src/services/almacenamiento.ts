@@ -7,6 +7,7 @@ const CLAVES = {
   tipoAcceso: 'olegario.tipoAcceso',
   fotoPerfil: 'olegario.fotoPerfil',
   perfilBasico: 'olegario.perfilBasico',
+  reservas: 'olegario.reservas',
 } as const;
 
 export type TipoAcceso = 'miembro' | 'invitado';
@@ -76,4 +77,49 @@ function leerPerfil(texto: string | null): PerfilBasico | null {
 export async function guardarPerfilBasico(perfil: PerfilBasico | null): Promise<void> {
   if (perfil) await AsyncStorage.setItem(CLAVES.perfilBasico, JSON.stringify(perfil));
   else await AsyncStorage.removeItem(CLAVES.perfilBasico);
+}
+
+// Reservas simuladas (Etapa 8): las que hizo la persona y las de prueba que canceló.
+// PROVISIONAL: en la Etapa 13 las reservas viven en el servidor.
+export type ReservaGuardada = {
+  id: string;
+  espacioId: string;
+  inicio: string;
+  fin: string;
+  cancelada?: boolean;
+};
+
+export type ReservasGuardadas = {
+  propias: ReservaGuardada[];
+  pruebasCanceladas: string[];
+};
+
+const SIN_RESERVAS: ReservasGuardadas = { propias: [], pruebasCanceladas: [] };
+
+export async function leerReservas(): Promise<ReservasGuardadas> {
+  const texto = await AsyncStorage.getItem(CLAVES.reservas);
+  if (!texto) return SIN_RESERVAS;
+  try {
+    const datos = JSON.parse(texto) as Partial<ReservasGuardadas>;
+    return {
+      propias: Array.isArray(datos.propias)
+        ? datos.propias.filter(
+            (r) =>
+              typeof r?.id === 'string' &&
+              typeof r.espacioId === 'string' &&
+              typeof r.inicio === 'string' &&
+              typeof r.fin === 'string',
+          )
+        : [],
+      pruebasCanceladas: Array.isArray(datos.pruebasCanceladas)
+        ? datos.pruebasCanceladas.filter((id) => typeof id === 'string')
+        : [],
+    };
+  } catch {
+    return SIN_RESERVAS;
+  }
+}
+
+export async function guardarReservas(reservas: ReservasGuardadas): Promise<void> {
+  await AsyncStorage.setItem(CLAVES.reservas, JSON.stringify(reservas));
 }

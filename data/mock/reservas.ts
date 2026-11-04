@@ -11,12 +11,14 @@ export function reservasDePrueba(hoy: Date = new Date()): Reserva[] {
   return [
     {
       id: 'reserva-prueba-1',
+      espacioId: 'mesa-luz-natural',
       servicio: 'cowork',
       tipo: 'Puesto individual',
       espacio: 'Mesa con Luz Natural',
       ubicacion: 'Sector Jardín · Puesto #14',
       inicio: a(10),
       fin: a(14),
+      esDatoDePrueba: true,
     },
   ];
 }

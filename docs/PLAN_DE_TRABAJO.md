@@ -98,12 +98,12 @@
 
 ## Etapa 8 — Espacios
 
-- **Estado:** `Pendiente`
+- **Estado:** `Completada (pendiente de autorización)`, 2026-11-04
 - **Objetivo:** P08: explorar y reservar (simulado).
-- **Tareas:** selector de semana · buscador · selector de horario (provisional) · tarjetas con variantes · flujo de reserva con confirmación (provisional) · validación de disponibilidad.
-- **Dependencias:** Etapa 7 · P-06 (reglas), P-25, P-31.
-- **Criterios de aceptación:** no se puede reservar algo ocupado · la reserva aparece en Home y Agenda · coincide con la captura.
-- **Pruebas:** unitarias de las reglas de reserva (funciones puras).
+- **Resultado:** ✅ chip "N PUESTOS LIBRES" y "TU RINCÓN PERFECTO" · ✅ selector de semana (solo hoy y 3 días más) · ✅ buscador (sin importar tildes) · ✅ filtro por servicio; desde el Home se abre filtrado · ✅ horario libre las 24 hs en pasos de 30 min · ✅ tarjetas con estado (libre / N libres / ocupado hasta) · ✅ "Usar ese horario" en espacios ocupados · ✅ confirmación con horas del plan · ✅ reservas guardadas en el teléfono, visibles en el Home · ✅ cancelar hasta 30 min antes · ✅ el invitado mira pero no reserva.
+- **Archivos:** `src/app/(tabs)/espacios.tsx`, `src/app/reserva/[id].tsx`, `src/components/espacios/`, `src/components/ui/PanelInferior.tsx`, `src/estado/reservas.tsx`, `src/models/espacio.ts`, `src/utils/fechas.ts`, `src/utils/disponibilidad.ts`, `src/utils/espacios.ts`, `data/mock/espaciosOlegario.ts`, `tests/espacios.test.tsx`.
+- **Criterios de aceptación:** ✅ no se puede reservar algo ocupado · ✅ la reserva aparece en el Home (en la Agenda, Etapa 9) · ✅ coincide con la captura salvo D-47 a D-50.
+- **Pruebas:** 75 pruebas automáticas (fechas, disponibilidad, reglas, filtro, reserva, filtro desde el Home, invitado, cancelación) y recorrido web con capturas en `docs/capturas-app/etapa-8/`.
 
 ## Etapa 9 — Agenda
 

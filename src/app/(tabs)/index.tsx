@@ -7,6 +7,7 @@ import { TarjetaReserva } from '@/components/home/TarjetaReserva';
 import { TarjetaServicio } from '@/components/home/TarjetaServicio';
 import { PantallaBase } from '@/components/navegacion/PantallaBase';
 import { Boton, Chip, Tarjeta, Texto } from '@/components/ui';
+import { useReservas } from '@/estado/reservas';
 import { useSesion } from '@/estado/sesion';
 import { useAhora } from '@/hooks/useAhora';
 import { espacio } from '@/theme';
@@ -15,16 +16,17 @@ import { estadoReserva, reservaParaMostrar, textoHorario } from '@/utils/reserva
 import { textoSaludo } from '@/utils/saludo';
 
 import { serviciosHomeDePrueba } from '../../../data/mock/espacios';
-import { reservasDePrueba } from '../../../data/mock/reservas';
 
-// Home (Figma: HOME). Reservas y disponibilidad son datos de prueba hasta el servidor (Etapa 13).
+// Home (Figma: HOME). La disponibilidad de los servicios es dato de prueba hasta el servidor (Etapa 13).
+// Cada servicio abre Espacios filtrado por ese servicio; "Ver todo" lo abre sin filtro.
 export default function InicioScreen() {
   const { perfilBasico, tipoAcceso } = useSesion();
   const ahora = useAhora();
+  const { reservas } = useReservas();
   const esMiembro = puede(tipoAcceso, 'reservarEspacio');
   const reserva = useMemo(
-    () => (esMiembro ? reservaParaMostrar(reservasDePrueba(ahora), ahora) : null),
-    [esMiembro, ahora],
+    () => (esMiembro ? reservaParaMostrar(reservas, ahora) : null),
+    [esMiembro, reservas, ahora],
   );
 
   return (
@@ -65,7 +67,11 @@ export default function InicioScreen() {
           <Texto variante="tituloSeccion" accessibilityRole="header">
             Espacios Olegario
           </Texto>
-          <Chip texto="Ver todo >" variante="enlace" onPress={() => router.navigate('/espacios')} />
+          <Chip
+            texto="Ver todo >"
+            variante="enlace"
+            onPress={() => router.navigate({ pathname: '/espacios', params: { servicio: '' } })}
+          />
         </View>
         <View style={styles.servicios}>
           {serviciosHomeDePrueba.map((servicio) => (
@@ -74,7 +80,9 @@ export default function InicioScreen() {
               submarca={servicio.submarca}
               nombre={servicio.nombre}
               disponibilidad={servicio.disponibilidad}
-              onPress={() => router.navigate('/espacios')}
+              onPress={() =>
+                router.navigate({ pathname: '/espacios', params: { servicio: servicio.submarca } })
+              }
             />
           ))}
         </View>

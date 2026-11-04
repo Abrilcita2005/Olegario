@@ -47,6 +47,11 @@ export const colores = {
   exito: marca.lima,
   advertencia: marca.naranja,
 
+  // Pastillas sobre la foto de los espacios y bordes de estado
+  fondoPastillaFoto: 'rgba(38, 32, 32, 0.78)',
+  bordeNaranja: 'rgba(248, 59, 17, 0.6)',
+  bordeLima: 'rgba(202, 242, 44, 0.6)',
+
   // Fondo semitransparente detrás de menús y paneles
   velo: 'rgba(38, 32, 32, 0.5)',
 
