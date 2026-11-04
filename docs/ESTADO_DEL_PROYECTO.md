@@ -2,14 +2,14 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                                                                                     |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Última actualización     | 2026-11-04                                                                                                                                                |
-| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                               |
-| Etapa actual             | **Etapa 10 — Comunidad y perfil profesional**                                                                                                             |
-| Estado                   | Completada, pendiente de autorización para continuar                                                                                                      |
-| Autorización de avance   | Etapa 10: concedida ("Avancemos", 2026-11-04). **Etapa 11: NO concedida.**                                                                                |
-| Próxima acción permitida | Correcciones dentro de la Etapa 10 si la responsable las pide. **No** empezar la Etapa 11 (Perfil de cuenta y membresías) sin una autorización explícita. |
+| Campo                    | Valor                                                                                                                     |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| Última actualización     | 2026-11-04                                                                                                                |
+| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                               |
+| Etapa actual             | **Etapa 11 — Perfil de cuenta y membresías**                                                                              |
+| Estado                   | En pausa: esperando las respuestas de la responsable (diseño, pagos, servicios, cuenta)                                   |
+| Autorización de avance   | Etapa 11: concedida ("avanza", 2026-11-04). **Etapa 12: NO concedida.**                                                   |
+| Próxima acción permitida | Retomar la Etapa 11 con las respuestas pendientes (ver abajo). **No** empezar la Etapa 12 sin una autorización explícita. |
 
 ## Historial de autorizaciones
 
@@ -21,6 +21,7 @@
 | 2026-10-28 | "Sí, instalá las 4"                                                                                        | `expo-font`, `@expo-google-fonts/inter`, `react-native-svg`, `expo-linear-gradient`                                                                                              |
 | 2026-10-28 | "Primero corregir la Etapa 4" · "Usar otra fuente" → "Poppins" · "Sí, como en Figma" · "Dejarlo como está" | Corregir la Etapa 4 (no avanzar todavía): Poppins en lugar de Vástago, aro en íconos de servicio, contraste aceptado                                                             |
 | 2026-11-03 | "avanza" (tras la revisión del collage)                                                                    | Etapa 7: Home                                                                                                                                                                    |
+| 2026-11-04 | "avanza" (tras la Etapa 10)                                                                                | Etapa 11: Perfil de cuenta y membresías                                                                                                                                          |
 | 2026-11-04 | "Avancemos" + respuestas                                                                                   | Etapa 10: solicitudes simuladas para contactar/postularse/sumarse, formulario provisorio para publicar, Modo Foco oculta de las listas y la ubicación, perfil público provisorio |
 | 2026-11-04 | Revisión 2 de la Etapa 9                                                                                   | Sumar fechas de Mendoza a las efemérides                                                                                                                                         |
 | 2026-11-04 | Revisión de la Etapa 9                                                                                     | Puntos por color aprobados; calendario de efemérides reales (solo en su día)                                                                                                     |
@@ -61,6 +62,8 @@
 - Prueba en un teléfono real (L-04).
 
 ## Preguntas abiertas para la responsable
+
+- Etapa 11 (sin responder): 1) diseño del Perfil provisorio con la estructura de Figma o captura por Drive; 2) horas extras y pagos simulados o solo informativos; 3) los 6 servicios provisorios o solo historial; 4) editar perfil, cerrar sesión y eliminar cuenta al final del perfil o en ajustes.
 
 - ¿Alguna efeméride lleva beneficio en OLE/CAFÉ? ¿Aprobás los textos de `data/efemerides.ts`?
 - P-46: ¿sumamos la Vendimia (fecha variable)?
