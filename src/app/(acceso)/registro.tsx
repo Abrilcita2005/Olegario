@@ -28,6 +28,7 @@ export default function RegistroScreen() {
   const [aceptaTerminos, setAceptaTerminos] = useState(false);
   const [errores, setErrores] = useState<ErroresRegistro>({});
   const [enviando, setEnviando] = useState(false);
+  const [avisoServidor, setAvisoServidor] = useState<string | null>(null);
 
   async function crearCuenta() {
     const nuevosErrores = validarRegistro({
@@ -40,11 +41,16 @@ export default function RegistroScreen() {
     setErrores(nuevosErrores);
     if (Object.keys(nuevosErrores).length > 0) return;
     setEnviando(true);
-    await registrarse({
-      nombre: nombre.trim(),
-      correo: correo.trim(),
-      profesion: profesion.trim(),
-    });
+    const resultado = await registrarse(
+      { nombre: nombre.trim(), correo: correo.trim(), profesion: profesion.trim() },
+      contrasena,
+    );
+    setEnviando(false);
+    if (!resultado.ok) setAvisoServidor(resultado.error);
+    else if (resultado.requiereConfirmacion)
+      setAvisoServidor(
+        'Te mandamos un correo para confirmar tu cuenta. Confirmalo y después ingresá.',
+      );
   }
 
   return (
@@ -108,6 +114,11 @@ export default function RegistroScreen() {
         {errores.aceptaTerminos ? (
           <Texto variante="meta" color="error" accessibilityLiveRegion="polite">
             {errores.aceptaTerminos}
+          </Texto>
+        ) : null}
+        {avisoServidor ? (
+          <Texto variante="cuerpoChico" color="error" accessibilityRole="alert">
+            {avisoServidor}
           </Texto>
         ) : null}
         <Boton

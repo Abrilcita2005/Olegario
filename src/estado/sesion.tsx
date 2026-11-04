@@ -18,6 +18,19 @@ import {
   type PerfilBasico,
   type TipoAcceso,
 } from '@/services/almacenamiento';
+import {
+  actualizarPerfilServidor,
+  cerrarSesionServidor,
+  eliminarCuentaServidor,
+  ingresarComoInvitado,
+  ingresarConCorreo,
+  leerCuentaActual,
+  registrarCuenta,
+  type ResultadoCuenta,
+} from '@/services/cuentaServidor';
+import { supabaseConfigurado } from '@/services/supabase';
+
+const OK: ResultadoCuenta = { ok: true };
 
 type Sesion = {
   cargando: boolean;
@@ -25,16 +38,20 @@ type Sesion = {
   tipoAcceso: TipoAcceso | null;
   fotoPerfil: string | null;
   perfilBasico: PerfilBasico | null;
-  // PROVISIONAL: registro simulado sin servidor. Guarda el perfil (sin contraseña) y entra como miembro.
-  registrarse: (perfil: PerfilBasico) => Promise<void>;
+  // Con Supabase (Etapa 13) crea la cuenta real; sin servidor, simula el registro en el teléfono.
+  // La contraseña nunca se guarda en la app.
+  registrarse: (perfil: PerfilBasico, contrasena: string) => Promise<ResultadoCuenta>;
   cambiarFotoPerfil: (foto: string | null) => Promise<void>;
   marcarBienvenidaVista: () => Promise<void>;
-  // PROVISIONAL (Etapa 5): ingreso simulado sin backend. Se reemplaza en la Etapa 6 y la Etapa 13.
-  ingresar: (tipo: TipoAcceso) => Promise<void>;
+  // Con Supabase: miembro con correo y contraseña, invitado con ingreso anónimo. Sin servidor: simulado.
+  ingresar: (
+    tipo: TipoAcceso,
+    credenciales?: { correo: string; contrasena: string },
+  ) => Promise<ResultadoCuenta>;
   salir: () => Promise<void>;
-  actualizarPerfil: (perfil: PerfilBasico) => Promise<void>;
-  // Eliminar cuenta (simulado, Etapa 11): borra los datos del teléfono y vuelve a Acceso.
-  eliminarCuenta: () => Promise<void>;
+  actualizarPerfil: (perfil: PerfilBasico) => Promise<ResultadoCuenta>;
+  // Eliminar cuenta: en el servidor (si está) y los datos del teléfono; vuelve a Acceso.
+  eliminarCuenta: () => Promise<ResultadoCuenta>;
   // Cambia al eliminar la cuenta, para que los demás estados se vuelvan a cargar desde cero.
   versionDatos: number;
 };
@@ -50,11 +67,17 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     leerEstadoGuardado()
-      .then((estado) => {
+      .then(async (estado) => {
         setBienvenidaVista(estado.bienvenidaVista);
         setTipoAcceso(estado.tipoAcceso);
         setFotoPerfil(estado.fotoPerfil);
         setPerfilBasico(estado.perfilBasico);
+        // Con servidor, la sesión real manda: si no hay sesión válida, se vuelve a Acceso.
+        if (supabaseConfigurado) {
+          const cuenta = await leerCuentaActual().catch(() => null);
+          setTipoAcceso(cuenta?.tipoAcceso ?? null);
+          if (cuenta?.perfil) setPerfilBasico(cuenta.perfil);
+        }
       })
       // Si el almacenamiento falla, se arranca como primera vez en lugar de bloquear la app.
       .catch(() => {})
@@ -66,15 +89,38 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
     await guardarBienvenidaVista();
   }, []);
 
-  const ingresar = useCallback(async (tipo: TipoAcceso) => {
-    setTipoAcceso(tipo);
-    await guardarTipoAcceso(tipo);
-  }, []);
+  const ingresar = useCallback(
+    async (tipo: TipoAcceso, credenciales?: { correo: string; contrasena: string }) => {
+      if (supabaseConfigurado) {
+        const resultado =
+          tipo === 'invitado'
+            ? await ingresarComoInvitado()
+            : await ingresarConCorreo(credenciales?.correo ?? '', credenciales?.contrasena ?? '');
+        if (!resultado.ok) return resultado;
+        const cuenta = await leerCuentaActual();
+        if (cuenta?.perfil) {
+          setPerfilBasico(cuenta.perfil);
+          await guardarPerfilBasico(cuenta.perfil);
+        }
+        tipo = cuenta?.tipoAcceso ?? tipo;
+      }
+      setTipoAcceso(tipo);
+      await guardarTipoAcceso(tipo);
+      return OK;
+    },
+    [],
+  );
 
-  const registrarse = useCallback(async (perfil: PerfilBasico) => {
+  const registrarse = useCallback(async (perfil: PerfilBasico, contrasena: string) => {
+    if (supabaseConfigurado) {
+      const resultado = await registrarCuenta(perfil, contrasena);
+      // Si hay que confirmar el correo, todavía no se entra a la app.
+      if (!resultado.ok || resultado.requiereConfirmacion) return resultado;
+    }
     setPerfilBasico(perfil);
     setTipoAcceso('miembro');
     await Promise.all([guardarPerfilBasico(perfil), guardarTipoAcceso('miembro')]);
+    return OK;
   }, []);
 
   const cambiarFotoPerfil = useCallback(async (foto: string | null) => {
@@ -84,22 +130,32 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
 
   const salir = useCallback(async () => {
     setTipoAcceso(null);
-    await guardarTipoAcceso(null);
+    await Promise.all([guardarTipoAcceso(null), cerrarSesionServidor()]);
   }, []);
 
   const [versionDatos, setVersionDatos] = useState(0);
 
   const actualizarPerfil = useCallback(async (perfil: PerfilBasico) => {
+    if (supabaseConfigurado) {
+      const resultado = await actualizarPerfilServidor(perfil);
+      if (!resultado.ok) return resultado;
+    }
     setPerfilBasico(perfil);
     await guardarPerfilBasico(perfil);
+    return OK;
   }, []);
 
   const eliminarCuenta = useCallback(async () => {
+    if (supabaseConfigurado) {
+      const resultado = await eliminarCuentaServidor();
+      if (!resultado.ok) return resultado;
+    }
     await borrarDatosDeCuenta();
     setPerfilBasico(null);
     setFotoPerfil(null);
     setTipoAcceso(null);
     setVersionDatos((v) => v + 1);
+    return OK;
   }, []);
 
   const valor = useMemo(
