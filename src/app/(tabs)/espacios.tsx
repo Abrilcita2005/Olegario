@@ -10,7 +10,7 @@ import { TarjetaEspacio } from '@/components/espacios/TarjetaEspacio';
 import { IconoCamara } from '@/components/iconos/Iconos';
 import type { Submarca } from '@/components/marca/IconoSubmarca';
 import { PantallaBase } from '@/components/navegacion/PantallaBase';
-import { Chip, EstadoVacio, Texto } from '@/components/ui';
+import { Chip, EstadoVacio, Texto, TextoDegradado } from '@/components/ui';
 import { useReservas } from '@/estado/reservas';
 import { useSesion } from '@/estado/sesion';
 import { useAhora } from '@/hooks/useAhora';
@@ -75,12 +75,15 @@ export default function EspaciosScreen() {
         <Chip
           texto={`${puestosLibres} ${puestosLibres === 1 ? 'PUESTO LIBRE' : 'PUESTOS LIBRES'}`}
         />
-        <Texto variante="tituloDestacado" accessibilityRole="header">
-          Tu rincón{' '}
-          <Texto variante="tituloDestacado" color="acentoNaranja">
-            perfecto
-          </Texto>
-        </Texto>
+        <View
+          accessible
+          accessibilityRole="header"
+          accessibilityLabel="Tu rincón perfecto"
+          style={styles.titulo}
+        >
+          <Texto variante="tituloDestacado">Tu rincón</Texto>
+          <TextoDegradado>perfecto</TextoDegradado>
+        </View>
       </View>
 
       <View style={styles.controles}>
@@ -239,6 +242,7 @@ function Filtro({
 
 const styles = StyleSheet.create({
   cabecera: { gap: espacio.l, marginBottom: espacio.base },
+  titulo: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-end', columnGap: espacio.s },
   controles: { gap: espacio.base },
   buscador: {
     flexDirection: 'row',

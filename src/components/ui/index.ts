@@ -12,3 +12,4 @@ export * from './SelectorSegmentado';
 export * from './Tarjeta';
 export * from './Texto';
 export * from './PanelInferior';
+export * from './TextoDegradado';

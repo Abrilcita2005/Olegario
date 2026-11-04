@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { DivisorTexto } from '@/components/acceso/DivisorTexto';
 import { PieHospitalidad } from '@/components/acceso/PieHospitalidad';
 import { Logo } from '@/components/marca/Logo';
-import { Boton, Texto } from '@/components/ui';
+import { Boton, Texto, TextoDegradado } from '@/components/ui';
 import { useSesion } from '@/estado/sesion';
 import { colores, espacio } from '@/theme';
 
@@ -17,12 +17,15 @@ export default function AccesoScreen() {
       <ScrollView contentContainerStyle={styles.contenido}>
         <Logo fondo="sobreClaro" />
         <View style={styles.titulos}>
-          <Texto variante="tituloDestacado" accessibilityRole="header">
-            Ecosistema{' '}
-            <Texto variante="tituloDestacado" color="acentoNaranja">
-              creativo
-            </Texto>
-          </Texto>
+          <View
+            accessible
+            accessibilityRole="header"
+            accessibilityLabel="Ecosistema creativo"
+            style={styles.titulo}
+          >
+            <Texto variante="tituloDestacado">Ecosistema</Texto>
+            <TextoDegradado>creativo</TextoDegradado>
+          </View>
           <View style={styles.cita}>
             <View style={styles.barraCita} />
             <Texto variante="citaAcceso" style={styles.textoCita}>
@@ -69,6 +72,7 @@ const styles = StyleSheet.create({
     gap: espacio.grande + espacio.m,
   },
   titulos: { gap: espacio.xl, marginTop: espacio.grande },
+  titulo: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-end', columnGap: espacio.s },
   cita: { flexDirection: 'row', paddingVertical: espacio.xs },
   barraCita: { width: 2, borderRadius: 9999, backgroundColor: colores.superficie },
   textoCita: { flex: 1, paddingLeft: espacio.xxl },

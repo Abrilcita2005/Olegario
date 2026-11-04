@@ -21,6 +21,7 @@
 | 2026-10-28 | "Sí, instalá las 4"                                                                                        | `expo-font`, `@expo-google-fonts/inter`, `react-native-svg`, `expo-linear-gradient`                                                              |
 | 2026-10-28 | "Primero corregir la Etapa 4" · "Usar otra fuente" → "Poppins" · "Sí, como en Figma" · "Dejarlo como está" | Corregir la Etapa 4 (no avanzar todavía): Poppins en lugar de Vástago, aro en íconos de servicio, contraste aceptado                             |
 | 2026-11-03 | "avanza" (tras la revisión del collage)                                                                    | Etapa 7: Home                                                                                                                                    |
+| 2026-11-04 | Respuestas a P-41 a P-45                                                                                   | Cookie de chocolate, puntos = reserva o evento, instalar `@react-native-masked-view/masked-view` para el degradado, aprobar textos de D-42       |
 | 2026-11-04 | "avanza" (tras "perfecto") + respuestas                                                                    | Etapa 8: horario libre 24 hs, 3 días de anticipación, cancelar hasta 30 min antes, toda reserva descuenta horas, Espacios filtrado desde el Home |
 | 2026-11-03 | "avancemos la etapa 6" + respuestas                                                                        | Etapa 6: invitado mira e inscribe a eventos, sin Google/Apple/Face ID, Bienvenida 1 como Figma, términos provisorios, collage interactivo        |
 | 2026-10-28 | "avanza" (Etapa 5) y "avanza" tras la pausa                                                                | Hacer y luego retomar la Etapa 5                                                                                                                 |
@@ -46,7 +47,7 @@
 
 - Etapa 6: bienvenidas (collage interactivo), acceso, registro e inicio de sesión con validaciones; 45 pruebas. Capturas en `docs/capturas-app/etapa-6/`.
 - Etapa 7: Home con saludo, banner, reserva actual (en curso / próxima / sin reserva / invitado) y servicios; 60 pruebas. Capturas en `docs/capturas-app/etapa-7/`.
-- Etapa 8: Espacios con semana, buscador, filtro por servicio, horario, tarjetas con estado, reserva y cancelación simuladas; 75 pruebas. Capturas en `docs/capturas-app/etapa-8/`. Revisiones 1 a 3: fotos reales de los cuatro espacios (Drive), puntos de actividad bajo los días, cookie de chocolate; "CAMBIAR" y el pie con horas aprobados.
+- Etapa 8: Espacios con semana, buscador, filtro por servicio, horario, tarjetas con estado, reserva y cancelación simuladas; 75 pruebas. Capturas en `docs/capturas-app/etapa-8/`. Revisiones 1 a 3: fotos reales de los cuatro espacios (Drive), puntos de actividad bajo los días, cookie de chocolate, degradado en "CREATIVO" y "PERFECTO", textos de D-42 aprobados; "CAMBIAR" y el pie con horas aprobados.
 
 ## Pendientes abiertos
 
@@ -54,9 +55,6 @@
 - Prueba en un teléfono real (L-04).
 
 ## Preguntas abiertas para la responsable
-
-- P-42: ¿"CREATIVO" con degradado (requiere una dependencia)?
-- P-43: ¿aprueba las correcciones de texto de D-42?
 
 ## Último informe de cierre
 
