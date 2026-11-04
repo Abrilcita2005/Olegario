@@ -1,4 +1,4 @@
-import type { Efemeride, Evento } from '@/models/agenda';
+import type { Efemeride, EfemerideAnual, Evento } from '@/models/agenda';
 import type { Reserva } from '@/models/reserva';
 import type { NombreColor } from '@/theme';
 
@@ -71,4 +71,11 @@ export function marcasDeActividad(reservas: Reserva[], eventos: Evento[]): Marca
 
 export function delDia<T>(items: T[], dia: Date, fecha: (item: T) => Date): T[] {
   return items.filter((item) => mismoDia(fecha(item), dia));
+}
+
+// Efemérides del calendario anual que caen en ese día (puede no haber ninguna).
+export function efemeridesDelDia(calendario: EfemerideAnual[], dia: Date): Efemeride[] {
+  return calendario
+    .filter((e) => e.mes === dia.getMonth() + 1 && e.dia === dia.getDate())
+    .map((e) => ({ ...e, fecha: new Date(dia.getFullYear(), e.mes - 1, e.dia) }));
 }

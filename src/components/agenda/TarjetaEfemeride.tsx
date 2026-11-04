@@ -11,7 +11,7 @@ import { EtiquetaMarca } from './EtiquetaMarca';
 
 type Props = { efemeride: Efemeride; onConocerMas: () => void };
 
-// Efeméride con beneficio en OLE/CAFÉ (Figma: AGENDA).
+// Efeméride del día (Figma: AGENDA). El beneficio en OLE/CAFÉ se muestra solo si la efeméride lo tiene.
 export function TarjetaEfemeride({ efemeride, onConocerMas }: Props) {
   return (
     <View style={styles.tarjeta}>
@@ -26,24 +26,26 @@ export function TarjetaEfemeride({ efemeride, onConocerMas }: Props) {
       </Texto>
       <View style={styles.cita}>
         <Texto variante="cuerpoChico" color="textoSecundario">
-          {efemeride.cita}
+          {efemeride.texto}
         </Texto>
       </View>
-      <View style={styles.beneficio}>
-        <IconoSubmarca submarca="cafe" tamano={44} />
-        <View style={styles.flex}>
-          <Texto variante="categoria" color="acentoNaranja">
-            Beneficio en OLE/CAFÉ
-          </Texto>
-          <Texto variante="cuerpoChico" color="textoSobreOscuro">
-            {efemeride.beneficio.antes}
-            <Texto variante="cuerpoChicoDestacado" color="textoSobreOscuro">
-              {efemeride.beneficio.destacado}
+      {efemeride.beneficio ? (
+        <View style={styles.beneficio}>
+          <IconoSubmarca submarca="cafe" tamano={44} />
+          <View style={styles.flex}>
+            <Texto variante="categoria" color="acentoNaranja">
+              Beneficio en OLE/CAFÉ
             </Texto>
-            {efemeride.beneficio.despues}
-          </Texto>
+            <Texto variante="cuerpoChico" color="textoSobreOscuro">
+              {efemeride.beneficio.antes}
+              <Texto variante="cuerpoChicoDestacado" color="textoSobreOscuro">
+                {efemeride.beneficio.destacado}
+              </Texto>
+              {efemeride.beneficio.despues}
+            </Texto>
+          </View>
         </View>
-      </View>
+      ) : null}
       <Pressable onPress={onConocerMas} accessibilityRole="link" hitSlop={8} style={styles.enlace}>
         <Texto variante="categoria" color="textoSobreOscuro">
           Conocer manifiesto & comunidad

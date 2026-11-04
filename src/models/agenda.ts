@@ -15,13 +15,18 @@ export type Evento = {
   esDatoDePrueba?: boolean;
 };
 
-export type Efemeride = {
+// Efeméride del calendario anual (se repite cada año el mismo día).
+export type EfemerideAnual = {
   id: string;
-  fecha: Date;
+  mes: number; // 1 a 12
+  dia: number;
   titulo: string;
-  cita: string;
-  beneficio: { antes: string; destacado: string; despues: string };
-  esDatoDePrueba?: boolean;
+  texto: string;
+  // Beneficio opcional (lo define Olegario; no se inventa).
+  beneficio?: { antes: string; destacado: string; despues: string };
 };
+
+// Efeméride ubicada en una fecha concreta para mostrar en la Agenda.
+export type Efemeride = EfemerideAnual & { fecha: Date };
 
 export type FiltroAgenda = 'todo' | 'reservas' | 'efemerides';

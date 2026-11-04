@@ -21,6 +21,7 @@
 | 2026-10-28 | "Sí, instalá las 4"                                                                                        | `expo-font`, `@expo-google-fonts/inter`, `react-native-svg`, `expo-linear-gradient`                                                                               |
 | 2026-10-28 | "Primero corregir la Etapa 4" · "Usar otra fuente" → "Poppins" · "Sí, como en Figma" · "Dejarlo como está" | Corregir la Etapa 4 (no avanzar todavía): Poppins en lugar de Vástago, aro en íconos de servicio, contraste aceptado                                              |
 | 2026-11-03 | "avanza" (tras la revisión del collage)                                                                    | Etapa 7: Home                                                                                                                                                     |
+| 2026-11-04 | Revisión de la Etapa 9                                                                                     | Puntos por color aprobados; calendario de efemérides reales (solo en su día)                                                                                      |
 | 2026-11-04 | "si avancemos" + respuestas                                                                                | Etapa 9: PIN de prueba copiable (instalar `expo-clipboard`), "MODIFICAR" abre el detalle, tocar un día muestra lo de ese día, fotos de eventos y personas (Drive) |
 | 2026-11-04 | Respuestas a P-41 a P-45                                                                                   | Cookie de chocolate, puntos = reserva o evento, instalar `@react-native-masked-view/masked-view` para el degradado, aprobar textos de D-42                        |
 | 2026-11-04 | "avanza" (tras "perfecto") + respuestas                                                                    | Etapa 8: horario libre 24 hs, 3 días de anticipación, cancelar hasta 30 min antes, toda reserva descuenta horas, Espacios filtrado desde el Home                  |
@@ -48,7 +49,7 @@
 
 - Etapa 6: bienvenidas (collage interactivo), acceso, registro e inicio de sesión con validaciones; 45 pruebas. Capturas en `docs/capturas-app/etapa-6/`.
 - Etapa 7: Home con saludo, banner, reserva actual (en curso / próxima / sin reserva / invitado) y servicios; 60 pruebas. Capturas en `docs/capturas-app/etapa-7/`.
-- Etapa 9: Agenda con filtros, semana con puntos de actividad, reserva con PIN de prueba copiable, efeméride, eventos con inscripción; 86 pruebas. Capturas en `docs/capturas-app/etapa-9/`.
+- Etapa 9: Agenda con filtros, semana con puntos de actividad, reserva con PIN de prueba copiable, calendario de efemérides reales, eventos con inscripción; 88 pruebas. Revisión 1: efemérides reales por fecha. Capturas en `docs/capturas-app/etapa-9/`.
 - Etapa 8: Espacios con semana, buscador, filtro por servicio, horario, tarjetas con estado, reserva y cancelación simuladas; 75 pruebas. Capturas en `docs/capturas-app/etapa-8/`. Revisiones 1 a 3: fotos reales de los cuatro espacios (Drive), puntos de actividad bajo los días, cookie de chocolate, degradado en "CREATIVO" y "PERFECTO", textos de D-42 aprobados; "CAMBIAR" y el pie con horas aprobados.
 
 ## Pendientes abiertos

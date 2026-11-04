@@ -9,18 +9,17 @@ import {
 } from 'react';
 
 import { useAhora } from '@/hooks/useAhora';
-import type { Efemeride, Evento } from '@/models/agenda';
+import type { Evento } from '@/models/agenda';
 import { guardarInscripciones, leerInscripciones } from '@/services/almacenamiento';
 import { inicioDelDia } from '@/utils/fechas';
 
-import { efemeridesDePrueba, eventosDePrueba } from '../../data/mock/agenda';
+import { eventosDePrueba } from '../../data/mock/agenda';
 
-// Eventos, efemérides e inscripciones. PROVISIONAL (Etapa 9): datos de prueba de Figma y las inscripciones
-// se guardan en el teléfono; en la Etapa 13 viene todo del servidor.
+// Eventos e inscripciones (las efemérides salen de `data/efemerides.ts`). PROVISIONAL (Etapa 9): eventos
+// de prueba de Figma; las inscripciones se guardan en el teléfono. En la Etapa 13 viene del servidor.
 
 type EstadoAgenda = {
   eventos: Evento[];
-  efemerides: Efemeride[];
   estaInscripto: (id: string) => boolean;
   // Inscribe o da de baja (alterna). Devuelve el nuevo estado.
   alternarInscripcion: (id: string) => Promise<boolean>;
@@ -40,7 +39,6 @@ export function ProveedorAgenda({ children }: { children: ReactNode }) {
 
   const claveDia = inicioDelDia(ahora).getTime();
   const eventos = useMemo(() => eventosDePrueba(new Date(claveDia)), [claveDia]);
-  const efemerides = useMemo(() => efemeridesDePrueba(new Date(claveDia)), [claveDia]);
 
   const estaInscripto = useCallback((id: string) => inscripciones.includes(id), [inscripciones]);
 
@@ -58,8 +56,8 @@ export function ProveedorAgenda({ children }: { children: ReactNode }) {
   );
 
   const valor = useMemo(
-    () => ({ eventos, efemerides, estaInscripto, alternarInscripcion }),
-    [eventos, efemerides, estaInscripto, alternarInscripcion],
+    () => ({ eventos, estaInscripto, alternarInscripcion }),
+    [eventos, estaInscripto, alternarInscripcion],
   );
 
   return <ContextoAgenda.Provider value={valor}>{children}</ContextoAgenda.Provider>;

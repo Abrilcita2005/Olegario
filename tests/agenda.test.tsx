@@ -3,6 +3,7 @@ import * as Clipboard from 'expo-clipboard';
 import { fireEvent, renderRouter, screen, waitFor } from 'expo-router/testing-library';
 
 import {
+  efemeridesDelDia,
   fechaEfemeride,
   fechaEvento,
   marcasDeActividad,
@@ -10,11 +11,13 @@ import {
   textoFaltante,
 } from '@/utils/agenda';
 
-import { efemeridesDePrueba, eventosDePrueba } from '../data/mock/agenda';
+import { efemerides } from '../data/efemerides';
+import { eventosDePrueba } from '../data/mock/agenda';
 import { reservasDePrueba } from '../data/mock/reservas';
 
-const DIA = new Date(2026, 10, 4); // miércoles 4 de noviembre de 2026
-const a = (hora: number, minuto = 0, dias = 0) => new Date(2026, 10, 4 + dias, hora, minuto);
+// Jueves 1 de octubre de 2026: Día internacional del café (hay efeméride y la reserva de prueba).
+const DIA = new Date(2026, 9, 1);
+const a = (hora: number, minuto = 0, dias = 0) => new Date(2026, 9, 1 + dias, hora, minuto);
 
 let mockAhora = a(9, 15);
 jest.mock('@/hooks/useAhora', () => ({ useAhora: () => mockAhora }));
@@ -38,9 +41,27 @@ describe('lógica de la agenda', () => {
   });
 
   it('arma las fechas de eventos y efemérides', () => {
-    expect(fechaEvento(storytelling)).toBe('Jue 5 · 17:00 hs');
-    expect(fechaEvento(sunset)).toBe('Vie 6 · 18:30 hs');
-    expect(fechaEfemeride(efemeridesDePrueba(DIA)[0])).toBe('4 de noviembre');
+    expect(fechaEvento(storytelling)).toBe('Vie 2 · 17:00 hs');
+    expect(fechaEvento(sunset)).toBe('Sáb 3 · 18:30 hs');
+    expect(fechaEfemeride(efemeridesDelDia(efemerides, DIA)[0])).toBe('1 de octubre');
+  });
+
+  it('el calendario de efemérides solo trae las del día (y ninguna si no hay)', () => {
+    expect(efemeridesDelDia(efemerides, DIA).map((e) => e.id)).toEqual(['cafe']);
+    expect(efemeridesDelDia(efemerides, new Date(2026, 10, 4))).toEqual([]);
+    expect(efemeridesDelDia(efemerides, new Date(2027, 3, 27))[0].fecha).toEqual(
+      new Date(2027, 3, 27),
+    );
+  });
+
+  it('las efemérides tienen fechas válidas y sin repetir', () => {
+    const ids = new Set(efemerides.map((e) => e.id));
+    expect(ids.size).toBe(efemerides.length);
+    for (const e of efemerides) {
+      const fecha = new Date(2026, e.mes - 1, e.dia);
+      expect(fecha.getMonth()).toBe(e.mes - 1);
+      expect(fecha.getDate()).toBe(e.dia);
+    }
   });
 
   it('marca los días con reserva (naranja), evento (lima) y after office (rosa)', () => {
@@ -67,7 +88,7 @@ describe('pantalla Agenda', () => {
     expect(screen.getByRole('header', { name: 'Mesa con Luz Natural' })).toBeTruthy();
     expect(screen.getByText('En 45 min')).toBeTruthy();
     expect(screen.getByText('10:00 - 14:00 hs')).toBeTruthy();
-    expect(screen.getByRole('header', { name: 'Día mundial del diseño gráfico' })).toBeTruthy();
+    expect(screen.getByRole('header', { name: 'Día internacional del café' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Mis reservas (1)' })).toBeTruthy();
 
     const pin = pinDeReserva('reserva-prueba-1');
@@ -86,15 +107,15 @@ describe('pantalla Agenda', () => {
     await abrir();
     await fireEvent.press(screen.getByRole('button', { name: 'Efemérides' }));
     expect(screen.queryByRole('header', { name: 'Mesa con Luz Natural' })).toBeNull();
-    expect(screen.getByRole('header', { name: 'Día mundial del diseño gráfico' })).toBeTruthy();
+    expect(screen.getByRole('header', { name: 'Día internacional del café' })).toBeTruthy();
     await fireEvent.press(screen.getByRole('button', { name: 'Mis reservas (1)' }));
     expect(screen.getByRole('header', { name: 'Mesa con Luz Natural' })).toBeTruthy();
-    expect(screen.queryByRole('header', { name: 'Día mundial del diseño gráfico' })).toBeNull();
+    expect(screen.queryByRole('header', { name: 'Día internacional del café' })).toBeNull();
   });
 
   it('al tocar otro día muestra sus eventos y se puede inscribir', async () => {
     await abrir();
-    await fireEvent.press(screen.getByRole('button', { name: 'JUE 5, hay un evento' }));
+    await fireEvent.press(screen.getByRole('button', { name: 'VIE 2, hay un evento' }));
     expect(screen.getByRole('header', { name: 'Storytelling para Emprendedores' })).toBeTruthy();
     expect(screen.queryByRole('header', { name: 'Mesa con Luz Natural' })).toBeNull();
     expect(screen.getByText('+14 inscriptos')).toBeTruthy();
@@ -112,7 +133,7 @@ describe('pantalla Agenda', () => {
   it('se puede pasar a la semana siguiente', async () => {
     await abrir();
     await fireEvent.press(screen.getByRole('button', { name: 'Semana siguiente' }));
-    expect(screen.getByRole('button', { name: 'MIÉ 11' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'JUE 8' })).toBeTruthy();
     expect(screen.getByText('Nada agendado este día')).toBeTruthy();
   });
 
@@ -122,7 +143,7 @@ describe('pantalla Agenda', () => {
     await fireEvent.press(screen.getByRole('button', { name: 'Mis reservas (0)' }));
     expect(screen.getByText('Reservar es para miembros')).toBeTruthy();
     await fireEvent.press(screen.getByRole('button', { name: 'Todo' }));
-    await fireEvent.press(screen.getByRole('button', { name: 'VIE 6, hay un evento' }));
+    await fireEvent.press(screen.getByRole('button', { name: 'SÁB 3, hay un evento' }));
     await fireEvent.press(
       screen.getByRole('button', { name: 'Inscribirme a Sunset Beats & Vinyl Session' }),
     );

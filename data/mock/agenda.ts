@@ -1,6 +1,6 @@
-import type { Efemeride, Evento } from '../../src/models/agenda';
+import type { Evento } from '../../src/models/agenda';
 
-// DATOS DE PRUEBA (no reales): eventos y efeméride de Figma (pantalla AGENDA), relativos al día en que se
+// DATOS DE PRUEBA (no reales): eventos de Figma (pantalla AGENDA), relativos al día en que se
 // abre la app, hasta el servidor (Etapa 13). Fotos de eventos y personas provistas por la responsable
 // (Drive, 2026-11-04); las personas son ficticias.
 const personas = [
@@ -41,23 +41,6 @@ export function eventosDePrueba(hoy: Date = new Date()): Evento[] {
       foto: require('../../assets/imagenes/eventos/sunset-beats-vinyl.jpg'),
       inscriptos: 14,
       personas: personas.slice(3, 6),
-      esDatoDePrueba: true,
-    },
-  ];
-}
-
-export function efemeridesDePrueba(hoy: Date = new Date()): Efemeride[] {
-  return [
-    {
-      id: 'efemeride-diseno-grafico',
-      fecha: a(hoy, 0, 0),
-      titulo: 'Día mundial del diseño gráfico',
-      cita: '“Celebrar el impacto visual que transforma ideas en proyectos reales. Los trazos que inspiran y las marcas que dejan huella indeleble.”',
-      beneficio: {
-        antes: 'Mostrá este pase y pedí tu ',
-        destacado: 'Flat White',
-        despues: ' de especialidad de regalo.',
-      },
       esDatoDePrueba: true,
     },
   ];

@@ -16,9 +16,11 @@ import { useSesion } from '@/estado/sesion';
 import { useAhora } from '@/hooks/useAhora';
 import type { FiltroAgenda } from '@/models/agenda';
 import { colores, degradados, espacio, radios } from '@/theme';
-import { delDia, marcasDeActividad } from '@/utils/agenda';
+import { delDia, efemeridesDelDia, marcasDeActividad } from '@/utils/agenda';
 import { inicioDelDia, sumarDias } from '@/utils/fechas';
 import { puede } from '@/utils/permisos';
+
+import { efemerides } from '../../../data/efemerides';
 
 function semanaDe(dia: Date): Date[] {
   const lunes = sumarDias(inicioDelDia(dia), -((dia.getDay() + 6) % 7));
@@ -31,7 +33,7 @@ export default function AgendaScreen() {
   const ahora = useAhora();
   const { tipoAcceso, salir } = useSesion();
   const { reservas } = useReservas();
-  const { eventos, efemerides, estaInscripto, alternarInscripcion } = useAgenda();
+  const { eventos, estaInscripto, alternarInscripcion } = useAgenda();
   const esMiembro = puede(tipoAcceso, 'reservarEspacio');
 
   const [dia, setDia] = useState(() => inicioDelDia(ahora));
@@ -39,7 +41,7 @@ export default function AgendaScreen() {
 
   const misReservas = esMiembro ? reservas : [];
   const reservasDelDia = delDia(misReservas, dia, (r) => r.inicio);
-  const efemeridesDelDia = delDia(efemerides, dia, (e) => e.fecha);
+  const efemeridesHoy = efemeridesDelDia(efemerides, dia);
   const eventosDelDia = delDia(eventos, dia, (e) => e.inicio);
 
   const verReservas = filtro !== 'efemerides';
@@ -47,7 +49,7 @@ export default function AgendaScreen() {
   const verEventos = filtro === 'todo';
   const hayAlgo =
     (verReservas && reservasDelDia.length > 0) ||
-    (verEfemerides && efemeridesDelDia.length > 0) ||
+    (verEfemerides && efemeridesHoy.length > 0) ||
     (verEventos && eventosDelDia.length > 0);
 
   return (
@@ -105,7 +107,7 @@ export default function AgendaScreen() {
           : null}
 
         {verEfemerides
-          ? efemeridesDelDia.map((efemeride) => (
+          ? efemeridesHoy.map((efemeride) => (
               <TarjetaEfemeride
                 key={efemeride.id}
                 efemeride={efemeride}
