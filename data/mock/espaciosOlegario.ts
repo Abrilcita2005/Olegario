@@ -2,6 +2,7 @@ import type { Espacio } from '../../src/models/espacio';
 
 // DATOS DE PRUEBA (no reales): espacios y ocupación tomados de Figma (pantalla ESPACIOS), hasta el
 // servidor (Etapa 13). Las ocupaciones son relativas al día en que se abre la app.
+// Fotos provistas por la responsable (Drive, 2026-11-04); la Mesa con Luz Natural todavía no tiene.
 export function espaciosDePrueba(hoy: Date = new Date()): Espacio[] {
   const a = (hora: number, minuto = 0, dias = 0) => {
     const fecha = new Date(hoy);
@@ -12,6 +13,7 @@ export function espaciosDePrueba(hoy: Date = new Date()): Espacio[] {
   return [
     {
       id: 'rincon-botanico-zen',
+      foto: require('../../assets/imagenes/espacios/rincon-botanico-zen.jpg'),
       servicio: 'cowork',
       nombre: 'Rincón Botánico Zen',
       tipo: 'Puesto individual',
@@ -34,6 +36,7 @@ export function espaciosDePrueba(hoy: Date = new Date()): Espacio[] {
     },
     {
       id: 'mesa-comunitaria-cafe',
+      foto: require('../../assets/imagenes/espacios/mesa-comunitaria-cafe.jpg'),
       servicio: 'cafe',
       nombre: 'Mesa Comunitaria Barra Cafetería',
       tipo: 'Mesa compartida',
@@ -46,6 +49,7 @@ export function espaciosDePrueba(hoy: Date = new Date()): Espacio[] {
     },
     {
       id: 'sala-acustica-focus',
+      foto: require('../../assets/imagenes/espacios/sala-acustica-focus.jpg'),
       servicio: 'stream',
       nombre: 'Sala Acústica Focus',
       tipo: 'Sala de stream y llamadas',

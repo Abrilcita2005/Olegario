@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { IconoUbicacion } from '@/components/iconos/Iconos';
 import { IconoSubmarca } from '@/components/marca/IconoSubmarca';
@@ -30,8 +30,8 @@ function textoEstado(estado: EstadoEspacio): string {
   return `Ocupado hasta ${estado.hasta}`;
 }
 
-// Tarjeta de espacio (Figma: ESPACIOS). PROVISIONAL: sin fotos reales de los espacios, la imagen es el
-// degradado de marca con el ícono del servicio (como la miniatura de la reserva del Home).
+// Tarjeta de espacio (Figma: ESPACIOS). Muestra la foto del espacio; si no tiene, el degradado de marca
+// con el ícono del servicio (como la miniatura de la reserva del Home).
 export function TarjetaEspacio({ espacio: datos, estado, accion }: Props) {
   const estiloEstado = ESTILO_ESTADO[estado.tipo];
   return (
@@ -43,7 +43,25 @@ export function TarjetaEspacio({ espacio: datos, estado, accion }: Props) {
         end={{ x: 1, y: 1 }}
         style={styles.imagen}
       >
-        <IconoSubmarca submarca={datos.servicio} tamano={88} conAro={false} />
+        {datos.foto ? (
+          <>
+            <Image
+              source={datos.foto}
+              resizeMode="cover"
+              accessibilityIgnoresInvertColors
+              style={styles.foto}
+            />
+            {/* Sombra abajo para que las etiquetas se lean sobre cualquier foto. */}
+            <LinearGradient
+              colors={[colores.transparente, colores.veloFoto]}
+              start={{ x: 0.5, y: 0.45 }}
+              end={{ x: 0.5, y: 1 }}
+              style={StyleSheet.absoluteFill}
+            />
+          </>
+        ) : (
+          <IconoSubmarca submarca={datos.servicio} tamano={88} conAro={false} />
+        )}
         <View style={[styles.pastilla, styles.arribaIzquierda]}>
           <IconoSubmarca submarca={datos.servicio} tamano={18} conAro={false} />
           <Texto variante="categoria" color="textoSobreOscuro">
@@ -156,6 +174,8 @@ const styles = StyleSheet.create({
     borderColor: colores.divisorSobreOscuro,
     backgroundColor: colores.fondoPastillaFoto,
   },
+  // Tamaño explícito: en la web, absoluteFill solo no escala la imagen.
+  foto: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' },
   arribaIzquierda: { position: 'absolute', top: espacio.l, left: espacio.l },
   arribaDerecha: { position: 'absolute', top: espacio.l, right: espacio.l },
   punto: { width: 6, height: 6, borderRadius: radios.pastilla },

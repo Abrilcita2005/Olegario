@@ -49,6 +49,7 @@ export const colores = {
 
   // Pastillas sobre la foto de los espacios y bordes de estado
   fondoPastillaFoto: 'rgba(38, 32, 32, 0.78)',
+  veloFoto: 'rgba(38, 32, 32, 0.55)',
   bordeNaranja: 'rgba(248, 59, 17, 0.6)',
   bordeLima: 'rgba(202, 242, 44, 0.6)',
 
