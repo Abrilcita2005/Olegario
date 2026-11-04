@@ -49,5 +49,7 @@ Las reglas de reserva (pasos de 30 min, hasta 3 días, lugar libre, horas sufici
 - [x] Proyecto de Supabase creado por la responsable (región West US).
 - [x] Esquema ejecutado en Supabase por la responsable (Paso 2, 2026-11-04).
 - [x] Contenido inicial escrito (`supabase/0002_contenido_inicial.sql`) y probado; se puede ejecutar más de una vez.
-- [ ] Contenido inicial cargado y datos de conexión en la configuración del entorno (responsable).
+- [x] Datos de conexión y acceso a la red cargados por la responsable en el entorno "Default" (2026-11-04); se aplican en una sesión nueva.
+- [ ] Confirmar que se cargó el contenido inicial (`0002`).
+- [x] Registro, ingreso, invitado, cerrar sesión, editar perfil y eliminar cuenta conectados a Supabase (`src/services/cuentaServidor.ts`); falta probarlos contra el servidor.
 - [ ] Pasar cada pantalla de los datos de prueba al servidor y cargar el contenido inicial.

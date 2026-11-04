@@ -2,14 +2,14 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                                                                             |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Última actualización     | 2026-11-04                                                                                                                                        |
-| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                       |
-| Etapa actual             | **Etapa 13 — Integraciones, persistencia y backend**                                                                                              |
-| Estado                   | En curso: definiendo servidor y pagos con la responsable                                                                                          |
-| Autorización de avance   | Etapa 13: concedida ("avancemos", 2026-11-04). **Etapa 14: NO concedida.**                                                                        |
-| Próxima acción permitida | Definir con la responsable el servidor y los pagos antes de instalar o contratar nada. **No** empezar la Etapa 14 sin una autorización explícita. |
+| Campo                    | Valor                                                                                                                                                                                                                 |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Última actualización     | 2026-11-04                                                                                                                                                                                                            |
+| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                                                                                           |
+| Etapa actual             | **Etapa 13 — Integraciones, persistencia y backend**                                                                                                                                                                  |
+| Estado                   | En curso: Supabase creado, esquema y contenido inicial cargados; falta probar la conexión desde una sesión nueva                                                                                                      |
+| Autorización de avance   | Etapa 13: concedida ("avancemos", 2026-11-04). **Etapa 14: NO concedida.**                                                                                                                                            |
+| Próxima acción permitida | En una sesión nueva: comprobar la conexión con Supabase (variables y red ya configuradas por la responsable) y seguir la Etapa 13 según `docs/BACKEND.md`. **No** empezar la Etapa 14 sin una autorización explícita. |
 
 ## Historial de autorizaciones
 
@@ -68,6 +68,16 @@
 
 - Resto de preguntas abiertas en `DECISIONES_Y_PENDIENTES.md`.
 - Prueba en un teléfono real (L-04).
+
+## Cómo retomar la Etapa 13 (para la próxima sesión)
+
+1. Comprobar que existan las variables `EXPO_PUBLIC_SUPABASE_URL` y `EXPO_PUBLIC_SUPABASE_ANON_KEY` y que
+   `https://cpzudtvilwmaqxhqgupc.supabase.co` responda (la responsable configuró variables y red en el entorno
+   "Default" el 2026-11-04). Si faltan, crear `.env` desde `.env.example` (nunca subirlo).
+2. Confirmar con la responsable que cargó `supabase/0002_contenido_inicial.sql` (el esquema 0001 ya está).
+3. Probar el registro, el ingreso y el modo invitado reales (`src/services/cuentaServidor.ts`, ya conectado a
+   `src/estado/sesion.tsx`). Revisar si Supabase pide confirmar el correo.
+4. Pasar reservas, agenda, comunidad y servicios del perfil de los datos de prueba al servidor.
 
 ## Preguntas abiertas para la responsable
 
