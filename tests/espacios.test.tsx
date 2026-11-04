@@ -139,6 +139,9 @@ describe('pantalla Espacios', () => {
     expect(screen.getByText('Hoy, 09:00 - 11:00 (2 hrs)')).toBeTruthy();
     expect(screen.getByText('Ocupado hasta 11:30')).toBeTruthy();
     expect(screen.getByText('3 LIBRES')).toBeTruthy();
+    // Punto bajo el día: hoy hay una reserva; mañana no.
+    expect(screen.getByRole('button', { name: 'MIÉ 4, tenés una reserva' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'JUE 5' })).toBeTruthy();
   });
 
   it('un miembro reserva y la reserva queda guardada', async () => {

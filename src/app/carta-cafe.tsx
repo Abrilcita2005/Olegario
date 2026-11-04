@@ -70,7 +70,7 @@ export default function CartaCafeScreen() {
             </Texto>
           </View>
           <Texto variante="cuerpoChico" color="textoSecundario">
-            Flat White de especialidad + Cookie casera de avena
+            Flat White de especialidad + Cookie casera de chocolate
           </Texto>
         </View>
       </Tarjeta>

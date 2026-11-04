@@ -88,6 +88,7 @@ export default function EspaciosScreen() {
           dias={diasVisibles(ahora)}
           seleccionado={dia}
           ahora={ahora}
+          diasConActividad={reservas.map((r) => r.inicio)}
           onElegir={elegirDia}
         />
 
