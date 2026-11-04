@@ -2,14 +2,14 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                                                                 |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Última actualización     | 2026-11-04                                                                                                                            |
-| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                           |
-| Etapa actual             | **Etapa 11 — Perfil de cuenta y membresías**                                                                                          |
-| Estado                   | Completada, pendiente de autorización para continuar                                                                                  |
-| Autorización de avance   | Etapa 11: concedida ("avanza", 2026-11-04). **Etapa 12: NO concedida.**                                                               |
-| Próxima acción permitida | Correcciones dentro de la Etapa 11 si la responsable las pide. **No** empezar la Etapa 12 (Novedades) sin una autorización explícita. |
+| Campo                    | Valor                                                                                                                                                             |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Última actualización     | 2026-11-04                                                                                                                                                        |
+| Rama de trabajo          | `claude/zen-hawking-g0erc1`                                                                                                                                       |
+| Etapa actual             | **Etapa 12 — Novedades**                                                                                                                                          |
+| Estado                   | Completada, pendiente de autorización para continuar                                                                                                              |
+| Autorización de avance   | Etapa 12: concedida ("avancemos a la etapa 12", 2026-11-04). **Etapa 13: NO concedida.**                                                                          |
+| Próxima acción permitida | Correcciones dentro de la Etapa 12 si la responsable las pide. **No** empezar la Etapa 13 (Integraciones, persistencia y backend) sin una autorización explícita. |
 
 ## Historial de autorizaciones
 
@@ -21,6 +21,8 @@
 | 2026-10-28 | "Sí, instalá las 4"                                                                                        | `expo-font`, `@expo-google-fonts/inter`, `react-native-svg`, `expo-linear-gradient`                                                                                              |
 | 2026-10-28 | "Primero corregir la Etapa 4" · "Usar otra fuente" → "Poppins" · "Sí, como en Figma" · "Dejarlo como está" | Corregir la Etapa 4 (no avanzar todavía): Poppins en lugar de Vástago, aro en íconos de servicio, contraste aceptado                                                             |
 | 2026-11-03 | "avanza" (tras la revisión del collage)                                                                    | Etapa 7: Home                                                                                                                                                                    |
+| 2026-11-04 | Respuestas de la Etapa 12                                                                                  | Fotos por Drive, "Pedir al barista" abre la carta, "Últimos cupos" inscribe, contador siempre activo                                                                             |
+| 2026-11-04 | "avancemos a la etapa 12"                                                                                  | Etapa 12: Novedades                                                                                                                                                              |
 | 2026-11-04 | "revisemos" + referencia del perfil de Comunidad                                                           | Rehacer el perfil público como en Figma con la foto de Martina Rossi                                                                                                             |
 | 2026-11-04 | Respuestas + captura del Perfil                                                                            | Pagos y horas extras simulados, 6 servicios provisorios, editar perfil/cerrar sesión/eliminar cuenta al final; captura de PERFIL por Drive                                       |
 | 2026-11-04 | "avanza" (tras la Etapa 10)                                                                                | Etapa 11: Perfil de cuenta y membresías                                                                                                                                          |
@@ -54,6 +56,7 @@
 
 - Etapa 6: bienvenidas (collage interactivo), acceso, registro e inicio de sesión con validaciones; 45 pruebas. Capturas en `docs/capturas-app/etapa-6/`.
 - Etapa 7: Home con saludo, banner, reserva actual (en curso / próxima / sin reserva / invitado) y servicios; 60 pruebas. Capturas en `docs/capturas-app/etapa-7/`.
+- Etapa 12: Novedades con las tarjetas de Figma, carta del café, inscripción simulada y contador siempre activo; 112 pruebas. Capturas en `docs/capturas-app/etapa-12/`.
 - Etapa 11: Perfil de cuenta según la captura de Figma: membresía, bolsa de horas, horas extras simuladas, 6 servicios provisorios, editar perfil y eliminar cuenta; 108 pruebas. Capturas en `docs/capturas-app/etapa-11/`.
 - Etapa 10: Comunidad con Modo Foco, publicar (provisorio), filtros, solicitudes simuladas y perfil público provisorio; 99 pruebas. Capturas en `docs/capturas-app/etapa-10/`.
 - Etapa 9: Agenda con filtros, semana con puntos de actividad, reserva con PIN de prueba copiable, calendario de efemérides reales, eventos con inscripción; 88 pruebas. Revisiones 1 y 2: efemérides reales por fecha, con fechas de Mendoza. Capturas en `docs/capturas-app/etapa-9/`.
@@ -72,4 +75,4 @@
 
 ## Último informe de cierre
 
-2026-11-04: Etapa 11, entregado en la conversación. En revisión: perfil público de Comunidad rehecho como en Figma.
+2026-11-04: Etapa 12, entregado en la conversación.

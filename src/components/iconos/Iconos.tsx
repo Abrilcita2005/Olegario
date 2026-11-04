@@ -425,3 +425,13 @@ export function IconoTarjeta({ tamano = 18, color }: Props) {
     </Svg>
   );
 }
+
+// Ícono de etiqueta de descuento (Figma: NOVEDADES, "20% OFF").
+export function IconoEtiqueta({ tamano = 12, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path d="M3 12V4h8l10 10-8 8L3 12Z" stroke={color} strokeWidth={2.2} strokeLinejoin="round" />
+      <Circle cx={7.5} cy={8.5} r={1.5} fill={color} />
+    </Svg>
+  );
+}

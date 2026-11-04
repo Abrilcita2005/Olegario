@@ -134,10 +134,12 @@
 
 ## Etapa 12 — Novedades
 
-- **Estado:** `Pendiente`
-- **Objetivo:** P13 y el contador de no leídas.
-- **Dependencias:** Etapa 5 · P-29, P-30.
-- **Criterios de aceptación:** el contador se actualiza al verlas · las acciones de las tarjetas funcionan según lo decidido.
+- **Estado:** `Completada (pendiente de autorización)`, 2026-11-04
+- **Objetivo:** P13 y el contador.
+- **Resultado:** ✅ panel "● PULSO DE OLEGARIO · Novedades y eventos" que sube desde abajo · ✅ tarjetas de Figma con las fotos de la responsable: Promo cafetería y Coworkeo itinerante, con "20% OFF" · ✅ "Pedir al barista" abre la carta del café · ✅ "Últimos cupos" inscribe (simulado) y suma tu foto a los circulitos · ✅ el contador del botón flotante muestra siempre cuántas novedades hay · ✅ textos corregidos (cookie de chocolate, tildes y voseo).
+- **Archivos:** `src/app/novedades.tsx`, `src/components/novedades/TarjetaNovedad.tsx`, `src/components/navegacion/BotonNovedades.tsx`, `data/mock/novedades.ts`, `assets/imagenes/novedades/`, `tests/novedades.test.tsx`.
+- **Criterios de aceptación:** ✅ el contador sigue la decisión de la responsable (siempre activo) · ✅ las acciones de las tarjetas funcionan según lo decidido · ✅ coincide con la captura (comparación en `docs/capturas-app/etapa-12/comparacion-figma.png`) salvo D-66.
+- **Pruebas:** 112 pruebas automáticas (textos, "Pedir al barista", inscripción, contador) y recorrido web.
 
 ## Etapa 13 — Integraciones, persistencia y backend
 

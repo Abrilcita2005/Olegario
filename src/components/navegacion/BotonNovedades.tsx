@@ -12,10 +12,11 @@ import { novedadesDePrueba } from '../../../data/mock/novedades';
 import { BARRA, BOTON_NOVEDADES } from './medidas';
 
 // Botón flotante persistente de Novedades (Figma: 178×45, sobre la barra inferior).
-// Abre el panel de Novedades. El contador sale de datos de prueba hasta la Etapa 12.
+// Abre el panel de Novedades. El contador sale de datos de prueba hasta el servidor (Etapa 13).
 export function BotonNovedades() {
   const { bottom } = useSafeAreaInsets();
-  const nuevas = novedadesDePrueba.filter((n) => !n.leida).length;
+  // El contador muestra siempre cuántas novedades hay (decisión de la responsable, 2026-11-04).
+  const nuevas = novedadesDePrueba.length;
   const textoContador = nuevas === 1 ? '1 nueva' : `${nuevas} nuevas`;
 
   return (

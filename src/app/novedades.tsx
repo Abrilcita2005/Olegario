@@ -1,41 +1,86 @@
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
-import { PantallaEnConstruccion } from '@/components/PantallaEnConstruccion';
+import { TarjetaNovedad } from '@/components/novedades/TarjetaNovedad';
 import { Texto } from '@/components/ui';
+import { useAgenda } from '@/estado/agenda';
+import { useSesion } from '@/estado/sesion';
 import { colores, espacio, radios } from '@/theme';
 
-// Panel de Novedades que sube desde abajo (aprobado 2026-10-28). Se cierra deslizando hacia abajo,
-// con el botón atrás del sistema o con "Cerrar". Contenido en la Etapa 12.
+import { novedadesDePrueba } from '../../data/mock/novedades';
+
+// Novedades (Figma: NOVEDADES, "PULSO DE OLEGARIO"). Panel que sube desde abajo (aprobado 2026-10-28);
+// se cierra deslizando hacia abajo, con el botón atrás o con "Cerrar". Decisiones de la responsable
+// (2026-11-04): "Pedir al barista" abre la carta del café; "Últimos cupos" inscribe (simulado, como los
+// eventos de la Agenda); el contador del botón flotante muestra siempre cuántas novedades hay.
 export default function NovedadesScreen() {
+  const { estaInscripto, alternarInscripcion } = useAgenda();
+  const { fotoPerfil } = useSesion();
+
   return (
     <View style={styles.panel}>
+      <Pressable
+        onPress={() => router.back()}
+        accessibilityRole="button"
+        accessibilityLabel="Cerrar novedades"
+        hitSlop={8}
+        style={styles.cerrar}
+      >
+        <Texto variante="chip">Cerrar</Texto>
+      </Pressable>
       <View style={styles.barraSuperior}>
-        <Texto variante="tituloSeccion" color="acento">
-          Pulso de Olegario
-        </Texto>
-        <Pressable
-          onPress={() => router.back()}
-          accessibilityRole="button"
-          accessibilityLabel="Cerrar novedades"
-          hitSlop={8}
-          style={styles.cerrar}
-        >
-          <Texto variante="chip">Cerrar</Texto>
-        </Pressable>
+        <View style={styles.titulo}>
+          <View style={styles.punto} />
+          <Texto variante="tituloSeccion" color="acento" accessibilityRole="header">
+            Pulso de Olegario
+          </Texto>
+        </View>
+        <Texto variante="cuerpoChico">Novedades y eventos</Texto>
       </View>
-      <PantallaEnConstruccion titulo="Novedades" etapa="Etapa 12" />
+
+      <ScrollView contentContainerStyle={styles.lista}>
+        {novedadesDePrueba.map((novedad) => (
+          <TarjetaNovedad
+            key={novedad.id}
+            novedad={novedad}
+            fotoPerfil={fotoPerfil}
+            inscripto={estaInscripto(novedad.id)}
+            onAccion={() => {
+              if (novedad.accion.tipo === 'carta') {
+                router.back();
+                router.push('/carta-cafe');
+              } else {
+                alternarInscripcion(novedad.id);
+              }
+            }}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  panel: { flex: 1, padding: espacio.margenPantalla, backgroundColor: colores.fondo },
-  barraSuperior: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  panel: {
+    flex: 1,
+    paddingTop: espacio.base,
+    paddingHorizontal: espacio.margenPantalla,
+    backgroundColor: colores.fondo,
+  },
+  barraSuperior: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: espacio.base,
+  },
+  titulo: { flexDirection: 'row', alignItems: 'center', gap: espacio.m },
+  punto: { width: 10, height: 10, borderRadius: radios.pastilla, backgroundColor: colores.acento },
   cerrar: {
-    minHeight: 44,
+    alignSelf: 'flex-end',
+    minHeight: 36,
     justifyContent: 'center',
-    paddingHorizontal: espacio.base,
+    paddingHorizontal: espacio.m,
     borderRadius: radios.pastilla,
   },
+  lista: { gap: espacio.base, paddingBottom: espacio.grande * 2 },
 });
