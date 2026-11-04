@@ -33,6 +33,8 @@ export const colores = {
   acento: marca.rosa,
   acentoNaranja: marca.naranja,
   acentoLima: marca.lima,
+  // Naranja de los títulos destacados de Figma (fin del degradado de "PERFECTO"; "CONECTÁ").
+  naranjaTitulo: '#F97316',
 
   // Botón "Siguiente" claro (bienvenidas)
   botonClaro: '#D9D9D9',

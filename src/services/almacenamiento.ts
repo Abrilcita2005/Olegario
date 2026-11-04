@@ -9,6 +9,7 @@ const CLAVES = {
   perfilBasico: 'olegario.perfilBasico',
   reservas: 'olegario.reservas',
   inscripciones: 'olegario.inscripciones',
+  comunidad: 'olegario.comunidad',
 } as const;
 
 export type TipoAcceso = 'miembro' | 'invitado';
@@ -139,4 +140,62 @@ export async function leerInscripciones(): Promise<string[]> {
 
 export async function guardarInscripciones(ids: string[]): Promise<void> {
   await AsyncStorage.setItem(CLAVES.inscripciones, JSON.stringify(ids));
+}
+
+// Comunidad (Etapa 10): modo de visibilidad, solicitudes enviadas y publicaciones propias.
+// PROVISIONAL: en la Etapa 13 se envían al servidor.
+export type PublicacionGuardada = {
+  id: string;
+  tipo: 'colaborador' | 'iniciativa';
+  busca?: string;
+  titulo: string;
+  descripcion: string;
+  etiquetas: string[];
+};
+
+export type ComunidadGuardada = {
+  modo: 'abierta' | 'foco';
+  // id de la publicación, persona o taller → mensaje enviado.
+  solicitudes: Record<string, string>;
+  publicaciones: PublicacionGuardada[];
+};
+
+export const COMUNIDAD_INICIAL: ComunidadGuardada = {
+  modo: 'abierta',
+  solicitudes: {},
+  publicaciones: [],
+};
+
+export async function leerComunidad(): Promise<ComunidadGuardada> {
+  const texto = await AsyncStorage.getItem(CLAVES.comunidad);
+  if (!texto) return COMUNIDAD_INICIAL;
+  try {
+    const datos = JSON.parse(texto) as Partial<ComunidadGuardada>;
+    const solicitudes: Record<string, string> = {};
+    if (datos.solicitudes && typeof datos.solicitudes === 'object') {
+      for (const [id, mensaje] of Object.entries(datos.solicitudes)) {
+        if (typeof mensaje === 'string') solicitudes[id] = mensaje;
+      }
+    }
+    return {
+      modo: datos.modo === 'foco' ? 'foco' : 'abierta',
+      solicitudes,
+      publicaciones: Array.isArray(datos.publicaciones)
+        ? datos.publicaciones.filter(
+            (p) =>
+              typeof p?.id === 'string' &&
+              typeof p.titulo === 'string' &&
+              typeof p.descripcion === 'string' &&
+              (p.tipo === 'colaborador' || p.tipo === 'iniciativa') &&
+              Array.isArray(p.etiquetas),
+          )
+        : [],
+    };
+  } catch {
+    return COMUNIDAD_INICIAL;
+  }
+}
+
+export async function guardarComunidad(datos: ComunidadGuardada): Promise<void> {
+  await AsyncStorage.setItem(CLAVES.comunidad, JSON.stringify(datos));
 }

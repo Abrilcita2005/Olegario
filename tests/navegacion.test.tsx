@@ -112,7 +112,7 @@ describe('App principal', () => {
   it.each([
     ['Espacios', '/espacios', 'Tu rincón perfecto'],
     ['Agenda', '/agenda', 'Tu rincón perfecto'],
-    ['Comunidad', '/comunidad', 'Comunidad'],
+    ['Comunidad', '/comunidad', 'Colaborá, sumate, conectá'],
   ])('la pestaña %s abre %s', async (etiqueta, ruta, titulo) => {
     await abrirApp({ bienvenida: true, acceso: 'miembro' });
     await waitFor(() => expect(screen).toHavePathname('/'));

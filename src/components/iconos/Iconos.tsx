@@ -328,3 +328,40 @@ export function IconoLlave({ tamano = 20, color }: Props) {
     </Svg>
   );
 }
+
+// Íconos de Comunidad (Figma: COMUNIDAD).
+
+export function IconoRayo({ tamano = 14, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function IconoAuriculares({ tamano = 14, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M4 15v-3a8 8 0 0 1 16 0v3M4 15h3v6H4v-6Zm13 0h3v6h-3v-6Z"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function IconoMasCirculo({ tamano = 16, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Circle cx={12} cy={12} r={9.5} stroke={color} strokeWidth={2} />
+      <Path d="M12 8v8M8 12h8" stroke={color} strokeWidth={2} strokeLinecap="round" />
+    </Svg>
+  );
+}

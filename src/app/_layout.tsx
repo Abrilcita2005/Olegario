@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 import { ProveedorAgenda } from '@/estado/agenda';
+import { ProveedorComunidad } from '@/estado/comunidad';
 import { ProveedorReservas } from '@/estado/reservas';
 import { ProveedorSesion, useSesion } from '@/estado/sesion';
 import { archivosDeFuentes, colores } from '@/theme';
@@ -16,8 +17,10 @@ export default function RootLayout() {
     <ProveedorSesion>
       <ProveedorReservas>
         <ProveedorAgenda>
-          <StatusBar style="dark" />
-          <Navegacion />
+          <ProveedorComunidad>
+            <StatusBar style="dark" />
+            <Navegacion />
+          </ProveedorComunidad>
         </ProveedorAgenda>
       </ProveedorReservas>
     </ProveedorSesion>
@@ -46,6 +49,8 @@ function Navegacion() {
         <Stack.Screen name="perfil" />
         <Stack.Screen name="carta-cafe" />
         <Stack.Screen name="reserva/[id]" />
+        <Stack.Screen name="persona/[id]" />
+        <Stack.Screen name="publicar" />
         <Stack.Screen
           name="novedades"
           options={{

@@ -116,11 +116,12 @@
 
 ## Etapa 10 — Comunidad y perfil profesional
 
-- **Estado:** `Pendiente`
+- **Estado:** `Completada (pendiente de autorización)`, 2026-11-04
 - **Objetivo:** P10 y P11.
-- **Tareas:** modo de visibilidad · listados de proyectos, talentos y talleres · filtros · perfil público · acciones de contacto según P-08 · publicar proyecto (provisional).
-- **Dependencias:** Etapa 9 · P-08, P-27.
-- **Criterios de aceptación:** "Modo foco" oculta a la persona de las listas · respeta la privacidad · coincide con las capturas.
+- **Resultado:** ✅ "MODO ACTIVO": Conexión Abierta / Modo Foco (se guarda; en Foco no aparecés en Talentos ni se muestra dónde estás) · ✅ "COLABORÁ, SUMATE, CONECTÁ" · ✅ publicar proyecto o búsqueda con formulario provisorio y validaciones (aparece primera en la lista, se puede eliminar) · ✅ filtros Todos / Buscan colaborador / Iniciativas con la cantidad de convocatorias · ✅ proyectos, talentos y talleres de Figma · ✅ contactar, postularse y sumarse con solicitud simulada ("Solicitud enviada") · ✅ "Ver detalles del proyecto" en un panel · ✅ perfil público provisorio (portada, foto, profesión, dónde está, Sobre mí, Ofrezco, Busco, Contactar) · ✅ tu tarjeta en Talentos con la ubicación de tu reserva en curso · ✅ el invitado no usa Comunidad.
+- **Archivos:** `src/app/(tabs)/comunidad.tsx`, `src/app/publicar.tsx`, `src/app/persona/[id].tsx`, `src/components/comunidad/`, `src/estado/comunidad.tsx`, `src/models/comunidad.ts`, `src/utils/comunidad.ts`, `data/mock/comunidad.ts`, `tests/comunidad.test.tsx`.
+- **Criterios de aceptación:** ✅ "Modo foco" oculta a la persona de las listas · ✅ respeta la privacidad (sin ubicación en Foco; solo datos de Figma) · ✅ coincide con la captura (comparación en `docs/capturas-app/etapa-10/`) salvo D-57 a D-60.
+- **Pruebas:** 99 pruebas automáticas (validación, etiquetas, Modo Foco, filtros, solicitud, publicar, perfil público, invitado) y recorrido web con capturas en `docs/capturas-app/etapa-10/`.
 
 ## Etapa 11 — Perfil de cuenta y membresías
 
