@@ -2,6 +2,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
+import { ProveedorAgenda } from '@/estado/agenda';
 import { ProveedorReservas } from '@/estado/reservas';
 import { ProveedorSesion, useSesion } from '@/estado/sesion';
 import { archivosDeFuentes, colores } from '@/theme';
@@ -14,8 +15,10 @@ export default function RootLayout() {
   return (
     <ProveedorSesion>
       <ProveedorReservas>
-        <StatusBar style="dark" />
-        <Navegacion />
+        <ProveedorAgenda>
+          <StatusBar style="dark" />
+          <Navegacion />
+        </ProveedorAgenda>
       </ProveedorReservas>
     </ProveedorSesion>
   );

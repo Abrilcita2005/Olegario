@@ -5,17 +5,21 @@ import { Circle, Defs, LinearGradient, Stop, Svg } from 'react-native-svg';
 import { degradados } from '@/theme';
 
 import { SubmarcaCafe } from './SubmarcaCafe';
+import { SubmarcaAfterOffice } from './SubmarcaAfterOffice';
 import { SubmarcaCowork } from './SubmarcaCowork';
+import { SubmarcaEvento } from './SubmarcaEvento';
 import { SubmarcaNetwork } from './SubmarcaNetwork';
 import { SubmarcaStream } from './SubmarcaStream';
 
-export type Submarca = 'cowork' | 'stream' | 'network' | 'cafe';
+export type Submarca = 'cowork' | 'stream' | 'network' | 'cafe' | 'evento' | 'afterOffice';
 
 const COMPONENTES = {
   cowork: SubmarcaCowork,
   stream: SubmarcaStream,
   network: SubmarcaNetwork,
   cafe: SubmarcaCafe,
+  evento: SubmarcaEvento,
+  afterOffice: SubmarcaAfterOffice,
 } as const;
 
 const NOMBRES: Record<Submarca, string> = {
@@ -23,6 +27,8 @@ const NOMBRES: Record<Submarca, string> = {
   stream: 'OLE/STREAM',
   network: 'OLE/NETWORK',
   cafe: 'OLE/CAFÉ',
+  evento: 'OLE/EVENTO',
+  afterOffice: 'OLE/AFTER OFFICE',
 };
 
 // Grosor del aro respecto del tamaño total (≈3 px en el ícono de 73 px de Figma).

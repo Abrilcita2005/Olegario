@@ -11,12 +11,14 @@ import { IconoCamara } from '@/components/iconos/Iconos';
 import type { Submarca } from '@/components/marca/IconoSubmarca';
 import { PantallaBase } from '@/components/navegacion/PantallaBase';
 import { Chip, EstadoVacio, Texto, TextoDegradado } from '@/components/ui';
+import { useAgenda } from '@/estado/agenda';
 import { useReservas } from '@/estado/reservas';
 import { useSesion } from '@/estado/sesion';
 import { useAhora } from '@/hooks/useAhora';
 import type { Espacio } from '@/models/espacio';
 import { colores, espacio, radios, tipografia } from '@/theme';
-import { estadoEspacio, lugaresLibres } from '@/utils/disponibilidad';
+import { marcasDeActividad } from '@/utils/agenda';
+import { diaReservable, estadoEspacio, lugaresLibres } from '@/utils/disponibilidad';
 import {
   ajustarHorario,
   diasVisibles,
@@ -39,6 +41,8 @@ export default function EspaciosScreen() {
   const ahora = useAhora();
   const { tipoAcceso, salir } = useSesion();
   const { espacios, reservas, horas, reservar } = useReservas();
+  const { eventos } = useAgenda();
+  const marcas = marcasDeActividad(reservas, eventos);
   const parametros = useLocalSearchParams<{ servicio?: string }>();
   const servicio = esServicio(parametros.servicio) ? parametros.servicio : null;
   const puedeReservar = puede(tipoAcceso, 'reservarEspacio');
@@ -90,8 +94,8 @@ export default function EspaciosScreen() {
         <SelectorSemana
           dias={diasVisibles(ahora)}
           seleccionado={dia}
-          ahora={ahora}
-          diasConActividad={reservas.map((r) => r.inicio)}
+          esHabilitado={(d) => diaReservable(d, ahora)}
+          marcas={marcas}
           onElegir={elegirDia}
         />
 

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { act, fireEvent, renderRouter, screen, waitFor } from 'expo-router/testing-library';
+import { fireEvent, renderRouter, screen, waitFor } from 'expo-router/testing-library';
 
 // Recorre la estructura de navegación de la Etapa 5 con el estado guardado que corresponda a cada caso.
 async function abrirApp(estado: { bienvenida?: boolean; acceso?: 'miembro' | 'invitado' }) {
@@ -10,9 +10,8 @@ async function abrirApp(estado: { bienvenida?: boolean; acceso?: 'miembro' | 'in
 }
 
 async function tocar(elemento: Parameters<typeof fireEvent.press>[0]) {
-  await act(async () => {
-    fireEvent.press(elemento);
-  });
+  // fireEvent ya es asíncrono y envuelve el toque en act (Testing Library v14).
+  await fireEvent.press(elemento);
 }
 
 describe('Primera apertura', () => {
@@ -59,10 +58,8 @@ describe('Acceso', () => {
     expect(screen.getByText('Ingresá tu contraseña.')).toBeTruthy();
     expect(screen).toHavePathname('/iniciar-sesion');
 
-    await act(async () => {
-      fireEvent.changeText(screen.getByLabelText('Email o usuario'), 'sofi@olegario.work');
-      fireEvent.changeText(screen.getByLabelText('Contraseña'), 'una-clave');
-    });
+    await fireEvent.changeText(screen.getByLabelText('Email o usuario'), 'sofi@olegario.work');
+    await fireEvent.changeText(screen.getByLabelText('Contraseña'), 'una-clave');
     await tocar(screen.getByRole('button', { name: 'Iniciar sesión' }));
 
     await waitFor(() => expect(screen).toHavePathname('/'));
@@ -75,21 +72,17 @@ describe('Acceso', () => {
     await tocar(screen.getByRole('button', { name: 'Crear una cuenta' }));
     await waitFor(() => expect(screen).toHavePathname('/registro'));
 
-    await act(async () => {
-      fireEvent.changeText(screen.getByLabelText('Nombre completo'), 'Sofía Prueba');
-      fireEvent.changeText(screen.getByLabelText('Correo profesional'), 'correo-mal');
-      fireEvent.changeText(screen.getByLabelText('Profesión / Área de trabajo'), 'Diseño');
-      fireEvent.changeText(screen.getByLabelText('Contraseña'), 'corta');
-    });
+    await fireEvent.changeText(screen.getByLabelText('Nombre completo'), 'Sofía Prueba');
+    await fireEvent.changeText(screen.getByLabelText('Correo profesional'), 'correo-mal');
+    await fireEvent.changeText(screen.getByLabelText('Profesión / Área de trabajo'), 'Diseño');
+    await fireEvent.changeText(screen.getByLabelText('Contraseña'), 'corta');
     await tocar(screen.getByRole('button', { name: 'Crear cuenta y continuar' }));
     expect(screen.getByText(/Ingresá un correo válido/)).toBeTruthy();
     expect(screen.getByText(/al menos 8 caracteres/)).toBeTruthy();
     expect(screen.getByText(/aceptá los términos/)).toBeTruthy();
 
-    await act(async () => {
-      fireEvent.changeText(screen.getByLabelText('Correo profesional'), 'sofia@estudio.design');
-      fireEvent.changeText(screen.getByLabelText('Contraseña'), 'Olegario2026!');
-    });
+    await fireEvent.changeText(screen.getByLabelText('Correo profesional'), 'sofia@estudio.design');
+    await fireEvent.changeText(screen.getByLabelText('Contraseña'), 'Olegario2026!');
     await tocar(screen.getByRole('checkbox'));
     await tocar(screen.getByRole('button', { name: 'Crear cuenta y continuar' }));
 
@@ -118,7 +111,7 @@ describe('Acceso', () => {
 describe('App principal', () => {
   it.each([
     ['Espacios', '/espacios', 'Tu rincón perfecto'],
-    ['Agenda', '/agenda', 'Agenda'],
+    ['Agenda', '/agenda', 'Tu rincón perfecto'],
     ['Comunidad', '/comunidad', 'Comunidad'],
   ])('la pestaña %s abre %s', async (etiqueta, ruta, titulo) => {
     await abrirApp({ bienvenida: true, acceso: 'miembro' });

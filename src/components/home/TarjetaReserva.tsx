@@ -12,6 +12,8 @@ const NOMBRE_SERVICIO: Record<Reserva['servicio'], string> = {
   stream: 'OLE/STREAM',
   network: 'OLE/NETWORK',
   cafe: 'OLE/CAFÉ',
+  evento: 'OLE/EVENTO',
+  afterOffice: 'OLE/AFTER OFFICE',
 };
 
 type Props = {

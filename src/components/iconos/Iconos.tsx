@@ -271,3 +271,60 @@ export function IconoMenos({ tamano = 18, color }: Props) {
     </Svg>
   );
 }
+
+// Íconos de la Agenda (Figma: AGENDA).
+
+export function IconoChevron({
+  tamano = 16,
+  color,
+  direccion = 'derecha',
+}: Props & { direccion?: 'izquierda' | 'derecha' }) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path
+        d={direccion === 'derecha' ? 'm9 5 7 7-7 7' : 'm15 5-7 7 7 7'}
+        stroke={color}
+        strokeWidth={2.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function IconoFlechaDerecha({ tamano = 16, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M4 12h15m-6-6 6 6-6 6"
+        stroke={color}
+        strokeWidth={2.2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function IconoCopiar({ tamano = 16, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M9 9h11v11H9V9Zm-4 6H4V4h11v1"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+export function IconoLlave({ tamano = 20, color }: Props) {
+  return (
+    <Svg width={tamano} height={tamano} viewBox="0 0 24 24" fill="none">
+      <Circle cx={7} cy={12} r={4} stroke={color} strokeWidth={2} />
+      <Path d="M11 12h10m-3 0v3m-3-3v2" stroke={color} strokeWidth={2} strokeLinecap="round" />
+    </Svg>
+  );
+}

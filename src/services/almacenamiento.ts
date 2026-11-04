@@ -8,6 +8,7 @@ const CLAVES = {
   fotoPerfil: 'olegario.fotoPerfil',
   perfilBasico: 'olegario.perfilBasico',
   reservas: 'olegario.reservas',
+  inscripciones: 'olegario.inscripciones',
 } as const;
 
 export type TipoAcceso = 'miembro' | 'invitado';
@@ -122,4 +123,20 @@ export async function leerReservas(): Promise<ReservasGuardadas> {
 
 export async function guardarReservas(reservas: ReservasGuardadas): Promise<void> {
   await AsyncStorage.setItem(CLAVES.reservas, JSON.stringify(reservas));
+}
+
+// Eventos a los que la persona se inscribió (ids). PROVISIONAL: en la Etapa 13, en el servidor.
+export async function leerInscripciones(): Promise<string[]> {
+  const texto = await AsyncStorage.getItem(CLAVES.inscripciones);
+  if (!texto) return [];
+  try {
+    const datos: unknown = JSON.parse(texto);
+    return Array.isArray(datos) ? datos.filter((id): id is string => typeof id === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function guardarInscripciones(ids: string[]): Promise<void> {
+  await AsyncStorage.setItem(CLAVES.inscripciones, JSON.stringify(ids));
 }

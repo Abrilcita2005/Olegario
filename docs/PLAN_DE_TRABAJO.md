@@ -107,11 +107,12 @@
 
 ## Etapa 9 — Agenda
 
-- **Estado:** `Pendiente` (medidas exactas bloqueadas por B-04)
+- **Estado:** `Completada (pendiente de autorización)`, 2026-11-04
 - **Objetivo:** P09: reservas, eventos y efemérides.
-- **Tareas:** filtros · calendario · tarjeta de reserva con PIN copiable · efeméride con beneficio · lista de eventos con inscripción.
-- **Dependencias:** Etapa 8 · P-07, P-26.
-- **Criterios de aceptación:** los filtros funcionan · copiar PIN confirma · inscribirse cambia el estado.
+- **Resultado:** ✅ encabezado "OLE / AGENDA CREATIVA" y título con degradado · ✅ filtros TODO / MIS RESERVAS (cantidad) / EFEMÉRIDES · ✅ semana con puntos de actividad (reserva naranja, evento lima, after office rosa) y flechas para cambiar de semana · ✅ al tocar un día se ve lo de ese día · ✅ tarjeta de reserva con "En 45 min", horario, ubicación, PIN de prueba copiable con aviso y "MODIFICAR" (abre el detalle) · ✅ efeméride con beneficio en OLE/CAFÉ y enlace a Comunidad · ✅ eventos con foto, personas inscriptas e inscripción que se guarda en el teléfono · ✅ íconos OLE/EVENTO y OLE/AFTER OFFICE de la marca · ✅ el invitado no ve reservas pero se inscribe a eventos.
+- **Archivos:** `src/app/(tabs)/agenda.tsx`, `src/components/agenda/`, `src/components/espacios/SelectorSemana.tsx`, `src/components/marca/SubmarcaEvento.tsx`, `src/components/marca/SubmarcaAfterOffice.tsx`, `src/estado/agenda.tsx`, `src/models/agenda.ts`, `src/utils/agenda.ts`, `data/mock/agenda.ts`, `assets/imagenes/eventos/`, `assets/imagenes/personas/`, `assets/marca/ole-evento.svg`, `assets/marca/ole-after-office.svg`, `tests/agenda.test.tsx`.
+- **Criterios de aceptación:** ✅ los filtros funcionan · ✅ copiar el PIN confirma ("PIN copiado") · ✅ inscribirse cambia el estado y la cantidad · ✅ coincide con la captura (comparación en `docs/capturas-app/etapa-9/comparacion-figma.png`) salvo D-52 a D-55.
+- **Pruebas:** 86 pruebas automáticas (PIN, tiempo restante, fechas, puntos, filtros, días, semanas, inscripción, invitado, "Modificar") y recorrido web con capturas en `docs/capturas-app/etapa-9/`.
 
 ## Etapa 10 — Comunidad y perfil profesional
 
