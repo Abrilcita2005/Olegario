@@ -32,6 +32,7 @@ $rutas = [
     ['DELETE', '/cuentas/yo', 'eliminarMiCuenta'],
     ['GET', '/espacios', 'listarEspacios'],
     ['GET', '/horas', 'verHoras'],
+    ['POST', '/horas/extra', 'sumarHorasExtraSimuladas'],
     ['GET', '/reservas', 'listarMisReservas'],
     ['POST', '/reservas', 'crearReserva'],
     ['POST', '/reservas/{id}/cancelar', 'cancelarReserva'],

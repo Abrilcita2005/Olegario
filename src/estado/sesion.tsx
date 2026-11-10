@@ -54,6 +54,8 @@ type Sesion = {
   eliminarCuenta: () => Promise<ResultadoCuenta>;
   // Cambia al eliminar la cuenta, para que los demás estados se vuelvan a cargar desde cero.
   versionDatos: number;
+  // Cuenta del servidor (null sin servidor o sin sesión): al cambiar, se recargan los datos.
+  idUsuario: string | null;
 };
 
 const ContextoSesion = createContext<Sesion | null>(null);
@@ -64,6 +66,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
   const [tipoAcceso, setTipoAcceso] = useState<TipoAcceso | null>(null);
   const [fotoPerfil, setFotoPerfil] = useState<string | null>(null);
   const [perfilBasico, setPerfilBasico] = useState<PerfilBasico | null>(null);
+  const [idUsuario, setIdUsuario] = useState<string | null>(null);
 
   useEffect(() => {
     leerEstadoGuardado()
@@ -78,6 +81,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
           const cuenta = await leerCuentaActual();
           if (cuenta !== 'sin_conexion') {
             setTipoAcceso(cuenta?.tipoAcceso ?? null);
+            setIdUsuario(cuenta?.id ?? null);
             if (cuenta?.perfil) setPerfilBasico(cuenta.perfil);
           }
         }
@@ -101,6 +105,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
             : await ingresarConCorreo(credenciales?.correo ?? '', credenciales?.contrasena ?? '');
         if (!resultado.ok) return resultado;
         const cuenta = resultado.cuenta;
+        setIdUsuario(cuenta?.id ?? null);
         if (cuenta?.perfil) {
           setPerfilBasico(cuenta.perfil);
           await guardarPerfilBasico(cuenta.perfil);
@@ -118,6 +123,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
     if (apiConfigurada) {
       const resultado = await registrarCuenta(perfil, contrasena);
       if (!resultado.ok) return resultado;
+      setIdUsuario(resultado.cuenta?.id ?? null);
     }
     setPerfilBasico(perfil);
     setTipoAcceso('miembro');
@@ -132,6 +138,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
 
   const salir = useCallback(async () => {
     setTipoAcceso(null);
+    setIdUsuario(null);
     await Promise.all([guardarTipoAcceso(null), cerrarSesionServidor()]);
   }, []);
 
@@ -156,6 +163,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
     setPerfilBasico(null);
     setFotoPerfil(null);
     setTipoAcceso(null);
+    setIdUsuario(null);
     setVersionDatos((v) => v + 1);
     return OK;
   }, []);
@@ -175,6 +183,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
       actualizarPerfil,
       eliminarCuenta,
       versionDatos,
+      idUsuario,
     }),
     [
       cargando,
@@ -190,6 +199,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
       actualizarPerfil,
       eliminarCuenta,
       versionDatos,
+      idUsuario,
     ],
   );
 

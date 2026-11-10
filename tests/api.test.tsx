@@ -13,15 +13,17 @@ jest.mock('expo-secure-store', () => ({
 
 type Cuentas = typeof import('@/services/cuentaServidor');
 type Api = typeof import('@/services/api');
+type Datos = typeof import('@/services/datosServidor');
 
 // La dirección de la API se lee al cargar el módulo: se carga de nuevo con la variable puesta.
-function cargar(url: string): { cuentas: Cuentas; api: Api } {
+function cargar(url: string): { cuentas: Cuentas; api: Api; datos: Datos } {
   process.env.EXPO_PUBLIC_API_URL = url;
-  let modulos!: { cuentas: Cuentas; api: Api };
+  let modulos!: { cuentas: Cuentas; api: Api; datos: Datos };
   jest.isolateModules(() => {
     modulos = {
       cuentas: require('@/services/cuentaServidor'),
       api: require('@/services/api'),
+      datos: require('@/services/datosServidor'),
     };
   });
   return modulos;
@@ -180,6 +182,49 @@ const URL_PRUEBA = process.env.OLEGARIO_API_PRUEBA;
       ok: true,
       cuenta: { tipoAcceso: 'invitado', perfil: null },
     });
+    expect(await cuentas.eliminarCuentaServidor()).toEqual({ ok: true });
+  });
+
+  it('reservas, horas extras simuladas y agenda', async () => {
+    const { cuentas, datos } = cargar(URL_PRUEBA ?? '');
+    globalThis.fetch = fetchPorHttp as typeof fetch;
+    const correo = `prueba+${Date.now()}@ejemplo.com`;
+    await cuentas.registrarCuenta(
+      { nombre: 'Beto Prueba', correo, profesion: '' },
+      'clave-2-segura',
+    );
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const enCuatroDias = new Date(hoy.getTime() + 4 * 86_400_000);
+    const inicial = await datos.leerReservasServidor(hoy, enCuatroDias);
+    expect(inicial?.espacios.map((e) => e.id)).toContain('sala-acustica-focus');
+    expect(inicial?.espacios.find((e) => e.id === 'mesa-luz-natural')?.foto).toBeDefined();
+    expect(inicial?.horas).toEqual({ totales: 80, usadas: 0, disponibles: 80 });
+
+    const inicio = new Date(hoy.getTime() + 86_400_000 + 10 * 3_600_000); // mañana 10 hs
+    const fin = new Date(inicio.getTime() + 3_600_000);
+    const creada = await datos.crearReservaServidor('sala-acustica-focus', inicio, fin);
+    expect(creada.ok).toBe(true);
+    expect(await datos.crearReservaServidor('sala-acustica-focus', inicio, fin)).toEqual({
+      ok: false,
+      error: 'sinLugar',
+    });
+    const conReserva = await datos.leerReservasServidor(hoy, enCuatroDias);
+    expect(conReserva?.reservas).toHaveLength(1);
+    expect(conReserva?.reservas[0].espacio).toBe('Sala Acústica Focus');
+    expect(conReserva?.horas?.disponibles).toBe(79);
+    expect((await datos.sumarHorasExtraServidor(5))?.disponibles).toBe(84);
+    expect(await datos.cancelarReservaServidor(creada.ok ? creada.reserva.id : '')).toBe(true);
+    expect((await datos.leerReservasServidor(hoy, enCuatroDias))?.reservas).toHaveLength(0);
+
+    const agenda = await datos.leerAgendaServidor();
+    expect(agenda?.eventos.map((e) => e.submarca).sort()).toEqual(['afterOffice', 'evento']);
+    expect(await datos.cambiarInscripcionServidor('coworkeo-itinerante', true)).toBe(true);
+    expect((await datos.leerAgendaServidor())?.inscripciones).toEqual(['coworkeo-itinerante']);
+    expect(await datos.cambiarInscripcionServidor('coworkeo-itinerante', false)).toBe(true);
+    expect((await datos.leerAgendaServidor())?.inscripciones).toEqual([]);
+
     expect(await cuentas.eliminarCuentaServidor()).toEqual({ ok: true });
   });
 });

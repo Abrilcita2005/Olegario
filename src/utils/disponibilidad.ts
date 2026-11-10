@@ -60,7 +60,7 @@ export function estadoEspacio(
 }
 
 export type ErrorReserva =
-  'duracion' | 'pasado' | 'anticipacion' | 'horasInsuficientes' | 'sinLugar';
+  'duracion' | 'pasado' | 'anticipacion' | 'horasInsuficientes' | 'sinLugar' | 'servidor';
 
 export const MENSAJES_ERROR_RESERVA: Record<ErrorReserva, string> = {
   duracion: 'El horario de fin tiene que ser posterior al de inicio.',
@@ -68,6 +68,7 @@ export const MENSAJES_ERROR_RESERVA: Record<ErrorReserva, string> = {
   anticipacion: `Podés reservar con hasta ${DIAS_ANTICIPACION} días de anticipación.`,
   horasInsuficientes: 'No te alcanzan las horas disponibles de tu plan.',
   sinLugar: 'Ese espacio ya no tiene lugar en el horario elegido.',
+  servidor: 'No pudimos guardar la reserva. Revisá tu conexión y probá de nuevo.',
 };
 
 export function validarReserva(params: {

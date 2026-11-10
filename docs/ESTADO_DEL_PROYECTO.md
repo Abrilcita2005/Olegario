@@ -2,14 +2,14 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                                                                                                               |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Última actualización     | 2026-11-04                                                                                                                                                                          |
-| Rama de trabajo          | `claude/gallant-fermi-66n1rh`                                                                                                                                                       |
-| Etapa actual             | **Etapa 13 — Integraciones, persistencia y backend**                                                                                                                                |
-| Estado                   | En curso: servidor Docker + PHP + MySQL (esquema aprobado), Supabase eliminado, cuentas de la app conectadas a la API; faltan reservas, agenda, comunidad y servicios en la app     |
-| Autorización de avance   | Etapa 13: concedida ("avancemos", 2026-11-04). **Etapa 14: NO concedida.**                                                                                                          |
-| Próxima acción permitida | Seguir la Etapa 13 en local según `docs/BACKEND.md` (reservas y agenda de la app desde la API). Hostinger, más adelante. **No** empezar la Etapa 14 sin una autorización explícita. |
+| Campo                    | Valor                                                                                                                                                                                             |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Última actualización     | 2026-11-10                                                                                                                                                                                        |
+| Rama de trabajo          | `claude/gallant-fermi-66n1rh`                                                                                                                                                                     |
+| Etapa actual             | **Etapa 13 — Integraciones, persistencia y backend**                                                                                                                                              |
+| Estado                   | En curso: servidor Docker + PHP + MySQL; cuentas, reservas, horas y agenda de la app conectadas a la API; faltan Comunidad y servicios del Perfil                                                 |
+| Autorización de avance   | Etapa 13: concedida ("avancemos", 2026-11-04). **Etapa 14: NO concedida.**                                                                                                                        |
+| Próxima acción permitida | Seguir la Etapa 13 en local según `docs/BACKEND.md` (Comunidad y servicios del Perfil en la API y en la app). Hostinger, más adelante. **No** empezar la Etapa 14 sin una autorización explícita. |
 
 ## Historial de autorizaciones
 
@@ -74,9 +74,11 @@
 ## Cómo retomar la Etapa 13 (para la próxima sesión)
 
 1. Leer `docs/BACKEND.md` (servidor con Docker + PHP + MySQL + phpMyAdmin en `servidor/`; Hostinger más adelante).
-2. Hecho: esquema aprobado, API de cuentas, reservas, agenda y contenido (36/36), Supabase eliminado,
-   cuentas de la app conectadas a la API (`EXPO_PUBLIC_API_URL`; sin ella, datos de prueba).
-3. Siguiente: reservas y agenda de la app desde la API; después Comunidad y servicios del Perfil.
+2. Hecho: esquema aprobado, API de cuentas, reservas, horas, agenda y contenido (39/39), Supabase
+   eliminado; cuentas, reservas, horas extras simuladas y agenda de la app conectadas a la API
+   (`EXPO_PUBLIC_API_URL`; sin ella, datos de prueba).
+3. Siguiente: Comunidad (publicaciones, solicitudes, perfiles públicos) y servicios del Perfil, en la
+   API y en la app. La API real se prueba con `OLEGARIO_API_PRUEBA=http://127.0.0.1:8090 npx jest tests/api.test.tsx`.
 4. Para probar en la nube sin Docker: instalar `mysql-server-8.0` con apt, cargar `servidor/db/` y
    correr la API con `php -S` (ver el informe del 2026-11-04). Las pruebas de la app ignoran las
    variables de servidor del entorno.

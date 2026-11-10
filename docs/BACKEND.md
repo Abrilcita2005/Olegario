@@ -25,7 +25,7 @@ App (teléfono o web)  ──►  API en PHP (puerto 8080)  ──►  MySQL (ba
 | `servidor/db/01_esquema.sql`           | Tablas (**pendiente de aprobación**)                           |
 | `servidor/db/02_contenido_inicial.sql` | Contenido de ejemplo de Figma y efemérides reales              |
 | `servidor/api/`                        | La API en PHP (`public/index.php` lista todas las direcciones) |
-| `servidor/pruebas/probar_api.php`      | 36 comprobaciones de punta a punta (solo en una base local)    |
+| `servidor/pruebas/probar_api.php`      | 39 comprobaciones de punta a punta (solo en una base local)    |
 
 ## Qué guarda el servidor
 
@@ -45,7 +45,7 @@ App (teléfono o web)  ──►  API en PHP (puerto 8080)  ──►  MySQL (ba
 
 Cuentas: `POST /cuentas/registro` · `POST /cuentas/ingreso` · `POST /cuentas/invitado` ·
 `POST /cuentas/salir` · `GET`, `PATCH` y `DELETE /cuentas/yo`.
-Reservas: `GET /espacios?desde=…&hasta=…` · `GET /horas` · `GET` y `POST /reservas` ·
+Reservas: `GET /espacios?desde=…&hasta=…` · `GET /horas` · `POST /horas/extra` (compra simulada) · `GET` y `POST /reservas` ·
 `POST /reservas/{id}/cancelar`.
 Agenda y contenido: `GET /eventos` · `POST` y `DELETE /eventos/{id}/inscripcion` · `GET /contenido`.
 Falta: Comunidad (publicaciones, solicitudes, perfiles públicos) y servicios del Perfil.
@@ -84,7 +84,7 @@ Para cuando se suba (todavía no se hizo):
 - [x] Docker (MySQL 8.4, PHP 8.3 con Apache, phpMyAdmin 5.2) escrito.
 - [x] Esquema MySQL **aprobado por la responsable (2026-11-04)**. Esquema y contenido inicial cargan
       sin errores (también dos veces seguidas) en un MySQL 8.0 de la nube.
-- [x] API de cuentas, reservas, agenda y contenido: 36 de 36 comprobaciones correctas en la nube.
+- [x] API de cuentas, reservas, agenda y contenido: 39 de 39 comprobaciones correctas en la nube.
 - [x] Supabase eliminado (archivos y paquete `@supabase/supabase-js`), con aprobación (2026-11-04).
 - [x] Cuentas de la app conectadas a la API (`src/services/api.ts` y `cuentaServidor.ts`): registro,
       ingreso, invitado, salir, editar perfil y eliminar cuenta. Probado contra la API real
@@ -92,6 +92,9 @@ Para cuando se suba (todavía no se hizo):
       en MySQL).
 - [ ] Probar `docker compose up` en la computadora de la responsable (en la nube Docker Hub rechazó
       la descarga de imágenes por exceso de pedidos).
-- [ ] Reservas y agenda de la app desde la API (la API ya está; falta la app).
+- [x] Reservas, horas (con la compra simulada de horas extras) y agenda de la app desde la API
+      (`src/services/datosServidor.ts`). Probado con un servidor simulado (`tests/servidor.test.tsx`),
+      contra la API real (`tests/api.test.tsx`) y en la versión web: reserva desde Espacios → guardada
+      en MySQL.
 - [ ] Comunidad y servicios del Perfil en la API y en la app.
 - [ ] Subir a Hostinger (ver arriba).

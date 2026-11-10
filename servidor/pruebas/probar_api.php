@@ -104,6 +104,12 @@ comprobar('solo pasos de 30 minutos', $e === 422);
 comprobar('no alcanza con las horas del plan', $e === 422 && $r['codigo'] === 'horasInsuficientes', $r);
 [$e, $r] = pedir('GET', '/horas', null, $ana);
 comprobar('la reserva descuenta horas (78 disponibles)', $r['disponibles'] == 78, $r);
+[$e, $r] = pedir('POST', '/horas/extra', ['horas' => 5], $ana);
+comprobar('suma horas extras simuladas (83 disponibles)', $e === 200 && $r['disponibles'] == 83, $r);
+[$e] = pedir('POST', '/horas/extra', ['horas' => 1000], $ana);
+comprobar('solo acepta los paquetes de la app', $e === 422);
+[$e] = pedir('POST', '/horas/extra', ['horas' => 5], $invitado);
+comprobar('el invitado no puede sumar horas', $e === 403);
 
 [, $r] = pedir('GET', '/espacios?desde=' . urlencode($i) . '&hasta=' . urlencode($f), null, $beto);
 $sala = array_values(array_filter($r, fn ($x) => $x['id'] === 'sala-acustica-focus'))[0] ?? [];
@@ -118,7 +124,7 @@ comprobar('nadie cancela la reserva de otra persona', $e === 404);
 [$e] = pedir('POST', "/reservas/{$reservaAna}/cancelar", null, $ana);
 comprobar('cancela la propia con más de 30 min de anticipación', $e === 200);
 [, $r] = pedir('GET', '/horas', null, $ana);
-comprobar('al cancelar vuelven las horas', $r['disponibles'] == 80, $r);
+comprobar('al cancelar vuelven las horas', $r['disponibles'] == 85, $r);
 
 echo "Agenda y contenido\n";
 [$e, $r] = pedir('GET', '/eventos', null, $invitado);

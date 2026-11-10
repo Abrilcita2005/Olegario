@@ -86,6 +86,28 @@ function verHoras(): never
     responder(horasDelPlan(usuarioActual()['id']));
 }
 
+// Paquetes de horas extras que ofrece la app (data/mock/membresia.ts: paquetesDeHorasDePrueba).
+const PAQUETES_HORAS_EXTRA = [5, 10, 20];
+
+/**
+ * POST /horas/extra {horas} — compra SIMULADA de horas extras (decisión de la responsable, 2026-11-04):
+ * no se cobra nada. Antes de usar la app con miembros reales hay que reemplazarla por pagos reales.
+ */
+function sumarHorasExtraSimuladas(): never
+{
+    $usuario = usuarioActual();
+    $horas = cuerpo()['horas'] ?? null;
+    if (!in_array($horas, PAQUETES_HORAS_EXTRA, true)) {
+        throw new ErrorApi(422, 'Elegí uno de los paquetes de horas.', 'campo_invalido');
+    }
+    $consulta = db()->prepare('UPDATE membresias SET horas_extra = horas_extra + ? WHERE usuario_id = ?');
+    $consulta->execute([$horas, $usuario['id']]);
+    if ($consulta->rowCount() === 0) {
+        throw new ErrorApi(403, 'Para sumar horas necesitás una membresía.', 'sin_membresia');
+    }
+    responder(horasDelPlan($usuario['id']));
+}
+
 /** GET /reservas — mis reservas no canceladas desde el inicio del mes. */
 function listarMisReservas(): never
 {

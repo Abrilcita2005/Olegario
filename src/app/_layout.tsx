@@ -24,11 +24,12 @@ export default function RootLayout() {
   );
 }
 
-// Datos de la persona (reservas, agenda, comunidad). Se vuelven a crear desde cero al eliminar la cuenta.
+// Datos de la persona (reservas, agenda, comunidad). Se vuelven a crear desde cero al eliminar la cuenta
+// o al cambiar de cuenta en el servidor.
 function ProveedoresDeDatos({ children }: { children: ReactNode }) {
-  const { versionDatos } = useSesion();
+  const { versionDatos, idUsuario } = useSesion();
   return (
-    <ProveedorReservas key={versionDatos}>
+    <ProveedorReservas key={`${versionDatos}-${idUsuario ?? 'sin-cuenta'}`}>
       <ProveedorAgenda>
         <ProveedorComunidad>{children}</ProveedorComunidad>
       </ProveedorAgenda>
