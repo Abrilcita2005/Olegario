@@ -6,7 +6,7 @@
 | ------------------------ | -------------------------------------------------------------------------------------- |
 | Última actualización     | 2026-11-11                                                                             |
 | Rama de trabajo          | `claude/gallant-fermi-66n1rh`                                                          |
-| Etapa actual             | **Etapa 14 — Pruebas funcionales, visuales, de accesibilidad y de uso** (completada)   |
+| Etapa actual             | **Etapa 15 — Optimización, documentación final y entrega**                             |
 | Estado                   | En curso (desde 2026-11-11). Primera APK de Android lista (D-81). Etapa 14 completada. |
 | Autorización de avance   | Etapa 15: concedida ("Podés comenzar la etapa 15", 2026-11-11).                        |
 | Próxima acción permitida | Trabajar en la Etapa 15 (APK, optimización, documentación final y entrega).            |
