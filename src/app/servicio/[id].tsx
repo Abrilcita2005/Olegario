@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 import { PantallaEnConstruccion } from '@/components/PantallaEnConstruccion';
@@ -8,24 +8,15 @@ import { PantallaSecundaria } from '@/components/navegacion/PantallaSecundaria';
 import { Boton, Chip, EstadoVacio, SelectorSegmentado, Tarjeta, Texto } from '@/components/ui';
 import { useReservas } from '@/estado/reservas';
 import { useAhora } from '@/hooks/useAhora';
-import {
-  guardarOpiniones,
-  leerOpiniones,
-  type MensajeEquipo,
-  type Opiniones,
-} from '@/services/almacenamiento';
+import { useBeneficios, useMembresia, useOpiniones, usePaquetes } from '@/hooks/useServiciosPerfil';
+import type { MensajeEquipo } from '@/services/almacenamiento';
 import { colores, espacio, radios, tipografia } from '@/theme';
 import { estadoReserva, textoHorario } from '@/utils/reservas';
 
-import {
-  beneficiosDePrueba,
-  membresiaDePrueba,
-  paquetesDePrueba,
-} from '../../../data/mock/membresia';
-
 // Servicios del Perfil (Figma: PERFIL, "GESTIÓN Y SERVICIOS"). PROVISORIOS: no hay diseño de estas
-// pantallas (decisión de la responsable, 2026-11-04). Paquetes, beneficios y pago son datos de prueba;
-// valoraciones y mensajes se guardan en el teléfono y no se envían a nadie hasta el servidor.
+// pantallas (decisión de la responsable, 2026-11-04). Con la API (Etapa 13), paquetes, beneficios,
+// membresía, valoraciones y mensajes vienen del servidor o se guardan ahí (src/hooks/useServiciosPerfil.ts).
+// El pago sigue SIMULADO: la tarjeta y la factura son datos de prueba.
 
 const TITULOS: Record<string, string> = {
   paquetes: 'Recepción de paquetes',
@@ -61,10 +52,21 @@ export default function ServicioScreen() {
   );
 }
 
+const MENSAJE_FALLO = 'No pudimos enviarlo. Revisá tu conexión y probá de nuevo.';
+
 function Paquetes() {
+  const paquetes = usePaquetes();
+  if (paquetes.length === 0) {
+    return (
+      <EstadoVacio
+        titulo="No tenés paquetes en recepción"
+        texto="Cuando llegue algo a tu nombre, lo vas a ver acá."
+      />
+    );
+  }
   return (
     <>
-      {paquetesDePrueba.map((p) => (
+      {paquetes.map((p) => (
         <Tarjeta key={p.id} style={styles.tarjeta}>
           <Texto variante="tituloTarjeta" color="textoSobreOscuro">
             {p.descripcion}
@@ -79,9 +81,18 @@ function Paquetes() {
 }
 
 function Beneficios() {
+  const beneficios = useBeneficios();
+  if (beneficios.length === 0) {
+    return (
+      <EstadoVacio
+        titulo="Sin beneficios por ahora"
+        texto="Pronto vas a ver acá las promos de Olegario."
+      />
+    );
+  }
   return (
     <>
-      {beneficiosDePrueba.map((b) => (
+      {beneficios.map((b) => (
         <Tarjeta key={b.id} style={styles.tarjeta}>
           <Chip texto={b.lugar} variante="destacado" />
           <Texto variante="tituloTarjeta" color="textoSobreOscuro">
@@ -153,27 +164,16 @@ function Historial() {
   );
 }
 
-function useOpiniones() {
-  const [opiniones, setOpiniones] = useState<Opiniones>({ valoraciones: [], mensajes: [] });
-  useEffect(() => {
-    leerOpiniones()
-      .then(setOpiniones)
-      .catch(() => {});
-  }, []);
-  const guardar = async (siguientes: Opiniones) => {
-    setOpiniones(siguientes);
-    await guardarOpiniones(siguientes);
-  };
-  return { opiniones, guardar };
-}
-
 function Valoraciones() {
   const { espacios } = useReservas();
-  const { opiniones, guardar } = useOpiniones();
-  const [espacioId, setEspacioId] = useState(espacios[0]?.id ?? '');
+  const { cantidad, valorar } = useOpiniones();
+  const [espacioElegido, setEspacioId] = useState<string | null>(null);
+  // Con servidor, los espacios llegan un instante después: por defecto, el primero.
+  const espacioId = espacioElegido ?? espacios[0]?.id ?? '';
   const [estrellas, setEstrellas] = useState(0);
   const [comentario, setComentario] = useState('');
   const [enviada, setEnviada] = useState(false);
+  const [fallo, setFallo] = useState(false);
 
   if (enviada) {
     return (
@@ -238,28 +238,25 @@ function Valoraciones() {
         texto="Enviar valoración"
         deshabilitado={estrellas === 0 || !espacioId}
         onPress={async () => {
-          await guardar({
-            ...opiniones,
-            valoraciones: [
-              ...opiniones.valoraciones,
-              {
-                id: `valoracion-${Date.now()}`,
-                espacioId,
-                estrellas,
-                comentario: comentario.trim(),
-                fecha: new Date().toISOString(),
-              },
-            ],
-          });
+          if (!(await valorar(espacioId, estrellas, comentario.trim()))) {
+            setFallo(true);
+            return;
+          }
+          setFallo(false);
           setEstrellas(0);
           setComentario('');
           setEnviada(true);
         }}
       />
-      {opiniones.valoraciones.length > 0 ? (
+      {fallo ? (
+        <Texto variante="cuerpoChico" color="error" accessibilityRole="alert">
+          {MENSAJE_FALLO}
+        </Texto>
+      ) : null}
+      {cantidad.valoraciones > 0 ? (
         <Texto variante="cuerpoChico">
-          Ya enviaste {opiniones.valoraciones.length}{' '}
-          {opiniones.valoraciones.length === 1 ? 'valoración' : 'valoraciones'}.
+          Ya enviaste {cantidad.valoraciones}{' '}
+          {cantidad.valoraciones === 1 ? 'valoración' : 'valoraciones'}.
         </Texto>
       ) : null}
     </>
@@ -272,7 +269,7 @@ const TIPOS = [
 ] as const;
 
 function Quejas() {
-  const { opiniones, guardar } = useOpiniones();
+  const { enviarMensaje } = useOpiniones();
   const [tipo, setTipo] = useState<MensajeEquipo['tipo']>('sugerencia');
   const [texto, setTexto] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -320,18 +317,10 @@ function Quejas() {
             return;
           }
           setError(null);
-          await guardar({
-            ...opiniones,
-            mensajes: [
-              ...opiniones.mensajes,
-              {
-                id: `mensaje-${Date.now()}`,
-                tipo,
-                texto: texto.trim(),
-                fecha: new Date().toISOString(),
-              },
-            ],
-          });
+          if (!(await enviarMensaje(tipo, texto.trim()))) {
+            setError(MENSAJE_FALLO);
+            return;
+          }
           setTexto('');
           setEnviado(true);
         }}
@@ -341,8 +330,7 @@ function Quejas() {
 }
 
 function Pagos() {
-  const ahora = useAhora();
-  const membresia = membresiaDePrueba(ahora);
+  const membresia = useMembresia();
   const [aviso, setAviso] = useState(false);
   return (
     <>

@@ -31,13 +31,14 @@ import { useComunidad } from '@/estado/comunidad';
 import { useReservas } from '@/estado/reservas';
 import { useSesion } from '@/estado/sesion';
 import { useAhora } from '@/hooks/useAhora';
+import { useMembresia } from '@/hooks/useServiciosPerfil';
 import { elegirFotoPerfil } from '@/services/fotoPerfil';
 import { colores, degradados, espacio, radios } from '@/theme';
 import { textoHoras } from '@/utils/fechas';
 import { puede } from '@/utils/permisos';
 import { fechaLarga, porcentajeLibre, textoProximaReserva } from '@/utils/perfil';
 
-import { membresiaDePrueba, paquetesDeHorasDePrueba } from '../../data/mock/membresia';
+import { paquetesDeHorasDePrueba } from '../../data/mock/membresia';
 
 type Panel = 'horas' | 'plan' | 'planes' | 'eliminar' | null;
 
@@ -54,7 +55,7 @@ export default function PerfilScreen() {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [panel, setPanel] = useState<Panel>(null);
   const [cargadas, setCargadas] = useState<number | null>(null);
-  const membresia = membresiaDePrueba(ahora);
+  const membresia = useMembresia();
 
   async function cambiarFoto(origen: 'galeria' | 'camara') {
     setAviso(null);

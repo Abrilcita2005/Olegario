@@ -7,7 +7,8 @@ import { colores, espacio, radios, tipografia } from '@/theme';
 type Props = {
   titulo: string;
   destinatario: string;
-  onEnviar: (mensaje: string) => Promise<void>;
+  // Devuelve false si no se pudo enviar: el panel queda abierto con un aviso.
+  onEnviar: (mensaje: string) => Promise<boolean>;
   onCerrar: () => void;
 };
 
@@ -18,6 +19,7 @@ const LARGO_MAXIMO = 300;
 export function PanelSolicitud({ titulo, destinatario, onEnviar, onCerrar }: Props) {
   const [mensaje, setMensaje] = useState('');
   const [enviando, setEnviando] = useState(false);
+  const [fallo, setFallo] = useState(false);
 
   return (
     <PanelInferior visible titulo={titulo} onCerrar={onCerrar}>
@@ -39,11 +41,17 @@ export function PanelSolicitud({ titulo, destinatario, onEnviar, onCerrar }: Pro
         cargando={enviando}
         onPress={async () => {
           setEnviando(true);
-          await onEnviar(mensaje.trim());
+          const enviada = await onEnviar(mensaje.trim());
           setEnviando(false);
-          onCerrar();
+          if (enviada) onCerrar();
+          else setFallo(true);
         }}
       />
+      {fallo ? (
+        <Texto variante="cuerpoChico" color="error" accessibilityRole="alert">
+          No pudimos enviar la solicitud. Revisá tu conexión y probá de nuevo.
+        </Texto>
+      ) : null}
       <Boton texto="Cancelar" variante="secundario" onPress={onCerrar} />
     </PanelInferior>
   );

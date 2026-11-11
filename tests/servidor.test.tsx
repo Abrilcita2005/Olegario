@@ -1,12 +1,14 @@
 import { act, cleanup, render, waitFor } from '@testing-library/react-native';
 
 import { ProveedorAgenda, useAgenda } from '@/estado/agenda';
+import { ProveedorComunidad, useComunidad } from '@/estado/comunidad';
 import { ProveedorReservas, useReservas, type ResultadoReserva } from '@/estado/reservas';
 import {
   errorReservaDesdeCodigo,
   espacioDesdeApi,
   eventoDesdeApi,
   type EspacioApi,
+  type ComunidadApi,
   type EventoApi,
   type ReservaApi,
 } from '@/services/datosServidor';
@@ -23,10 +25,17 @@ const mockServidor = {
   eventos: [] as EventoApi[],
   rechazarReserva: null as string | null,
   fallarInscripcion: false,
+  comunidad: null as unknown as ComunidadApi,
+  fallarSolicitud: false,
   llamadas: [] as string[],
 };
 
 const error = (codigo: string): Respuesta => ({ ok: false, estado: 422, error: codigo, codigo });
+
+// Comunidad necesita saber si es miembro: sesión simulada de un miembro.
+jest.mock('@/estado/sesion', () => ({
+  useSesion: () => ({ tipoAcceso: 'miembro', perfilBasico: null }),
+}));
 
 jest.mock('@/services/api', () => ({
   apiConfigurada: true,
@@ -60,6 +69,34 @@ jest.mock('@/services/api', () => ({
       return resolver({ ok: true, datos: s.horas });
     }
     if (ruta === '/eventos') return resolver({ ok: true, datos: s.eventos });
+    if (ruta === '/comunidad') return resolver({ ok: true, datos: s.comunidad });
+    if (ruta === '/comunidad/modo') {
+      s.comunidad.modo = datos!.modo as ComunidadApi['modo'];
+      return resolver({ ok: true, datos: { modo: datos!.modo } });
+    }
+    if (ruta === '/solicitudes') {
+      if (s.fallarSolicitud) return resolver(error('sin_conexion'));
+      s.comunidad.solicitudesEnviadas.push(datos!.destino);
+      return resolver({ ok: true, datos: { enviada: true } });
+    }
+    if (ruta === '/publicaciones') {
+      s.comunidad.publicaciones.unshift({
+        id: 'p-nueva',
+        tipo: 'iniciativa',
+        busca: null,
+        titulo: datos!.titulo,
+        descripcion: datos!.descripcion,
+        etiquetas: [],
+        autor: { id: 'yo', nombre: 'Yo', profesion: '' },
+        esPropia: true,
+      });
+      return resolver({ ok: true, datos: { id: 'p-nueva' } });
+    }
+    const borrar = ruta.match(/^\/publicaciones\/(.+)$/);
+    if (borrar) {
+      s.comunidad.publicaciones = s.comunidad.publicaciones.filter((p) => p.id !== borrar[1]);
+      return resolver({ ok: true, datos: { ok: true } });
+    }
     const inscripcion = ruta.match(/^\/eventos\/(.+)\/inscripcion$/);
     if (inscripcion) {
       if (s.fallarInscripcion) return resolver(error('sin_conexion'));
@@ -291,5 +328,135 @@ describe('agenda con la API', () => {
     });
     expect(resultado).toBe(false);
     expect(estado!.estaInscripto('evento-storytelling')).toBe(false);
+  });
+});
+
+describe('comunidad con la API', () => {
+  let estado: ReturnType<typeof useComunidad> | undefined;
+  function Captura() {
+    estado = useComunidad();
+    return null;
+  }
+
+  beforeEach(() => {
+    mockServidor.comunidad = {
+      modo: 'abierta',
+      personas: [
+        {
+          id: 'beto',
+          nombre: 'Beto',
+          profesion: 'Dev',
+          fotoUrl: null,
+          sobreMi: null,
+          ofrezco: 'Código',
+          busco: null,
+          disponible: true,
+        },
+      ],
+      publicaciones: [
+        {
+          id: 'p1',
+          tipo: 'colaborador',
+          busca: 'Diseñador/a',
+          titulo: 'Proyecto de Beto',
+          descripcion: 'Buscamos a alguien para diseñar pantallas.',
+          etiquetas: ['Figma'],
+          autor: { id: 'beto', nombre: 'Beto', profesion: 'Dev' },
+          esPropia: false,
+        },
+        {
+          id: 'p2',
+          tipo: 'iniciativa',
+          busca: null,
+          titulo: 'Proyecto en Modo Foco',
+          descripcion: 'La persona autora está en Modo Foco.',
+          etiquetas: [],
+          autor: { id: null, nombre: 'Clara', profesion: '' },
+          esPropia: false,
+        },
+      ],
+      talleres: [
+        {
+          id: 'club-lectura',
+          tipo: 'Grupo',
+          cuando: 'Miércoles',
+          titulo: 'Club',
+          descripcion: 'Lectura',
+          accion: 'Sumarse',
+        },
+      ],
+      solicitudesEnviadas: [],
+    };
+    mockServidor.fallarSolicitud = false;
+    mockServidor.llamadas = [];
+  });
+
+  async function abrir() {
+    estado = undefined;
+    render(
+      <ProveedorComunidad>
+        <Captura />
+      </ProveedorComunidad>,
+    );
+    await waitFor(() => expect(estado?.publicaciones).toHaveLength(2));
+  }
+
+  it('lee personas, publicaciones y talleres del servidor (sin datos de prueba)', async () => {
+    await abrir();
+    expect(estado!.personas.map((p) => p.id)).toEqual(['beto']);
+    expect(estado!.publicaciones[0]).toMatchObject({
+      autores: [{ personaId: 'beto', nombre: 'Beto' }],
+      accion: 'Quiero aportar / postularme',
+    });
+    // Autora en Modo Foco: sin enlace a su perfil.
+    expect(estado!.publicaciones[1].autores[0].personaId).toBeUndefined();
+    expect(estado!.talleres.map((t) => t.id)).toEqual(['club-lectura']);
+  });
+
+  it('envía una solicitud y la marca como enviada', async () => {
+    await abrir();
+    let enviada = false;
+    await act(async () => {
+      enviada = await estado!.enviarSolicitud('p1', 'Me interesa');
+    });
+    expect(enviada).toBe(true);
+    expect(estado!.solicitudEnviada('p1')).toBe(true);
+  });
+
+  it('si el servidor no guarda la solicitud, avisa y no la marca', async () => {
+    await abrir();
+    mockServidor.fallarSolicitud = true;
+    let enviada = true;
+    await act(async () => {
+      enviada = await estado!.enviarSolicitud('p1', '');
+    });
+    expect(enviada).toBe(false);
+    expect(estado!.solicitudEnviada('p1')).toBe(false);
+  });
+
+  it('cambia a Modo Foco en el servidor', async () => {
+    await abrir();
+    await act(async () => {
+      await estado!.cambiarModo('foco');
+    });
+    expect(estado!.modo).toBe('foco');
+    expect(mockServidor.comunidad.modo).toBe('foco');
+  });
+
+  it('publica y borra la propia publicación', async () => {
+    await abrir();
+    await act(async () => {
+      await estado!.publicar({
+        tipo: 'iniciativa',
+        titulo: 'Mi iniciativa',
+        descripcion: 'Una iniciativa para toda la comunidad.',
+        etiquetas: [],
+      });
+    });
+    expect(estado!.publicaciones[0]).toMatchObject({ id: 'p-nueva', esPropia: true });
+    await act(async () => {
+      await estado!.eliminarPublicacion('p-nueva');
+    });
+    expect(estado!.publicaciones.map((p) => p.id)).toEqual(['p1', 'p2']);
   });
 });

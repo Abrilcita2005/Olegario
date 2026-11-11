@@ -7,6 +7,8 @@ require __DIR__ . '/../src/Base.php';
 require __DIR__ . '/../src/Cuentas.php';
 require __DIR__ . '/../src/Reservas.php';
 require __DIR__ . '/../src/Agenda.php';
+require __DIR__ . '/../src/Comunidad.php';
+require __DIR__ . '/../src/Perfil.php';
 
 // Permite probar desde la versión web de la app (Expo en el navegador).
 header('Access-Control-Allow-Origin: *');
@@ -40,6 +42,16 @@ $rutas = [
     ['POST', '/eventos/{id}/inscripcion', 'inscribirme'],
     ['DELETE', '/eventos/{id}/inscripcion', 'darmeDeBaja'],
     ['GET', '/contenido', 'verContenido'],
+    ['GET', '/comunidad', 'verComunidad'],
+    ['PATCH', '/comunidad/modo', 'cambiarModoComunidad'],
+    ['POST', '/publicaciones', 'publicar'],
+    ['DELETE', '/publicaciones/{id}', 'eliminarPublicacion'],
+    ['POST', '/solicitudes', 'enviarSolicitud'],
+    ['GET', '/membresia', 'verMembresia'],
+    ['GET', '/paquetes', 'verPaquetes'],
+    ['GET', '/opiniones', 'verMisOpiniones'],
+    ['POST', '/valoraciones', 'valorarEspacio'],
+    ['POST', '/mensajes', 'enviarMensajeAlEquipo'],
 ];
 
 try {

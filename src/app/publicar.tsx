@@ -31,13 +31,15 @@ export default function PublicarScreen() {
   const [etiquetas, setEtiquetas] = useState('');
   const [errores, setErrores] = useState<ErroresPublicacion>({});
   const [enviando, setEnviando] = useState(false);
+  const [fallo, setFallo] = useState(false);
 
   const enviar = async () => {
     const encontrados = validarPublicacion({ tipo, busca, titulo, descripcion, etiquetas });
     setErrores(encontrados);
     if (Object.keys(encontrados).length > 0) return;
     setEnviando(true);
-    await publicar({
+    setFallo(false);
+    const publicada = await publicar({
       tipo,
       busca: tipo === 'colaborador' ? busca.trim() : undefined,
       titulo: titulo.trim(),
@@ -45,7 +47,8 @@ export default function PublicarScreen() {
       etiquetas: separarEtiquetas(etiquetas),
     });
     setEnviando(false);
-    router.back();
+    if (publicada) router.back();
+    else setFallo(true);
   };
 
   return (
@@ -96,6 +99,11 @@ export default function PublicarScreen() {
           value={etiquetas}
           onChangeText={setEtiquetas}
         />
+        {fallo ? (
+          <Texto variante="cuerpoChico" color="error" accessibilityRole="alert">
+            No pudimos publicar. Revisá tu conexión y probá de nuevo.
+          </Texto>
+        ) : null}
         <Boton texto="Publicar" tamano="grande" onPress={enviar} cargando={enviando} />
       </View>
     </PantallaSecundaria>

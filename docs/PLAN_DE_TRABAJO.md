@@ -143,7 +143,8 @@
 
 ## Etapa 13 — Integraciones, persistencia y backend
 
-- **Estado:** `Pendiente` (B-05)
+- **Estado:** `Completada (pendiente de autorización)`, 2026-11-11. Servidor Docker + PHP + MySQL (D-68);
+  pendientes de la responsable: probar Docker en su computadora y subir a Hostinger (D-69).
 - **Objetivo:** reemplazar los datos de prueba por datos reales según D-08 / P-02.
 - **Tareas:** crear el servicio elegido (con aprobación de costos) · autenticación real · esquema de datos (requiere aprobación) · reglas de acceso · migración de `services/` · notificaciones si se aprueban · carga inicial de contenido real.
 - **Criterios de aceptación:** cada flujo funciona con datos reales · la seguridad está verificada (sin secretos en el cliente, reglas por rol).

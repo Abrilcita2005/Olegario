@@ -227,4 +227,58 @@ const URL_PRUEBA = process.env.OLEGARIO_API_PRUEBA;
 
     expect(await cuentas.eliminarCuentaServidor()).toEqual({ ok: true });
   });
+
+  it('comunidad entre dos miembros y servicios del perfil', async () => {
+    const { cuentas, datos } = cargar(URL_PRUEBA ?? '');
+    globalThis.fetch = fetchPorHttp as typeof fetch;
+    const sello = Date.now();
+    const correoBeto = `beto+${sello}@ejemplo.com`;
+    const correoAna = `ana+${sello}@ejemplo.com`;
+
+    // Beto publica un proyecto.
+    await cuentas.registrarCuenta(
+      { nombre: 'Beto Real', correo: correoBeto, profesion: 'Dev' },
+      'clave-2-segura',
+    );
+    expect(
+      await datos.publicarServidor({
+        tipo: 'colaborador',
+        busca: 'Diseñador/a',
+        titulo: 'Proyecto real de Beto',
+        descripcion: 'Buscamos a alguien para diseñar las pantallas.',
+        etiquetas: ['Figma'],
+      }),
+    ).toBe(true);
+    await cuentas.cerrarSesionServidor();
+
+    // Ana lo ve, se postula y usa los servicios del perfil.
+    await cuentas.registrarCuenta(
+      { nombre: 'Ana Real', correo: correoAna, profesion: 'UX' },
+      'clave-1-segura',
+    );
+    const comunidad = await datos.leerComunidadServidor();
+    const proyecto = comunidad?.publicaciones.find((p) => p.titulo === 'Proyecto real de Beto');
+    expect(proyecto).toMatchObject({ esPropia: false, accion: 'Quiero aportar / postularme' });
+    expect(comunidad?.personas.some((p) => p.nombre === 'Beto Real')).toBe(true);
+    expect(await datos.enviarSolicitudServidor(proyecto!.id, 'Me interesa')).toBe(true);
+    expect((await datos.leerComunidadServidor())?.solicitudesEnviadas).toContain(proyecto!.id);
+    expect(await datos.cambiarModoServidor('foco')).toBe(true);
+    expect((await datos.leerComunidadServidor())?.modo).toBe('foco');
+
+    expect(await datos.leerMembresiaServidor()).toMatchObject({ plan: 'Plan Pro Creativo' });
+    expect(await datos.leerPaquetesServidor()).toEqual([]);
+    expect((await datos.leerBeneficiosServidor())?.map((b) => b.id)).toEqual(['promo-cafeteria']);
+    expect(await datos.valorarEspacioServidor('sala-acustica-focus', 5, 'Excelente')).toBe(true);
+    expect(await datos.enviarMensajeServidor('sugerencia', 'Más enchufes en la terraza.')).toBe(
+      true,
+    );
+    expect(await datos.enviarMensajeServidor('queja', 'corto')).toBe(false);
+    expect(await datos.leerOpinionesServidor()).toEqual({ valoraciones: 1, mensajes: 1 });
+    expect(await cuentas.eliminarCuentaServidor()).toEqual({ ok: true });
+
+    // Beto borra su publicación y su cuenta.
+    await cuentas.ingresarConCorreo(correoBeto, 'clave-2-segura');
+    expect(await datos.eliminarPublicacionServidor(proyecto!.id)).toBe(true);
+    expect(await cuentas.eliminarCuentaServidor()).toEqual({ ok: true });
+  });
 });

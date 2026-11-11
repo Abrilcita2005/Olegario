@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 
-import type { ModoComunidad, Persona, Publicacion } from '@/models/comunidad';
+import type { ModoComunidad, Persona, Publicacion, Taller } from '@/models/comunidad';
 import {
   COMUNIDAD_INICIAL,
   guardarComunidad,
@@ -16,6 +16,15 @@ import {
   type ComunidadGuardada,
   type PublicacionGuardada,
 } from '@/services/almacenamiento';
+import { apiConfigurada } from '@/services/api';
+import {
+  cambiarModoServidor,
+  eliminarPublicacionServidor,
+  enviarSolicitudServidor,
+  leerComunidadServidor,
+  publicarServidor,
+  type DatosComunidad,
+} from '@/services/datosServidor';
 
 import {
   personasDePrueba,
@@ -24,8 +33,9 @@ import {
 } from '../../data/mock/comunidad';
 import { useSesion } from './sesion';
 
-// Comunidad. PROVISIONAL (Etapa 10): personas, proyectos y talleres de prueba de Figma; el modo, las
-// solicitudes y las publicaciones propias se guardan en el teléfono. En la Etapa 13, en el servidor.
+// Comunidad. Con la API configurada (Etapa 13) todo viene del servidor (personas visibles, publicaciones,
+// talleres, Modo Foco y solicitudes). Sin servidor (y en las pruebas): personas, proyectos y talleres de
+// prueba de Figma; el modo, las solicitudes y las publicaciones propias se guardan en el teléfono (Etapa 10).
 
 export type NuevaPublicacion = Omit<PublicacionGuardada, 'id'>;
 
@@ -34,16 +44,112 @@ type EstadoComunidad = {
   cambiarModo: (modo: ModoComunidad) => Promise<void>;
   personas: Persona[];
   publicaciones: Publicacion[];
-  talleres: typeof talleresDePrueba;
+  talleres: Taller[];
   solicitudEnviada: (id: string) => boolean;
-  enviarSolicitud: (id: string, mensaje: string) => Promise<void>;
-  publicar: (datos: NuevaPublicacion) => Promise<void>;
+  // Devuelven false si no se pudo guardar (por ejemplo, sin conexión con el servidor).
+  enviarSolicitud: (id: string, mensaje: string) => Promise<boolean>;
+  publicar: (datos: NuevaPublicacion) => Promise<boolean>;
   eliminarPublicacion: (id: string) => Promise<void>;
 };
 
 const ContextoComunidad = createContext<EstadoComunidad | null>(null);
 
 export function ProveedorComunidad({ children }: { children: ReactNode }) {
+  return apiConfigurada ? (
+    <ProveedorComunidadServidor>{children}</ProveedorComunidadServidor>
+  ) : (
+    <ProveedorComunidadLocal>{children}</ProveedorComunidadLocal>
+  );
+}
+
+const COMUNIDAD_VACIA: DatosComunidad = {
+  modo: 'abierta',
+  personas: [],
+  publicaciones: [],
+  talleres: [],
+  solicitudesEnviadas: [],
+};
+
+function ProveedorComunidadServidor({ children }: { children: ReactNode }) {
+  const { tipoAcceso } = useSesion();
+  const [datos, setDatos] = useState<DatosComunidad>(COMUNIDAD_VACIA);
+
+  const recargar = useCallback(async () => {
+    const leidos = await leerComunidadServidor();
+    if (leidos) setDatos(leidos);
+  }, []);
+
+  // Solo miembros: el invitado no usa Comunidad (el servidor también se lo impide).
+  useEffect(() => {
+    if (tipoAcceso !== 'miembro') return;
+    let activo = true;
+    leerComunidadServidor().then((leidos) => {
+      if (activo && leidos) setDatos(leidos);
+    });
+    return () => {
+      activo = false;
+    };
+  }, [tipoAcceso]);
+
+  const cambiarModo = useCallback(
+    async (modo: ModoComunidad) => {
+      const anterior = datos.modo;
+      setDatos((actual) => ({ ...actual, modo }));
+      if (!(await cambiarModoServidor(modo))) setDatos((actual) => ({ ...actual, modo: anterior }));
+    },
+    [datos.modo],
+  );
+
+  const solicitudEnviada = useCallback(
+    (id: string) => datos.solicitudesEnviadas.includes(id),
+    [datos.solicitudesEnviadas],
+  );
+
+  const enviarSolicitud = useCallback(async (id: string, mensaje: string) => {
+    const enviada = await enviarSolicitudServidor(id, mensaje);
+    if (enviada)
+      setDatos((actual) => ({
+        ...actual,
+        solicitudesEnviadas: [...actual.solicitudesEnviadas.filter((e) => e !== id), id],
+      }));
+    return enviada;
+  }, []);
+
+  const publicar = useCallback(
+    async (nueva: NuevaPublicacion) => {
+      const publicada = await publicarServidor(nueva);
+      if (publicada) await recargar();
+      return publicada;
+    },
+    [recargar],
+  );
+
+  const eliminarPublicacion = useCallback(
+    async (id: string) => {
+      if (await eliminarPublicacionServidor(id)) await recargar();
+    },
+    [recargar],
+  );
+
+  const valor = useMemo(
+    () => ({
+      modo: datos.modo,
+      cambiarModo,
+      personas: datos.personas,
+      publicaciones: datos.publicaciones,
+      talleres: datos.talleres,
+      solicitudEnviada,
+      enviarSolicitud,
+      publicar,
+      eliminarPublicacion,
+    }),
+    [datos, cambiarModo, solicitudEnviada, enviarSolicitud, publicar, eliminarPublicacion],
+  );
+
+  return <ContextoComunidad.Provider value={valor}>{children}</ContextoComunidad.Provider>;
+}
+
+function ProveedorComunidadLocal({ children }: { children: ReactNode }) {
   const { perfilBasico } = useSesion();
   const [guardado, setGuardado] = useState<ComunidadGuardada>(COMUNIDAD_INICIAL);
 
@@ -87,20 +193,24 @@ export function ProveedorComunidad({ children }: { children: ReactNode }) {
   );
 
   const enviarSolicitud = useCallback(
-    (id: string, mensaje: string) =>
-      actualizar({ ...guardado, solicitudes: { ...guardado.solicitudes, [id]: mensaje } }),
+    async (id: string, mensaje: string) => {
+      await actualizar({ ...guardado, solicitudes: { ...guardado.solicitudes, [id]: mensaje } });
+      return true;
+    },
     [actualizar, guardado],
   );
 
   const publicar = useCallback(
-    (datos: NuevaPublicacion) =>
-      actualizar({
+    async (datos: NuevaPublicacion) => {
+      await actualizar({
         ...guardado,
         publicaciones: [
           ...guardado.publicaciones,
           { ...datos, id: `publicacion-${Date.now()}-${Math.random().toString(36).slice(2, 7)}` },
         ],
-      }),
+      });
+      return true;
+    },
     [actualizar, guardado],
   );
 

@@ -1,6 +1,7 @@
 import type { ImageSourcePropType } from 'react-native';
 
 import type { Evento } from '@/models/agenda';
+import type { ModoComunidad, Persona, Publicacion, Taller } from '@/models/comunidad';
 import type { Espacio } from '@/models/espacio';
 import type { Reserva } from '@/models/reserva';
 import type { ErrorReserva } from '@/utils/disponibilidad';
@@ -191,4 +192,168 @@ export async function cambiarInscripcionServidor(
   const ruta = `/eventos/${encodeURIComponent(eventoId)}/inscripcion`;
   const respuesta = await pedirApi(inscribir ? 'POST' : 'DELETE', ruta);
   return respuesta.ok;
+}
+
+// ───────────── Comunidad ─────────────
+export type PersonaApi = {
+  id: string;
+  nombre: string;
+  profesion: string;
+  fotoUrl: string | null;
+  sobreMi: string | null;
+  ofrezco: string | null;
+  busco: string | null;
+  disponible: boolean;
+};
+
+export type PublicacionApi = {
+  id: string;
+  tipo: Publicacion['tipo'];
+  busca: string | null;
+  titulo: string;
+  descripcion: string;
+  etiquetas: string[];
+  // id null: la persona autora está en Modo Foco (no se enlaza a su perfil).
+  autor: { id: string | null; nombre: string; profesion: string };
+  esPropia: boolean;
+};
+
+export type ComunidadApi = {
+  modo: ModoComunidad;
+  personas: PersonaApi[];
+  publicaciones: PublicacionApi[];
+  talleres: Omit<Taller, 'esDatoDePrueba'>[];
+  solicitudesEnviadas: string[];
+};
+
+export type DatosComunidad = {
+  modo: ModoComunidad;
+  personas: Persona[];
+  publicaciones: Publicacion[];
+  talleres: Taller[];
+  solicitudesEnviadas: string[];
+};
+
+export function personaDesdeApi(p: PersonaApi): Persona {
+  return {
+    id: p.id,
+    nombre: p.nombre,
+    profesion: p.profesion,
+    foto: p.fotoUrl ? { uri: p.fotoUrl } : undefined,
+    sobreMi: p.sobreMi ?? undefined,
+    ofrezco: p.ofrezco ?? undefined,
+    busco: p.busco ?? undefined,
+    disponible: p.disponible,
+  };
+}
+
+// Textos de los botones tomados de Figma (COMUNIDAD).
+const ACCION_PUBLICACION: Record<Publicacion['tipo'], string> = {
+  colaborador: 'Quiero aportar / postularme',
+  iniciativa: 'Me interesa colaborar',
+};
+
+export function publicacionDesdeApi(p: PublicacionApi): Publicacion {
+  return {
+    id: p.id,
+    tipo: p.tipo,
+    busca: p.busca ?? undefined,
+    titulo: p.titulo,
+    descripcion: p.descripcion,
+    etiquetas: p.etiquetas,
+    autores: [
+      { personaId: p.autor.id && !p.esPropia ? p.autor.id : undefined, nombre: p.autor.nombre },
+    ],
+    rolAutor: p.autor.profesion || undefined,
+    actividad: '',
+    accion: p.esPropia ? '' : ACCION_PUBLICACION[p.tipo],
+    esPropia: p.esPropia,
+  };
+}
+
+export async function leerComunidadServidor(): Promise<DatosComunidad | null> {
+  const respuesta = await pedirApi<ComunidadApi>('GET', '/comunidad');
+  if (!respuesta.ok) return null;
+  const d = respuesta.datos;
+  return {
+    modo: d.modo,
+    personas: d.personas.map(personaDesdeApi),
+    publicaciones: d.publicaciones.map(publicacionDesdeApi),
+    talleres: d.talleres,
+    solicitudesEnviadas: d.solicitudesEnviadas,
+  };
+}
+
+export async function cambiarModoServidor(modo: ModoComunidad): Promise<boolean> {
+  return (await pedirApi('PATCH', '/comunidad/modo', { modo })).ok;
+}
+
+export type NuevaPublicacionApi = {
+  tipo: Publicacion['tipo'];
+  busca?: string;
+  titulo: string;
+  descripcion: string;
+  etiquetas: string[];
+};
+
+export async function publicarServidor(datos: NuevaPublicacionApi): Promise<boolean> {
+  return (await pedirApi('POST', '/publicaciones', datos)).ok;
+}
+
+export async function eliminarPublicacionServidor(id: string): Promise<boolean> {
+  return (await pedirApi('DELETE', `/publicaciones/${encodeURIComponent(id)}`)).ok;
+}
+
+// `destino`: id de la persona, la publicación o el taller.
+export async function enviarSolicitudServidor(destino: string, mensaje: string): Promise<boolean> {
+  return (await pedirApi('POST', '/solicitudes', { destino, mensaje })).ok;
+}
+
+// ───────────── Servicios del Perfil ─────────────
+export type MembresiaApi = {
+  plan: string;
+  acceso: string;
+  vence: string | null; // AAAA-MM-DD
+  renovacionAutomatica: boolean;
+};
+
+export type PaqueteApi = { id: string; descripcion: string; estado: string };
+
+export type BeneficioApi = { id: string; titulo: string; detalle: string; lugar: string };
+
+export type CantidadOpiniones = { valoraciones: number; mensajes: number };
+
+export async function leerMembresiaServidor(): Promise<MembresiaApi | null> {
+  const respuesta = await pedirApi<MembresiaApi | null>('GET', '/membresia');
+  return respuesta.ok ? respuesta.datos : null;
+}
+
+export async function leerPaquetesServidor(): Promise<PaqueteApi[] | null> {
+  const respuesta = await pedirApi<PaqueteApi[]>('GET', '/paquetes');
+  return respuesta.ok ? respuesta.datos : null;
+}
+
+export async function leerBeneficiosServidor(): Promise<BeneficioApi[] | null> {
+  const respuesta = await pedirApi<{ beneficios: BeneficioApi[] }>('GET', '/contenido');
+  return respuesta.ok ? respuesta.datos.beneficios : null;
+}
+
+export async function leerOpinionesServidor(): Promise<CantidadOpiniones | null> {
+  const respuesta = await pedirApi<CantidadOpiniones>('GET', '/opiniones');
+  return respuesta.ok ? respuesta.datos : null;
+}
+
+export async function valorarEspacioServidor(
+  espacioId: string,
+  estrellas: number,
+  comentario: string,
+): Promise<boolean> {
+  return (await pedirApi('POST', '/valoraciones', { espacioId, estrellas, comentario })).ok;
+}
+
+export async function enviarMensajeServidor(
+  tipo: 'queja' | 'sugerencia',
+  texto: string,
+): Promise<boolean> {
+  return (await pedirApi('POST', '/mensajes', { tipo, texto })).ok;
 }
