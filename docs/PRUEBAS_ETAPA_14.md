@@ -45,9 +45,21 @@ A revisar en el iPhone: el centrado de "Siguiente" y los títulos (no se pueden 
 Segunda prueba (2026-11-12): los títulos ya no se cortan (OK). Correcciones de D-76; captura:
 `docs/capturas-app/etapa-14/correcciones-ronda-2.png`.
 
-## 4. Lo que no se puede probar en la nube (necesita a la responsable)
+## 4. Servidor definitivo en Hostinger (2026-11-11)
+
+- API publicada en `https://www.supervisioncct3.com/olegario` (hosting compartido, PHP 8.1, D-79 y D-80).
+- **84 de 84 comprobaciones** contra Hostinger (cuentas de prueba creadas y borradas por la herramienta).
+- Carpeta privada `olegario-api` (código y contraseña): bloqueada desde internet (403).
+- Error encontrado y corregido: borrar una publicación daba error 500 (la base de Hostinger rechazaba
+  comparar el rol dentro de la consulta). Una falla momentánea al quitar la foto fue el caché de Hostinger.
+- App (versión web) conectada a Hostinger: registro → Home → Espacios con los 21 espacios reales, sin errores
+  de consola; la cuenta de prueba se borró al final.
+
+## 5. Lo que no se puede probar en la nube (necesita a la responsable)
 
 - Recorrido en un **teléfono real** iOS y Android (L-04).
 - **VoiceOver** (iPhone) y **TalkBack** (Android).
 - **Texto grande** del sistema.
-- **Pruebas de uso con 3 personas**: guion, tareas y planilla en `docs/PRUEBAS_DE_USO.md`.
+- **Pruebas de uso con 3 personas**: guion, tareas y planilla en `docs/PRUEBAS_DE_USO.md`. La responsable
+  informó que se hicieron desde su teléfono; no se entregaron las planillas, así que no hay correcciones
+  derivadas de ellas. La etapa se cierra a pedido de la responsable ("La etapa 14 finalizala", 2026-11-11).

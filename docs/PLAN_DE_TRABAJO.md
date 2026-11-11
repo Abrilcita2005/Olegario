@@ -152,7 +152,7 @@
 
 ## Etapa 14 — Pruebas funcionales, visuales, de accesibilidad y de uso
 
-- **Estado:** `En curso` (autorizada el 2026-11-11)
+- **Estado:** `Completada` (2026-11-11)
 - **Tareas:** recorrido completo en iOS y Android · comparación con Figma pantalla por pantalla · VoiceOver/TalkBack · texto grande · sin conexión · **pruebas de uso con al menos 3 personas ajenas al desarrollo** (guion, 5 a 7 tareas, planilla: ¿empezó sola?, dudas, malentendidos, tiempo, ¿completó?, ¿le sirvió?) · correcciones en orden: comprensión → flujo → errores → estética.
 - **Criterios de aceptación:** sin errores bloqueantes · planilla completa y correcciones hechas.
 
