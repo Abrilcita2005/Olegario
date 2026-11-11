@@ -47,8 +47,15 @@ type Panel = 'horas' | 'plan' | 'planes' | 'eliminar' | null;
 // perfil, cerrar sesión y eliminar cuenta al final.
 export default function PerfilScreen() {
   const ahora = useAhora();
-  const { fotoPerfil, cambiarFotoPerfil, salir, tipoAcceso, perfilBasico, eliminarCuenta } =
-    useSesion();
+  const {
+    fotoPerfil,
+    cambiarFotoPerfil,
+    salir,
+    tipoAcceso,
+    perfilBasico,
+    eliminarCuenta,
+    verBienvenidaDeNuevo,
+  } = useSesion();
   const { reservas, horas, cargarHorasExtra } = useReservas();
   const { modo } = useComunidad();
   const [aviso, setAviso] = useState<string | null>(null);
@@ -290,6 +297,18 @@ export default function PerfilScreen() {
           </Texto>
         </Pressable>
       </View>
+
+      {/* Para volver a ver la bienvenida (y para las pruebas de uso); discreto, al final. */}
+      <Pressable
+        onPress={verBienvenidaDeNuevo}
+        accessibilityRole="link"
+        hitSlop={10}
+        style={styles.eliminar}
+      >
+        <Texto variante="enlaceChico" color="textoTerciario">
+          Volver a ver la bienvenida
+        </Texto>
+      </Pressable>
 
       <PieHospitalidad />
 

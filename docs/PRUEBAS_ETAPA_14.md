@@ -42,6 +42,9 @@ detalle de eventos y del coworkeo itinerante, y Comunidad (Modo Foco en una lín
 renglones con "CONECTÁ" en degradado). Captura: `docs/capturas-app/etapa-14/correcciones-prueba-telefono.png`.
 A revisar en el iPhone: el centrado de "Siguiente" y los títulos (no se pueden ver desde la nube).
 
+Segunda prueba (2026-11-12): los títulos ya no se cortan (OK). Correcciones de D-76; captura:
+`docs/capturas-app/etapa-14/correcciones-ronda-2.png`.
+
 ## 4. Lo que no se puede probar en la nube (necesita a la responsable)
 
 - Recorrido en un **teléfono real** iOS y Android (L-04).

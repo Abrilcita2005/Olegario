@@ -25,6 +25,8 @@ type Props = {
   deshabilitado?: boolean;
   cargando?: boolean;
   etiquetaAccesible?: string;
+  // El texto en una sola línea (si no entra, la letra se achica un poco).
+  unaLinea?: boolean;
   style?: ViewStyle;
 };
 
@@ -47,6 +49,7 @@ export function Boton({
   deshabilitado = false,
   cargando = false,
   etiquetaAccesible,
+  unaLinea = false,
   style,
 }: Props) {
   const inactivo = deshabilitado || cargando;
@@ -74,6 +77,9 @@ export function Boton({
                 : 'boton'
         }
         color={esSiguiente && presionado ? 'textoBoton' : colorTexto[variante]}
+        numberOfLines={unaLinea ? 1 : undefined}
+        adjustsFontSizeToFit={unaLinea}
+        minimumFontScale={0.75}
         style={[styles.texto, esSiguiente && styles.textoSiguiente]}
       >
         {texto}

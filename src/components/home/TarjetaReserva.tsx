@@ -63,6 +63,7 @@ export function TarjetaReserva({ reserva, estado, horario, onVerDetalles, onComo
           variante="contorno"
           icono={<IconoQr color={colores.textoSobreOscuro} />}
           onPress={onVerDetalles}
+          unaLinea
           style={styles.botonPrincipal}
         />
         <BotonIcono

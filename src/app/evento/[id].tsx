@@ -62,13 +62,16 @@ export default function EventoScreen() {
   return (
     <PantallaSecundaria>
       <View style={styles.contenido}>
+        {/* Foto en un cuadrado con esquinas redondeadas, dentro de los márgenes (antes se cortaba al ras). */}
         {evento.foto ? (
-          <Image
-            source={evento.foto}
-            style={styles.foto}
-            resizeMode="cover"
-            accessibilityIgnoresInvertColors
-          />
+          <View style={styles.marcoFoto}>
+            <Image
+              source={evento.foto}
+              style={styles.foto}
+              resizeMode="cover"
+              accessibilityIgnoresInvertColors
+            />
+          </View>
         ) : null}
         <EtiquetaMarca texto={evento.etiqueta} />
         <Texto variante="tituloAcceso" accessibilityRole="header">
@@ -119,7 +122,14 @@ export default function EventoScreen() {
 
 const styles = StyleSheet.create({
   contenido: { gap: espacio.base },
-  foto: { width: '100%', aspectRatio: 4 / 3, borderRadius: radios.xxl },
+  marcoFoto: {
+    width: '100%',
+    aspectRatio: 1,
+    borderRadius: radios.xxl,
+    overflow: 'hidden',
+    backgroundColor: colores.superficie,
+  },
+  foto: { width: '100%', height: '100%' },
   datos: { gap: espacio.m },
   dato: { flexDirection: 'row', alignItems: 'center', gap: espacio.m },
   flex: { flex: 1 },

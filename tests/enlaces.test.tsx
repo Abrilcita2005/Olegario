@@ -42,7 +42,7 @@ it('en Espacios, la barra "Buscá tu mesa en tiempo real" abre el plano (con el 
   await act(async () => {
     fireEvent.press(
       screen.getByRole('button', {
-        name: 'Buscá tu mesa en tiempo real: abrir el plano de Olegario',
+        name: 'Buscá tu espacio en tiempo real: abrir el plano de Olegario',
       }),
     );
   });

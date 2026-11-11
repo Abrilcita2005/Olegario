@@ -9,6 +9,7 @@ import {
 } from 'react';
 
 import {
+  borrarBienvenidaVista,
   borrarDatosDeCuenta,
   guardarBienvenidaVista,
   guardarFotoPerfil,
@@ -33,6 +34,16 @@ import { apiConfigurada } from '@/services/api';
 
 const OK: ResultadoCuenta = { ok: true };
 
+// "sofi.valenzuela@estudio.com" → "Sofi Valenzuela"; un usuario sin @ se usa tal cual.
+export function nombreDesdeUsuario(usuario: string): string {
+  const base = usuario.includes('@') ? usuario.split('@')[0] : usuario;
+  return base
+    .split(/[._-]+/)
+    .filter(Boolean)
+    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+    .join(' ');
+}
+
 type Sesion = {
   cargando: boolean;
   bienvenidaVista: boolean;
@@ -45,6 +56,8 @@ type Sesion = {
   // Con la API también la sube al servidor (para que la vea la Comunidad). Devuelve el error si falló.
   cambiarFotoPerfil: (foto: string | null) => Promise<ResultadoCuenta>;
   marcarBienvenidaVista: () => Promise<void>;
+  // Vuelve a mostrar la bienvenida (sin cerrar la sesión); al terminarla se vuelve a la app.
+  verBienvenidaDeNuevo: () => Promise<void>;
   // Con la API: miembro con correo y contraseña, invitado sin correo. Sin servidor: simulado.
   ingresar: (
     tipo: TipoAcceso,
@@ -100,6 +113,11 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
     await guardarBienvenidaVista();
   }, []);
 
+  const verBienvenidaDeNuevo = useCallback(async () => {
+    setBienvenidaVista(false);
+    await borrarBienvenidaVista();
+  }, []);
+
   const ingresar = useCallback(
     async (tipo: TipoAcceso, credenciales?: { correo: string; contrasena: string }) => {
       if (apiConfigurada) {
@@ -119,6 +137,17 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
           await guardarFotoPerfil(cuenta.fotoUrl);
         }
         tipo = cuenta?.tipoAcceso ?? tipo;
+      } else if (tipo === 'miembro' && credenciales?.correo) {
+        // Sin servidor: se muestra el nombre con el que la persona ingresó (Etapa 14). Si ya se había
+        // registrado en este teléfono con ese correo, se usa su perfil.
+        const guardado = (await leerEstadoGuardado().catch(() => null))?.perfilBasico;
+        const correo = credenciales.correo.trim();
+        const perfil =
+          guardado && guardado.correo.toLowerCase() === correo.toLowerCase()
+            ? guardado
+            : { nombre: nombreDesdeUsuario(correo), correo, profesion: '' };
+        setPerfilBasico(perfil);
+        await guardarPerfilBasico(perfil);
       }
       setTipoAcceso(tipo);
       await guardarTipoAcceso(tipo);
@@ -191,6 +220,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
       registrarse,
       cambiarFotoPerfil,
       marcarBienvenidaVista,
+      verBienvenidaDeNuevo,
       ingresar,
       salir,
       actualizarPerfil,
@@ -207,6 +237,7 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
       registrarse,
       cambiarFotoPerfil,
       marcarBienvenidaVista,
+      verBienvenidaDeNuevo,
       ingresar,
       salir,
       actualizarPerfil,

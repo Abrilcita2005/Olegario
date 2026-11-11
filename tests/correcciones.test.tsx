@@ -35,3 +35,23 @@ it('detalle del coworkeo itinerante (novedad)', async () => {
   expect(await screen.findByRole('header', { name: 'Coworkeo itinerante' })).toBeTruthy();
   expect(screen.getByText(/jornada de trabajo fuera de Olegario/)).toBeTruthy();
 });
+
+it('al iniciar sesión, el Perfil muestra el nombre con el que se ingresó', async () => {
+  await AsyncStorage.clear();
+  await AsyncStorage.setItem('olegario.bienvenidaVista', 'si');
+  await renderRouter('./src/app', { initialUrl: '/iniciar-sesion' });
+  await waitFor(() => expect(screen).toHavePathname('/iniciar-sesion'));
+  await fireEvent.changeText(screen.getByLabelText('Email o usuario'), 'abril.chaves@ejemplo.com');
+  await fireEvent.changeText(screen.getByLabelText('Contraseña'), 'clave-segura-1');
+  await fireEvent.press(screen.getByRole('button', { name: 'Iniciar sesión' }));
+  await waitFor(() => expect(screen).toHavePathname('/'));
+  expect(JSON.parse((await AsyncStorage.getItem('olegario.perfilBasico')) ?? '{}').nombre).toBe(
+    'Abril Chaves',
+  );
+});
+
+it('desde el Perfil se puede volver a ver la bienvenida', async () => {
+  await abrir('/perfil');
+  await fireEvent.press(screen.getByRole('link', { name: 'Volver a ver la bienvenida' }));
+  await waitFor(() => expect(screen).toHavePathname('/bienvenida'));
+});

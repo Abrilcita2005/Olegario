@@ -14,8 +14,15 @@ export function BannerMarca() {
       end={{ x: 0.7, y: 1 }}
       style={styles.banner}
     >
-      <Texto variante="cita" color="textoSobreOscuro" style={styles.texto}>
-        “Impulsamos personas, conectamos oportunidades y expandimos experiencias de trabajo.”
+      {/* Exactamente 4 líneas (pedido de la responsable); si no entran, la letra se achica un poco. */}
+      <Texto
+        variante="cita"
+        color="textoSobreOscuro"
+        numberOfLines={4}
+        adjustsFontSizeToFit
+        minimumFontScale={0.8}
+      >
+        {'“Impulsamos personas,\nconectamos oportunidades\ny expandimos experiencias\nde trabajo.”'}
       </Texto>
     </LinearGradient>
   );
@@ -28,5 +35,4 @@ const styles = StyleSheet.create({
     minHeight: 131,
     justifyContent: 'center',
   },
-  texto: { maxWidth: 260 },
 });

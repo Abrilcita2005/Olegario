@@ -59,6 +59,11 @@ export async function guardarBienvenidaVista(): Promise<void> {
   await AsyncStorage.setItem(CLAVES.bienvenidaVista, 'si');
 }
 
+// Para volver a ver la bienvenida desde el Perfil (Etapa 14).
+export async function borrarBienvenidaVista(): Promise<void> {
+  await AsyncStorage.removeItem(CLAVES.bienvenidaVista);
+}
+
 export async function guardarTipoAcceso(tipo: TipoAcceso | null): Promise<void> {
   if (tipo) await AsyncStorage.setItem(CLAVES.tipoAcceso, tipo);
   else await AsyncStorage.removeItem(CLAVES.tipoAcceso);

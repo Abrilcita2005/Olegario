@@ -10,7 +10,7 @@ import { TarjetaEspacio } from '@/components/espacios/TarjetaEspacio';
 import { IconoCamara } from '@/components/iconos/Iconos';
 import type { Submarca } from '@/components/marca/IconoSubmarca';
 import { PantallaBase } from '@/components/navegacion/PantallaBase';
-import { Chip, EstadoVacio, Texto, TextoDegradado } from '@/components/ui';
+import { Boton, Chip, EstadoVacio, Texto, TextoDegradado } from '@/components/ui';
 import { useAgenda } from '@/estado/agenda';
 import { useReservas } from '@/estado/reservas';
 import { useSesion } from '@/estado/sesion';
@@ -102,25 +102,19 @@ export default function EspaciosScreen() {
           onElegir={elegirDia}
         />
 
-        {/* "Buscá tu mesa en tiempo real" abre el plano en vivo (pedido de la responsable, Etapa 14). */}
-        <Pressable
+        {/* Botón que abre el plano en vivo (pedido de la responsable, Etapa 14). */}
+        <Boton
+          texto="Buscá tu espacio en tiempo real"
+          variante="secundario"
+          icono={<IconoCamara color={colores.acentoLima} />}
+          unaLinea
           onPress={async () => {
             await abrirPlanoDeReservas();
             // Al volver del plano, se leen de nuevo las reservas (lo reservado ahí aparece acá).
             await actualizar();
           }}
-          accessibilityRole="button"
-          accessibilityLabel="Buscá tu mesa en tiempo real: abrir el plano de Olegario"
-          style={({ pressed }) => [styles.buscador, pressed && styles.presionado]}
-        >
-          <IconoCamara color={colores.textoTerciario} />
-          <Texto variante="cuerpo" color="textoTerciario" style={styles.textoBuscador}>
-            Buscá tu mesa en tiempo real
-          </Texto>
-          <Texto variante="cuerpoChicoDestacado" color="acentoLima">
-            Ver plano
-          </Texto>
-        </Pressable>
+          etiquetaAccesible="Buscá tu espacio en tiempo real: abrir el plano de Olegario"
+        />
         {PLANO_CONECTADO_AL_SERVIDOR && apiConfigurada ? null : (
           <Texto variante="meta" color="textoTerciario">
             Las reservas que hagas en el plano se guardan aparte: no aparecen en tus reservas de la
@@ -264,17 +258,6 @@ const styles = StyleSheet.create({
   cabecera: { gap: espacio.l, marginBottom: espacio.base },
   titulo: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-end', columnGap: espacio.s },
   controles: { gap: espacio.base },
-  buscador: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: espacio.l,
-    minHeight: 48,
-    paddingHorizontal: espacio.base,
-    borderRadius: radios.xxl,
-    backgroundColor: colores.superficie,
-  },
-  textoBuscador: { flex: 1, paddingVertical: espacio.l },
-  presionado: { opacity: 0.85 },
   filtros: { gap: espacio.m, paddingVertical: espacio.xxs },
   filtro: {
     minHeight: 32,

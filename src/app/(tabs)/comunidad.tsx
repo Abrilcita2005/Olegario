@@ -92,15 +92,23 @@ export default function ComunidadScreen() {
         <IconoSubmarca submarca="network" tamano={28} />
         <Texto variante="categoria">OLE/NETWORK • Comunidad</Texto>
       </View>
-      {/* Tres renglones y "CONECTÁ" en degradado, como los otros títulos (pedido de la responsable). */}
+      {/* Dos renglones ("Colaborá, sumate / y conectá") con "CONECTÁ" en degradado (pedido de la responsable). */}
       <View accessible accessibilityRole="header" accessibilityLabel="Colaborá, sumate, conectá">
-        <Texto variante="tituloAcceso" style={styles.mayusculas}>
-          Colaborá,
+        <Texto
+          variante="tituloAcceso"
+          style={styles.mayusculas}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.7}
+        >
+          Colaborá, sumate
         </Texto>
-        <Texto variante="tituloAcceso" style={styles.mayusculas}>
-          Sumate,
-        </Texto>
-        <TextoDegradado variante="tituloAcceso">CONECTÁ</TextoDegradado>
+        <View style={styles.filaTitulo}>
+          <Texto variante="tituloAcceso" style={styles.mayusculas}>
+            y{' '}
+          </Texto>
+          <TextoDegradado variante="tituloAcceso">CONECTÁ</TextoDegradado>
+        </View>
       </View>
       <Texto variante="cuerpo" style={styles.bajada}>
         Proyectos que buscan tu talento, iniciativas de la comunidad y sinergias en Olegario.
@@ -347,6 +355,7 @@ function Seccion({ antetitulo, titulo }: { antetitulo: string; titulo: string })
 }
 
 const styles = StyleSheet.create({
+  filaTitulo: { flexDirection: 'row', alignItems: 'flex-end' },
   modo: {
     gap: espacio.m,
     padding: espacio.l,

@@ -23,13 +23,7 @@ export function TarjetaNovedad({ novedad, inscripto, fotoPerfil, onAccion, onVer
   const mas = (novedad.participantes?.mas ?? 0) + (inscripto ? 1 : 0);
   return (
     <View style={styles.tarjeta}>
-      <Pressable
-        onPress={onVerDetalle}
-        disabled={!onVerDetalle}
-        accessibilityRole={onVerDetalle ? 'button' : undefined}
-        accessibilityLabel={onVerDetalle ? `${novedad.titulo}. Ver más información` : undefined}
-        style={styles.marcoFoto}
-      >
+      <View style={styles.marcoFoto}>
         <Image
           source={novedad.foto}
           resizeMode="cover"
@@ -69,7 +63,7 @@ export function TarjetaNovedad({ novedad, inscripto, fotoPerfil, onAccion, onVer
             </View>
           </View>
         ) : null}
-      </Pressable>
+      </View>
 
       <View style={styles.fila}>
         {novedad.descuento ? (
@@ -86,9 +80,24 @@ export function TarjetaNovedad({ novedad, inscripto, fotoPerfil, onAccion, onVer
       </View>
 
       <View style={styles.pie}>
-        <Texto variante="cuerpoChico" color="textoSecundario" style={styles.texto}>
-          {novedad.texto}
-        </Texto>
+        <View style={styles.texto}>
+          <Texto variante="cuerpoChico" color="textoSecundario">
+            {novedad.texto}
+          </Texto>
+          {/* Abre el detalle (Etapa 14); la tarjeta queda igual que antes. */}
+          {onVerDetalle ? (
+            <Pressable
+              onPress={onVerDetalle}
+              hitSlop={10}
+              accessibilityRole="link"
+              accessibilityLabel={`Ver más sobre ${novedad.titulo}`}
+            >
+              <Texto variante="cuerpoChicoDestacado" color="acentoLima">
+                Ver más
+              </Texto>
+            </Pressable>
+          ) : null}
+        </View>
         <Pressable
           hitSlop={8}
           onPress={onAccion}
@@ -164,7 +173,7 @@ const styles = StyleSheet.create({
     backgroundColor: colores.naranjaTitulo,
   },
   pie: { flexDirection: 'row', alignItems: 'center', gap: espacio.l },
-  texto: { flex: 1 },
+  texto: { flex: 1, gap: espacio.xs },
   boton: {
     flexDirection: 'row',
     alignItems: 'center',
