@@ -4,9 +4,28 @@ Objetivo: ver si personas que **no participaron del desarrollo** entienden y usa
 Mínimo **3 personas** (idealmente distintas entre sí: alguien que ya trabaja en un coworking, alguien
 que trabaja por su cuenta y alguien poco habituado a las apps). Cada prueba lleva unos 20 minutos.
 
+## Cómo abrir la app en el teléfono (Expo Go)
+
+Se hace desde **tu computadora** (la misma donde tenés Docker). La computadora y el teléfono tienen que
+estar en la **misma red wifi**. Se hace una sola vez lo del punto 1; el resto, cada vez que pruebes.
+
+1. Preparación (una sola vez):
+   - Instalá **Node.js 22** desde https://nodejs.org (versión LTS) y **Git** desde https://git-scm.com.
+   - En el teléfono de prueba, instalá **Expo Go** (App Store o Google Play, es gratis).
+   - En una terminal de la computadora, bajá el proyecto y elegí la rama de trabajo:
+     `git clone https://github.com/Abrilcita2005/Olegario.git` → `cd Olegario` →
+     `git checkout claude/gallant-fermi-66n1rh` → `npm install`.
+2. Cada vez que pruebes: en la carpeta `Olegario`, `git pull` y después `npm start`. Aparece un código QR.
+3. En el teléfono: con la cámara (iPhone) o desde Expo Go (Android), escaneá el QR. La app se abre.
+4. Si no abre porque no están en la misma red, cortá con Ctrl+C y probá con `npx expo start --tunnel`.
+
+Para las pruebas de uso alcanza con los **datos de prueba** (así arranca, sin servidor): no hace falta
+encender Docker. Entre una persona y otra, borrá los datos: Perfil → "Eliminar cuenta" (la app vuelve a
+la pantalla de Acceso, lista para crear otra cuenta).
+
 ## Antes de empezar
 
-- Usá un teléfono con la app abierta en la pantalla de **Bienvenida** (primera vez).
+- Dejá la app abierta en la pantalla de **Acceso** (o en la Bienvenida, si es la primera vez).
 - No expliques cómo funciona la app. Si la persona pregunta, respondé "¿Qué harías vos?" y anotá la duda.
 - Pedile que **piense en voz alta**: que diga lo que busca, lo que espera y lo que la confunde.
 - Medí el tiempo de cada tarea (desde que la leés hasta que termina o se rinde).

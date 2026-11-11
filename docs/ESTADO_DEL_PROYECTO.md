@@ -15,6 +15,7 @@
 
 | Fecha         | Mensaje de la responsable                                                                                  | Qué autorizó                                                                                                                                                                     |
 | ------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-11    | "1. dejalo como está 2. Mañana te paso el hostinger 3. Expo go"                                            | Textos de 9–10 px como Figma (D-74); Hostinger mañana (P-48 espera); pruebas de uso con Expo Go                                                                                  |
 | 2026-11-11    | "Bueno eso dsp lo vemos. Avancemos a la siguiente etapa"                                                   | Etapa 14: Pruebas funcionales, visuales, de accesibilidad y de uso (Hostinger queda para después)                                                                                |
 | 2026-11-11    | "Es MySQL"                                                                                                 | Hostinger usa MySQL (base `U275204779_Olegario`; falta confirmar mayúsculas/minúsculas)                                                                                          |
 | 2026-11-11    | "Quiero unir los dos sistemas" + respuestas                                                                | Plano de Vercel al servidor (deja Firebase), los 21 espacios del plano, entrada directa con código (tabla `codigos_acceso` aprobada) (D-73)                                      |
@@ -90,9 +91,7 @@
 
 ## Preguntas abiertas para la responsable
 
-- P-48: ¿sumamos "Recuperar contraseña" (envío de correos desde Hostinger)?
-- P-49: ¿subimos a 11 px los textos de 9–10 px de Figma?
-- Pruebas de uso y en teléfono real: ¿cómo acceden las 3 personas a la app (tu compu con Expo Go o una versión web de prueba)?
+- P-48: "Recuperar contraseña" se retoma con los datos de Hostinger (la responsable los pasa).
 
 - ¿Me pasás el enlace definitivo de "Conocé Olegario"? El actual es de prueba de Vercel y puede vencer.
 - Hostinger: ¿el nombre exacto de la base es `U275204779_Olegario` o en minúsculas (`u275204779_olegario`)? Confirmarlo en hPanel → Bases de datos. (Motor: MySQL, confirmado 2026-11-11.)

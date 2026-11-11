@@ -20,10 +20,10 @@ la consola, revisando accesibilidad básica y pantalla angosta.
 | Botones sin nombre para lectores de pantalla                                                | Accesib.    | Ninguno                                        |
 | Pantallas sin título para lectores de pantalla                                              | Accesib.    | Ninguna                                        |
 | Áreas táctiles menores a 44 px (chips, "Ver perfil", ojo de contraseña, "Eliminar cuenta"…) | Accesib.    | Corregido con área táctil extendida            |
-| Textos de 9–10 px que vienen de Figma (barra inferior, tarjetas del Home, chip "LIBRE")     | Accesib.    | **Pendiente de decisión (P-49)**               |
+| Textos de 9–10 px que vienen de Figma (barra inferior, tarjetas del Home, chip "LIBRE")     | Accesib.    | Se respetan como Figma (D-74)                  |
 | Pantalla de 320 px de ancho: nada se sale de la pantalla (solo las filas que se deslizan)   | Visual      | Sin problemas                                  |
 | Empaquetado iOS y Android                                                                   | Técnico     | Sin errores                                    |
-| "Recuperar contraseña" no funciona (el servidor no envía correos)                           | Función     | **Pendiente de decisión (P-48)**               |
+| "Recuperar contraseña" no funciona (el servidor no envía correos)                           | Función     | Se retoma con Hostinger (P-48)                 |
 
 ## 2. Comparación con Figma
 
