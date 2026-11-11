@@ -29,3 +29,8 @@ export const fotosDeEventos: Record<string, ImageSourcePropType> = {
   'evento-storytelling': require('../assets/imagenes/eventos/storytelling-emprendedores.jpg'),
   'evento-sunset-beats': require('../assets/imagenes/eventos/sunset-beats-vinyl.jpg'),
 };
+
+export const fotosDeNovedades: Record<string, ImageSourcePropType> = {
+  'promo-cafeteria': require('../assets/imagenes/novedades/promo-cafeteria.jpg'),
+  'coworkeo-itinerante': require('../assets/imagenes/novedades/coworkeo-itinerante.jpg'),
+};

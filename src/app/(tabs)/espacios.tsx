@@ -123,7 +123,8 @@ export default function EspaciosScreen() {
           contentContainerStyle={styles.filtros}
         >
           <Filtro texto="Todos" activo={!servicio} onPress={() => filtrar(null)} />
-          {SERVICIOS.map((s) => (
+          {/* Solo submarcas que tienen espacios (con los espacios reales no hay OLE/CAFÉ). */}
+          {SERVICIOS.filter((s) => espacios.some((e) => e.servicio === s)).map((s) => (
             <Filtro
               key={s}
               texto={NOMBRE_SERVICIO[s]}

@@ -1,12 +1,13 @@
 import type { ImageSourcePropType } from 'react-native';
 
 import type { Evento } from '@/models/agenda';
+import type { Novedad } from '@/models/novedad';
 import type { ModoComunidad, Persona, Publicacion, Taller } from '@/models/comunidad';
 import type { Espacio } from '@/models/espacio';
 import type { Reserva } from '@/models/reserva';
 import type { ErrorReserva } from '@/utils/disponibilidad';
 
-import { fotosDeEspacios, fotosDeEventos } from '../../data/fotosLocales';
+import { fotosDeEspacios, fotosDeEventos, fotosDeNovedades } from '../../data/fotosLocales';
 import { pedirApi } from './api';
 
 // Reservas y agenda con la API de Olegario (Etapa 13, D-68; direcciones en docs/BACKEND.md). Las reglas
@@ -358,4 +359,42 @@ export async function enviarMensajeServidor(
   texto: string,
 ): Promise<boolean> {
   return (await pedirApi('POST', '/mensajes', { tipo, texto })).ok;
+}
+
+// ───────────── Novedades ─────────────
+type NovedadApi = {
+  id: string;
+  titulo: string;
+  texto: string;
+  descuento: string | null;
+  fotoUrl: string | null;
+  accion: 'carta' | 'inscripcion';
+  eventoId: string | null;
+};
+
+// Novedades que carga el equipo, con la cantidad real de inscriptos al evento (sin decir quiénes).
+export async function leerNovedadesServidor(): Promise<Novedad[] | null> {
+  const [contenido, eventos] = await Promise.all([
+    pedirApi<{ novedades: NovedadApi[] }>('GET', '/contenido'),
+    pedirApi<EventoApi[]>('GET', '/eventos'),
+  ]);
+  if (!contenido.ok) return null;
+  const evento = (id: string | null) =>
+    eventos.ok && id ? eventos.datos.find((e) => e.id === id) : undefined;
+  return contenido.datos.novedades.map((n) => {
+    const e = evento(n.eventoId);
+    return {
+      id: n.id,
+      foto: foto(n.fotoUrl, fotosDeNovedades[n.id]),
+      descuento: n.descuento ?? undefined,
+      titulo: n.titulo,
+      texto: n.texto,
+      // Con datos reales no se promete escasez ("Últimos cupos"): se invita a inscribirse.
+      accion: { texto: n.accion === 'carta' ? 'Pedir al barista' : 'Inscribirme', tipo: n.accion },
+      eventoId: n.eventoId ?? undefined,
+      participantes: e
+        ? { iniciales: [], mas: Math.max(0, e.inscriptos - (e.inscripto ? 1 : 0)) }
+        : undefined,
+    };
+  });
 }

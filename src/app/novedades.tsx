@@ -5,9 +5,8 @@ import { TarjetaNovedad } from '@/components/novedades/TarjetaNovedad';
 import { Texto } from '@/components/ui';
 import { useAgenda } from '@/estado/agenda';
 import { useSesion } from '@/estado/sesion';
+import { useNovedades } from '@/hooks/useNovedades';
 import { colores, espacio, radios } from '@/theme';
-
-import { novedadesDePrueba } from '../../data/mock/novedades';
 
 // Novedades (Figma: NOVEDADES, "PULSO DE OLEGARIO"). Panel que sube desde abajo (aprobado 2026-10-28);
 // se cierra deslizando hacia abajo, con el botón atrás o con "Cerrar". Decisiones de la responsable
@@ -16,6 +15,7 @@ import { novedadesDePrueba } from '../../data/mock/novedades';
 export default function NovedadesScreen() {
   const { estaInscripto, alternarInscripcion } = useAgenda();
   const { fotoPerfil } = useSesion();
+  const novedades = useNovedades();
 
   return (
     <View style={styles.panel}>
@@ -39,18 +39,18 @@ export default function NovedadesScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.lista}>
-        {novedadesDePrueba.map((novedad) => (
+        {novedades.map((novedad) => (
           <TarjetaNovedad
             key={novedad.id}
             novedad={novedad}
             fotoPerfil={fotoPerfil}
-            inscripto={estaInscripto(novedad.id)}
+            inscripto={estaInscripto(novedad.eventoId ?? novedad.id)}
             onAccion={() => {
               if (novedad.accion.tipo === 'carta') {
                 router.back();
                 router.push('/carta-cafe');
               } else {
-                alternarInscripcion(novedad.id);
+                alternarInscripcion(novedad.eventoId ?? novedad.id);
               }
             }}
           />

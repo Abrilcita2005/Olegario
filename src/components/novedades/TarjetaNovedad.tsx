@@ -4,10 +4,10 @@ import { IconoCheck, IconoEtiqueta, IconoFlechaDerecha } from '@/components/icon
 import { Avatar, Texto } from '@/components/ui';
 import { colores, espacio, radios } from '@/theme';
 
-import type { NovedadDePrueba } from '../../../data/mock/novedades';
+import type { Novedad } from '@/models/novedad';
 
 type Props = {
-  novedad: NovedadDePrueba;
+  novedad: Novedad;
   inscripto: boolean;
   fotoPerfil: string | null;
   onAccion: () => void;
@@ -28,7 +28,8 @@ export function TarjetaNovedad({ novedad, inscripto, fotoPerfil, onAccion }: Pro
           style={styles.foto}
           accessibilityIgnoresInvertColors
         />
-        {novedad.participantes ? (
+        {/* Sin nadie inscripto no se muestra "+0". */}
+        {novedad.participantes && novedad.participantes.iniciales.length + mas > 0 ? (
           <View
             style={styles.participantes}
             accessible

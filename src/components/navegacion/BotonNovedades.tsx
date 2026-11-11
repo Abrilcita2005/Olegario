@@ -5,18 +5,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { IconoMegafono } from '@/components/iconos/Iconos';
 import { Texto } from '@/components/ui';
+import { useNovedades } from '@/hooks/useNovedades';
 import { colores, degradados, espacio, radios } from '@/theme';
-
-import { novedadesDePrueba } from '../../../data/mock/novedades';
 
 import { BARRA, BOTON_NOVEDADES } from './medidas';
 
 // Botón flotante persistente de Novedades (Figma: 178×45, sobre la barra inferior).
-// Abre el panel de Novedades. El contador sale de datos de prueba hasta el servidor (Etapa 13).
+// Abre el panel de Novedades. El contador cuenta las novedades (del servidor o, sin él, las de prueba).
 export function BotonNovedades() {
   const { bottom } = useSafeAreaInsets();
   // El contador muestra siempre cuántas novedades hay (decisión de la responsable, 2026-11-04).
-  const nuevas = novedadesDePrueba.length;
+  const nuevas = useNovedades().length;
   const textoContador = nuevas === 1 ? '1 nueva' : `${nuevas} nuevas`;
 
   return (

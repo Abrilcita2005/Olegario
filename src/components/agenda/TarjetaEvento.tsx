@@ -73,7 +73,7 @@ export function TarjetaEvento({ evento, inscripto, onInscribir }: Props) {
             />
           ))}
           <Texto variante="cuerpoChicoDestacado" color="textoSecundario" style={styles.cantidad}>
-            +{total} inscriptos
+            {total > 0 ? `+${total} inscriptos` : 'Sin inscriptos todavía'}
           </Texto>
         </View>
         <Pressable
