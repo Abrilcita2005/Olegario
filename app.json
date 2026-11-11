@@ -10,6 +10,8 @@
       "supportsTablet": false
     },
     "android": {
+      "package": "com.olegario.enmovimiento",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/imagenes/android-icon-foreground.png",
