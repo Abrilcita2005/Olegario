@@ -202,7 +202,11 @@ const URL_PRUEBA = process.env.OLEGARIO_API_PRUEBA;
     expect(inicial?.espacios.find((e) => e.id === 'puesto-1')?.foto).toBeDefined();
     expect(inicial?.horas).toEqual({ totales: 80, usadas: 0, disponibles: 80 });
 
-    const inicio = new Date(hoy.getTime() + 86_400_000 + 10 * 3_600_000); // mañana 10 hs
+    // Mañana a las 10 hs de Mendoza (13 hs UTC), dentro del horario de 8 a 20, en cualquier zona horaria.
+    const manana = new Date(Date.now() + 86_400_000);
+    const inicio = new Date(
+      Date.UTC(manana.getUTCFullYear(), manana.getUTCMonth(), manana.getUTCDate(), 13, 0, 0),
+    );
     const fin = new Date(inicio.getTime() + 3_600_000);
     const creada = await datos.crearReservaServidor('streaming-1', inicio, fin);
     expect(creada.ok).toBe(true);

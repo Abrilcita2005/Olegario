@@ -15,6 +15,7 @@
 
 | Fecha         | Mensaje de la responsable                                                                                  | Qué autorizó                                                                                                                                                                     |
 | ------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-11    | Datos de Hostinger (compartido, subcarpeta `/olegario`, base `u275204779_olegario`, PHP 8.3, casilla)      | Preparar la subida a Hostinger (D-79): API en subcarpeta, configuración fuera de `public_html`, paquete y guía                                                                   |
 | 2026-11-12    | Tercera lista ("no modifiques nada más")                                                                   | Solo: cerrar sesión → Bienvenida, panel de Novedades, interlineado del título de Comunidad (D-77)                                                                                |
 | 2026-11-12    | "avancemos" + segunda lista tras probar en el iPhone                                                       | Correcciones de D-76                                                                                                                                                             |
 | 2026-11-11    | Lista de cambios tras probar en el teléfono + respuestas                                                   | Correcciones de D-75; instalar `react-native-view-shot` y `expo-sharing`; columna `eventos.descripcion`; pedido del café simulado; la barra de Espacios abre el plano            |
@@ -97,7 +98,8 @@
 - P-48: "Recuperar contraseña" se retoma con los datos de Hostinger (la responsable los pasa).
 
 - ¿Me pasás el enlace definitivo de "Conocé Olegario"? El actual es de prueba de Vercel y puede vencer.
-- Hostinger: ¿el nombre exacto de la base es `U275204779_Olegario` o en minúsculas (`u275204779_olegario`)? Confirmarlo en hPanel → Bases de datos. (Motor: MySQL, confirmado 2026-11-11.)
+- Hostinger: datos recibidos (D-79). Falta que la responsable suba el paquete siguiendo `servidor/hostinger/GUIA.md`.
+- P-48: recuperar contraseña por correo necesita una tabla nueva de códigos y la contraseña de la casilla en `config.php`: falta aprobación.
 
 - ¿Alguna efeméride lleva beneficio en OLE/CAFÉ? ¿Aprobás los textos de `data/efemerides.ts`?
 - P-46: ¿sumamos la Vendimia (fecha variable)?

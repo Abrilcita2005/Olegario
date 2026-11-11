@@ -9,12 +9,25 @@ if (PHP_SAPI === 'cli-server' && is_file(__DIR__ . (parse_url($_SERVER['REQUEST_
     return false;
 }
 
-require __DIR__ . '/../src/Base.php';
-require __DIR__ . '/../src/Cuentas.php';
-require __DIR__ . '/../src/Reservas.php';
-require __DIR__ . '/../src/Agenda.php';
-require __DIR__ . '/../src/Comunidad.php';
-require __DIR__ . '/../src/Perfil.php';
+// Carpeta pública (esta): index.php, .htaccess y fotos/.
+const CARPETA_PUBLICA = __DIR__;
+
+// Carpeta privada (código y configuración), fuera del alcance de internet:
+//  * En Hostinger: `olegario-api/`, al lado de `public_html/` (ver servidor/hostinger/GUIA.md).
+//  * En Docker o en local: la carpeta de arriba (`servidor/api/`).
+$carpetaPrivada = is_dir(__DIR__ . '/../../olegario-api/src') ? __DIR__ . '/../../olegario-api' : __DIR__ . '/..';
+
+// Configuración del servidor (datos de la base). En Hostinger vive en olegario-api/config.php;
+// en Docker no existe y se usan las variables de entorno.
+$archivoConfig = $carpetaPrivada . '/config.php';
+define('CONFIG_SERVIDOR', is_file($archivoConfig) ? (array) require $archivoConfig : []);
+
+require $carpetaPrivada . '/src/Base.php';
+require $carpetaPrivada . '/src/Cuentas.php';
+require $carpetaPrivada . '/src/Reservas.php';
+require $carpetaPrivada . '/src/Agenda.php';
+require $carpetaPrivada . '/src/Comunidad.php';
+require $carpetaPrivada . '/src/Perfil.php';
 
 // Permite probar desde la versión web de la app (Expo en el navegador).
 header('Access-Control-Allow-Origin: *');
@@ -26,7 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 $metodo = $_SERVER['REQUEST_METHOD'];
-$ruta = rtrim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/', '/') ?: '/';
+$ruta = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';
+// Si la API vive en una subcarpeta (en Hostinger, /olegario), se le quita esa parte a la dirección.
+if (RUTA_BASE !== '' && str_starts_with($ruta, RUTA_BASE)) {
+    $ruta = substr($ruta, strlen(RUTA_BASE));
+}
+$ruta = rtrim($ruta, '/') ?: '/';
 
 // [método, patrón de la dirección, función]. {id} es una parte variable de la dirección.
 $rutas = [

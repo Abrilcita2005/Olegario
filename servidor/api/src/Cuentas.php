@@ -212,13 +212,13 @@ function actualizarMiPerfil(): never
 
 // Fotos de perfil: se guardan como archivo en public/fotos/ (con nombre al azar) y en la base solo
 // queda la ruta. Solo JPG, PNG o WEBP de hasta 2 MB.
-const CARPETA_FOTOS = __DIR__ . '/../public/fotos';
+const CARPETA_FOTOS = CARPETA_PUBLICA . '/fotos';
 const TIPOS_FOTO = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
 
 function borrarArchivoDeFoto(?string $ruta): void
 {
     if ($ruta && preg_match('#^fotos/[a-f0-9]{32}\.(jpg|png|webp)$#', $ruta)) {
-        @unlink(__DIR__ . '/../public/' . $ruta);
+        @unlink(CARPETA_PUBLICA . '/' . $ruta);
     }
 }
 
@@ -248,7 +248,7 @@ function cambiarMiFoto(): never
             throw new RuntimeException('No se pudo crear la carpeta de fotos.');
         }
         $ruta = 'fotos/' . bin2hex(random_bytes(16)) . '.' . TIPOS_FOTO[$tipo];
-        if (file_put_contents(__DIR__ . '/../public/' . $ruta, $bytes) === false) {
+        if (file_put_contents(CARPETA_PUBLICA . '/' . $ruta, $bytes) === false) {
             throw new RuntimeException('No se pudo guardar la foto.');
         }
     }

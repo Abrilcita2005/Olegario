@@ -13,12 +13,34 @@ final class ErrorApi extends Exception
     }
 }
 
+/**
+ * Un dato de configuración: primero la variable de entorno (Docker y pruebas locales) y si no,
+ * el archivo config.php de la carpeta privada (Hostinger). Nunca se escriben contraseñas en el código.
+ */
+function ajuste(string $nombre, string $porDefecto = ''): string
+{
+    $valor = getenv($nombre);
+    if ($valor !== false && $valor !== '') {
+        return $valor;
+    }
+    $config = defined('CONFIG_SERVIDOR') ? CONFIG_SERVIDOR : [];
+    return isset($config[$nombre]) && $config[$nombre] !== '' ? (string) $config[$nombre] : $porDefecto;
+}
+
+/**
+ * Subcarpeta donde vive la API (por ejemplo "/olegario" en Hostinger; "" en Docker).
+ * Se deduce de la ubicación de index.php; con el servidor de prueba de PHP siempre es "".
+ */
+define('RUTA_BASE', PHP_SAPI === 'cli-server'
+    ? ''
+    : rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), '/'));
+
 function db(): PDO
 {
     static $pdo = null;
     if ($pdo === null) {
-        $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8mb4', getenv('DB_HOST') ?: 'db', getenv('DB_NAME') ?: 'olegario');
-        $pdo = new PDO($dsn, getenv('DB_USER') ?: '', getenv('DB_PASSWORD') ?: '', [
+        $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8mb4', ajuste('DB_HOST', 'db'), ajuste('DB_NAME', 'olegario'));
+        $pdo = new PDO($dsn, ajuste('DB_USER'), ajuste('DB_PASSWORD'), [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
@@ -99,7 +121,7 @@ function urlPublica(?string $ruta): ?string
     }
     $esquema = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    return "{$esquema}://{$host}/" . ltrim($ruta, '/');
+    return "{$esquema}://{$host}" . RUTA_BASE . '/' . ltrim($ruta, '/');
 }
 
 /** Texto opcional: vacío → null. */
