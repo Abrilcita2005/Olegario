@@ -22,7 +22,7 @@ App (teléfono o web)  ──►  API en PHP (puerto 8080)  ──►  MySQL (ba
 | -------------------------------------- | ---------------------------------------------------------------- |
 | `servidor/docker-compose.yml`          | Los tres servicios: MySQL, la API y phpMyAdmin                   |
 | `servidor/.env.example`                | Plantilla de contraseñas (se copia como `servidor/.env`)         |
-| `servidor/db/01_esquema.sql`           | Tablas (**pendiente de aprobación**)                             |
+| `servidor/db/01_esquema.sql`           | Tablas (aprobado 2026-11-04)                                     |
 | `servidor/db/02_contenido_inicial.sql` | Los 21 espacios reales del plano, ejemplos de Figma y efemérides |
 | `servidor/db/03_codigos_acceso.sql`    | Códigos de un solo uso para entrar al plano desde la app (D-73)  |
 | `servidor/api/`                        | La API en PHP (`public/index.php` lista todas las direcciones)   |
