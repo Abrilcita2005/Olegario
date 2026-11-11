@@ -80,18 +80,19 @@
 
 ## Cómo retomar (para la próxima sesión)
 
-1. La Etapa 13 está terminada en local; **no** empezar la Etapa 14 sin autorización explícita.
-2. Servidor: `docs/BACKEND.md`. Para probar en la nube sin Docker: instalar `mysql-server-8.0` con apt,
-   cargar `servidor/db/` y correr la API con `php -S 127.0.0.1:8090 -t servidor/api/public servidor/api/public/index.php`
-   (con `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`). Comprobar con `php servidor/pruebas/probar_api.php`
-   y `OLEGARIO_API_PRUEBA=http://127.0.0.1:8090 npx jest tests/api.test.tsx`.
-3. Entorno "Olegario" (2026-11-11): permite las dos páginas de Vercel y prepara solo `npm ci` y MySQL
-   (sin probar todavía en una sesión nueva).
-4. Plano de reservas: repositorio `Abrilcita2005/olegario-reservas`, cambios en su rama
-   `claude/gallant-fermi-66n1rh` (sin publicar hasta Hostinger, D-73).
-5. Pendientes de la responsable: probar `docker compose up`, datos de Hostinger. Limitaciones L-08 y L-10 en `DECISIONES_Y_PENDIENTES.md`.
+1. Etapa 14 en curso. Hecho (2026-11-11): recorrido automático y correcciones, comparación con Figma,
+   kit de pruebas de uso. Informe: `docs/PRUEBAS_ETAPA_14.md`; kit: `docs/PRUEBAS_DE_USO.md`.
+2. Falta (con la responsable): pruebas en teléfono real, VoiceOver/TalkBack, texto grande y las pruebas
+   de uso con 3 personas; después, corregir en orden comprensión → flujo → errores → estética.
+3. Servidor para probar en la nube: `docs/BACKEND.md` (MySQL con apt y `php -S ... -t servidor/api/public`).
+4. Plano de reservas: `Abrilcita2005/olegario-reservas`, rama `claude/gallant-fermi-66n1rh` (D-73).
+5. No empezar la Etapa 15 sin autorización explícita.
 
 ## Preguntas abiertas para la responsable
+
+- P-48: ¿sumamos "Recuperar contraseña" (envío de correos desde Hostinger)?
+- P-49: ¿subimos a 11 px los textos de 9–10 px de Figma?
+- Pruebas de uso y en teléfono real: ¿cómo acceden las 3 personas a la app (tu compu con Expo Go o una versión web de prueba)?
 
 - ¿Me pasás el enlace definitivo de "Conocé Olegario"? El actual es de prueba de Vercel y puede vencer.
 - Hostinger: ¿el nombre exacto de la base es `U275204779_Olegario` o en minúsculas (`u275204779_olegario`)? Confirmarlo en hPanel → Bases de datos. (Motor: MySQL, confirmado 2026-11-11.)

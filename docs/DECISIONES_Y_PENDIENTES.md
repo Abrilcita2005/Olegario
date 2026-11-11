@@ -106,6 +106,9 @@
 
 - ~~P-47~~ **Resuelta 2026-11-11 (D-71)**, la responsable pidió que lo resolviera el equipo técnico ("solucionalo vos").
 
+- P-48 (Etapa 14): "Recuperar contraseña" necesita que el servidor envíe correos (se puede con el correo de Hostinger). ¿Lo sumamos o, por ahora, la recupera el equipo de Olegario a pedido?
+- P-49 (Etapa 14): los textos de 9–10 px de Figma (barra inferior, tarjetas del Home, chip "LIBRE", "2 nuevas") están por debajo de los 11 px recomendados. ¿Los subimos a 11 px o se respetan como Figma?
+
 ### Grupo 4 — Diseño (bloquea la Etapa 4)
 
 - **P-13** **Tipografías:** las pantallas usan Poppins, Manrope, Montserrat y DM Sans, pero la guía de estilo dice Vástago y San Francisco. ¿Cuál vale? ¿Tenés el archivo y la licencia de **Vástago**? Recomendación: D-09.
