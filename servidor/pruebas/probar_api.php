@@ -15,15 +15,40 @@ function pedir(string $metodo, string $ruta, ?array $datos = null, ?string $toke
     if ($token) {
         $encabezados[] = "Authorization: Bearer {$token}";
     }
-    $contexto = stream_context_create(['http' => [
+    $opciones = ['http' => [
         'method' => $metodo,
         'header' => implode("\r\n", $encabezados),
         'content' => $datos === null ? '' : json_encode($datos),
         'ignore_errors' => true,
-    ]]);
+    ]];
+    // Si la computadora sale a internet por un proxy (por ejemplo, el entorno en la nube), se usa.
+    $proxy = getenv('HTTPS_PROXY') ?: getenv('https_proxy');
+    if ($proxy && str_starts_with($base, 'https://')) {
+        $opciones['http']['proxy'] = preg_replace('#^https?://#', 'tcp://', $proxy);
+        $certificados = getenv('SSL_CERT_FILE') ?: getenv('CURL_CA_BUNDLE');
+        if ($certificados) {
+            $opciones['ssl'] = ['cafile' => $certificados];
+        }
+    }
+    $contexto = stream_context_create($opciones);
     $respuesta = file_get_contents($base . $ruta, false, $contexto);
     preg_match('#HTTP/\S+ (\d+)#', $http_response_header[0] ?? '', $m);
     return [(int) ($m[1] ?? 0), json_decode((string) $respuesta, true)];
+}
+
+/** Baja un archivo (por ejemplo una foto) con el mismo proxy que `pedir`; false si no existe. */
+function bajar(string $url): string|false
+{
+    $opciones = ['http' => ['ignore_errors' => false]];
+    $proxy = getenv('HTTPS_PROXY') ?: getenv('https_proxy');
+    if ($proxy && str_starts_with($url, 'https://')) {
+        $opciones['http']['proxy'] = preg_replace('#^https?://#', 'tcp://', $proxy);
+        $certificados = getenv('SSL_CERT_FILE') ?: getenv('CURL_CA_BUNDLE');
+        if ($certificados) {
+            $opciones['ssl'] = ['cafile' => $certificados];
+        }
+    }
+    return @file_get_contents($url, false, stream_context_create($opciones));
 }
 
 function comprobar(string $descripcion, bool $condicion, mixed $detalle = null): void
@@ -223,7 +248,7 @@ comprobar('el invitado no sube foto', $e === 403);
 [$e, $r] = pedir('PUT', '/cuentas/foto', ['foto' => $png], $ana);
 $urlFoto = $r['fotoUrl'] ?? '';
 comprobar('Ana sube su foto', $e === 200 && preg_match('#/fotos/[a-f0-9]{32}\.png$#', $urlFoto), $r);
-$archivo = @file_get_contents($urlFoto);
+$archivo = bajar($urlFoto);
 comprobar('la foto se puede ver desde la app', $archivo !== false && str_starts_with($archivo, "\x89PNG"));
 [$e, $r] = pedir('PATCH', '/cuentas/yo', ['nombre' => 'Ana María', 'profesion' => 'UX', 'sobreMi' => 'Diseño apps.', 'ofrezco' => 'Mentorías de UX', 'busco' => ''], $ana);
 comprobar('guarda sobre mí y ofrezco (y busco vacío queda sin texto)', $e === 200 && $r['perfil']['sobreMi'] === 'Diseño apps.' && $r['perfil']['busco'] === null, $r);
@@ -234,7 +259,7 @@ comprobar('editar solo nombre no borra el sobre mí', ($r['perfil']['sobreMi'] ?
 $anaVista = array_values(array_filter($r['personas'], fn ($p) => $p['nombre'] === 'Ana María'))[0] ?? [];
 comprobar('Beto ve la foto y el perfil de Ana', ($anaVista['fotoUrl'] ?? '') === $urlFoto && $anaVista['ofrezco'] === 'Mentorías de UX', $anaVista);
 [$e, $r] = pedir('PUT', '/cuentas/foto', ['foto' => null], $ana);
-comprobar('Ana quita su foto (y se borra el archivo)', $e === 200 && $r['fotoUrl'] === null && @file_get_contents($urlFoto) === false);
+comprobar('Ana quita su foto (y se borra el archivo)', $e === 200 && $r['fotoUrl'] === null && bajar($urlFoto) === false);
 [, $r] = pedir('PUT', '/cuentas/foto', ['foto' => $png], $ana);
 $urlFotoFinal = $r['fotoUrl'] ?? '';
 
@@ -266,7 +291,7 @@ comprobar('después de eliminarla, la sesión ya no sirve', $e === 401);
 [$e] = pedir('POST', '/cuentas/ingreso', ['correo' => $correoBeto, 'contrasena' => 'clave-segura-2']);
 comprobar('y no se puede volver a ingresar', $e === 401);
 pedir('DELETE', '/cuentas/yo', null, $ana);
-comprobar('al eliminar la cuenta se borra su foto', @file_get_contents($urlFotoFinal) === false);
+comprobar('al eliminar la cuenta se borra su foto', bajar($urlFotoFinal) === false);
 pedir('DELETE', '/cuentas/yo', null, $invitado);
 [$e] = pedir('POST', '/cuentas/salir', null, $ana);
 comprobar('salir sin sesión no rompe nada', $e === 200);

@@ -121,8 +121,16 @@ function publicar(): never
 function eliminarPublicacion(string $id): never
 {
     $usuario = miembroActual();
-    $consulta = db()->prepare('DELETE FROM publicaciones WHERE id = ? AND (autor_id = ? OR ? = \'equipo\')');
-    $consulta->execute([$id, $usuario['id'], $usuario['rol']]);
+    // El equipo puede borrar cualquier publicación; cada miembro, solo las suyas. La decisión se toma
+    // aquí (y no comparando el rol dentro de la consulta), porque algunas bases de Hostinger rechazan esa
+    // comparación por diferencias de idioma (collation) entre el dato enviado y el texto fijo.
+    if ($usuario['rol'] === 'equipo') {
+        $consulta = db()->prepare('DELETE FROM publicaciones WHERE id = ?');
+        $consulta->execute([$id]);
+    } else {
+        $consulta = db()->prepare('DELETE FROM publicaciones WHERE id = ? AND autor_id = ?');
+        $consulta->execute([$id, $usuario['id']]);
+    }
     if ($consulta->rowCount() === 0) {
         throw new ErrorApi(404, 'No encontramos esa publicación.', 'no_existe');
     }
