@@ -66,11 +66,10 @@ function Navegacion() {
         <Stack.Screen name="servicio/[id]" />
         <Stack.Screen
           name="novedades"
+          // Panel estándar del iPhone que sube desde abajo y se cierra deslizando hacia abajo. Antes era
+          // un "formSheet" con altura fija, que en el iPhone dibujaba mal el contenido (Etapa 14, D-78).
           options={{
-            presentation: 'formSheet',
-            sheetAllowedDetents: [0.92],
-            sheetGrabberVisible: true,
-            sheetCornerRadius: 24,
+            presentation: 'modal',
             animation: 'slide_from_bottom',
             gestureEnabled: true,
           }}
