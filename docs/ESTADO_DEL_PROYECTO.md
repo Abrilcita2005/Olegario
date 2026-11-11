@@ -15,6 +15,7 @@
 
 | Fecha         | Mensaje de la responsable                                                                                  | Qué autorizó                                                                                                                                                                     |
 | ------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-11    | "Antes de avanzar… incorporar 2 cosas" + respuestas                                                        | "Conocé Olegario" y el plano de Vercel con poco protagonismo (D-72); instalar `expo-web-browser`; reservas del plano aparte "por ahora"                                          |
 | 2026-11-11    | "No entendí esto, solucionalo vos" (P-47)                                                                  | Corrección de la Etapa 13: foto de perfil en el servidor y sobre mí/ofrezco/busco en Editar perfil (D-71)                                                                        |
 | 2026-11-10/11 | "Continuamos?" · "Avancemos así terminamos"                                                                | Terminar la Etapa 13 (reservas, agenda, Comunidad y servicios del Perfil con la API); no autoriza la Etapa 14                                                                    |
 | 2026-11-04    | "SI" (esquema) · "SI" (Supabase) · Hostinger                                                               | Esquema MySQL aprobado; borrar Supabase y desinstalar `@supabase/supabase-js`; servidor final en Hostinger (base `U275204779_Olegario`), por ahora en local                      |
@@ -46,7 +47,7 @@
 - Encabezado: isotipo → Home · ícono OLE/CAFÉ → carta del café · avatar → perfil de cuenta (no el de comunidad).
 - Novedades: panel que sube desde abajo.
 - Bienvenida: solo la primera vez.
-- Dependencias aprobadas: `@react-native-async-storage/async-storage`, `expo-image-picker`. Etapa 8: `@react-native-masked-view/masked-view`. Etapa 9: `expo-clipboard`. Etapa 13: `expo-secure-store` (`@supabase/supabase-js` se desinstaló al dejar Supabase, D-68).
+- Dependencias aprobadas: `@react-native-async-storage/async-storage`, `expo-image-picker`. Etapa 8: `@react-native-masked-view/masked-view`. Etapa 9: `expo-clipboard`. Etapa 13: `expo-secure-store`, `expo-web-browser` (`@supabase/supabase-js` se desinstaló al dejar Supabase, D-68).
 - Revisión 1: avatar con foto personal (galería o cámara) · carta del café con diseño provisional propio.
 - Revisión 2: un solo botón "Cambiar foto" con menú · carta con foto y etiquetas, sin aviso de ejemplo, márgenes corregidos.
 - Revisión 3: ilustraciones de productos y promo en la carta · tarjeta con el precio en recuadro claro y texto negro.
@@ -81,10 +82,13 @@
    cargar `servidor/db/` y correr la API con `php -S 127.0.0.1:8090 -t servidor/api/public servidor/api/public/index.php`
    (con `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`). Comprobar con `php servidor/pruebas/probar_api.php`
    y `OLEGARIO_API_PRUEBA=http://127.0.0.1:8090 npx jest tests/api.test.tsx`.
-3. Pendientes de la responsable: probar `docker compose up`, datos de Hostinger. Limitaciones L-08 y L-10 en `DECISIONES_Y_PENDIENTES.md`.
+3. Entorno "Olegario" (2026-11-11): permite las dos páginas de Vercel y prepara solo `npm ci` y MySQL
+   (sin probar todavía en una sesión nueva).
+4. Pendientes de la responsable: probar `docker compose up`, datos de Hostinger. Limitaciones L-08 y L-10 en `DECISIONES_Y_PENDIENTES.md`.
 
 ## Preguntas abiertas para la responsable
 
+- ¿Me pasás el enlace definitivo de "Conocé Olegario"? El actual es de prueba de Vercel y puede vencer.
 - Hostinger: ¿el nombre exacto de la base es `U275204779_Olegario` o en minúsculas? ¿Usa MySQL o MariaDB?
 
 - ¿Alguna efeméride lleva beneficio en OLE/CAFÉ? ¿Aprobás los textos de `data/efemerides.ts`?

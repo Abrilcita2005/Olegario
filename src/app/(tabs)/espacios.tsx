@@ -7,14 +7,16 @@ import { ConfirmarReserva } from '@/components/espacios/ConfirmarReserva';
 import { SelectorHorario } from '@/components/espacios/SelectorHorario';
 import { SelectorSemana } from '@/components/espacios/SelectorSemana';
 import { TarjetaEspacio } from '@/components/espacios/TarjetaEspacio';
-import { IconoCamara } from '@/components/iconos/Iconos';
+import { IconoCamara, IconoUbicacion } from '@/components/iconos/Iconos';
 import type { Submarca } from '@/components/marca/IconoSubmarca';
 import { PantallaBase } from '@/components/navegacion/PantallaBase';
+import { FilaServicio } from '@/components/perfil/FilaServicio';
 import { Chip, EstadoVacio, Texto, TextoDegradado } from '@/components/ui';
 import { useAgenda } from '@/estado/agenda';
 import { useReservas } from '@/estado/reservas';
 import { useSesion } from '@/estado/sesion';
 import { useAhora } from '@/hooks/useAhora';
+import { abrirEnlace } from '@/services/enlacesExternos';
 import type { Espacio } from '@/models/espacio';
 import { colores, espacio, radios, tipografia } from '@/theme';
 import { marcasDeActividad } from '@/utils/agenda';
@@ -30,6 +32,8 @@ import {
   textoHorarioElegido,
 } from '@/utils/fechas';
 import { NOMBRE_SERVICIO, SERVICIOS, esServicio, filtrarEspacios } from '@/utils/espacios';
+
+import { ENLACE_PLANO_RESERVAS } from '../../../data/enlaces';
 import { puede } from '@/utils/permisos';
 
 const DURACION_INICIAL_MINUTOS = 120;
@@ -188,6 +192,22 @@ export default function EspaciosScreen() {
         )}
       </View>
 
+      {/* Plano visto desde arriba (Vercel): minimizado al final; se abre solo si lo tocan. */}
+      <View style={styles.plano}>
+        <FilaServicio
+          icono={IconoUbicacion}
+          color={colores.acentoNaranja}
+          fondo={colores.fondoIconoNaranja}
+          titulo="Ver plano de Olegario"
+          detalle="El coworking visto desde arriba"
+          onPress={() => abrirEnlace(ENLACE_PLANO_RESERVAS)}
+        />
+        <Texto variante="cuerpoChico" color="textoTerciario">
+          Las reservas que hagas en el plano se guardan aparte: no aparecen en tus reservas de la
+          app.
+        </Texto>
+      </View>
+
       {selectorAbierto ? (
         <SelectorHorario
           dia={dia}
@@ -245,6 +265,7 @@ function Filtro({
 }
 
 const styles = StyleSheet.create({
+  plano: { gap: espacio.s, marginTop: espacio.grande },
   cabecera: { gap: espacio.l, marginBottom: espacio.base },
   titulo: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-end', columnGap: espacio.s },
   controles: { gap: espacio.base },

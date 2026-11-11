@@ -7,7 +7,9 @@ import { BotonNovedades } from '@/components/navegacion/BotonNovedades';
 export default function TabsLayout() {
   return (
     <Tabs>
-      <TabSlot />
+      {/* flexShrink: 1 deja que el contenido ocupe solo el alto de la pantalla (por defecto no se achica y,
+          en la versión web, lo último quedaba tapado por la barra y Novedades sin poder bajar). */}
+      <TabSlot style={{ flexShrink: 1 }} />
       <BotonNovedades />
       <TabList asChild>
         <ContenedorBarra>

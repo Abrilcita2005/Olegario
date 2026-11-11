@@ -5,16 +5,20 @@ import { StyleSheet, View } from 'react-native';
 import { BannerMarca } from '@/components/home/BannerMarca';
 import { TarjetaReserva } from '@/components/home/TarjetaReserva';
 import { TarjetaServicio } from '@/components/home/TarjetaServicio';
+import { IconoCamara } from '@/components/iconos/Iconos';
 import { PantallaBase } from '@/components/navegacion/PantallaBase';
+import { FilaServicio } from '@/components/perfil/FilaServicio';
 import { Boton, Chip, Tarjeta, Texto } from '@/components/ui';
 import { useReservas } from '@/estado/reservas';
 import { useSesion } from '@/estado/sesion';
 import { useAhora } from '@/hooks/useAhora';
-import { espacio } from '@/theme';
+import { abrirEnlace } from '@/services/enlacesExternos';
+import { colores, espacio } from '@/theme';
 import { puede } from '@/utils/permisos';
 import { estadoReserva, reservaParaMostrar, textoHorario } from '@/utils/reservas';
 import { textoSaludo } from '@/utils/saludo';
 
+import { ENLACE_CONOCE_OLEGARIO } from '../../../data/enlaces';
 import { serviciosHomeDePrueba } from '../../../data/mock/espacios';
 
 // Home (Figma: HOME). La disponibilidad de los servicios es dato de prueba hasta el servidor (Etapa 13).
@@ -87,6 +91,18 @@ export default function InicioScreen() {
           ))}
         </View>
       </View>
+
+      {/* Recorrido en video (Vercel): discreto, al final; se abre solo si lo tocan. */}
+      <View style={styles.conoce}>
+        <FilaServicio
+          icono={IconoCamara}
+          color={colores.acentoLima}
+          fondo={colores.fondoIconoLima}
+          titulo="Conocé Olegario"
+          detalle="Recorrido en video por el coworking"
+          onPress={() => abrirEnlace(ENLACE_CONOCE_OLEGARIO)}
+        />
+      </View>
     </PantallaBase>
   );
 }
@@ -113,6 +129,7 @@ function SinReserva({ esMiembro }: { esMiembro: boolean }) {
 const styles = StyleSheet.create({
   saludo: { gap: espacio.xs, marginBottom: espacio.xl },
   seccion: { gap: espacio.l, marginTop: espacio.grande },
+  conoce: { marginTop: espacio.grande },
   tituloSeccion: {
     flexDirection: 'row',
     alignItems: 'center',
