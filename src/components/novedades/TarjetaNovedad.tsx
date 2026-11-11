@@ -81,6 +81,7 @@ export function TarjetaNovedad({ novedad, inscripto, fotoPerfil, onAccion }: Pro
           {novedad.texto}
         </Texto>
         <Pressable
+          hitSlop={8}
           onPress={onAccion}
           accessibilityRole="button"
           accessibilityLabel={

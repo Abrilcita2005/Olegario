@@ -22,7 +22,8 @@ const ROLES = [
 ] as const;
 
 // Inicio de sesión (Figma: INICIO 3), sin Google, Apple ni Face ID (decisión 2026-11-03).
-// PROVISIONAL: sin servidor, cualquier dato con formato válido entra (no se verifica la contraseña).
+// Con servidor (Etapa 13) se verifica el correo y la contraseña; si falla, se muestra el motivo.
+// Sin servidor, cualquier dato con formato válido entra (no se verifica la contraseña).
 export default function IniciarSesionScreen() {
   const { ingresar } = useSesion();
   const [rol, setRol] = useState<(typeof ROLES)[number]['valor']>('miembro');
@@ -30,6 +31,7 @@ export default function IniciarSesionScreen() {
   const [contrasena, setContrasena] = useState('');
   const [errores, setErrores] = useState<{ usuario?: string; contrasena?: string }>({});
   const [enviando, setEnviando] = useState(false);
+  const [avisoServidor, setAvisoServidor] = useState<string | null>(null);
 
   async function entrar() {
     const nuevos = {
@@ -38,8 +40,12 @@ export default function IniciarSesionScreen() {
     };
     setErrores(nuevos);
     if (nuevos.usuario || nuevos.contrasena) return;
+    setAvisoServidor(null);
     setEnviando(true);
-    await ingresar(rol);
+    const resultado = await ingresar(rol, { correo: usuario.trim(), contrasena });
+    // Si entra, la navegación cambia sola de pantalla; si no, se muestra el motivo.
+    setEnviando(false);
+    if (!resultado.ok) setAvisoServidor(resultado.error);
   }
 
   return (
@@ -87,6 +93,11 @@ export default function IniciarSesionScreen() {
             onPress={() => router.push('/recuperar-contrasena')}
           />
         </View>
+        {avisoServidor ? (
+          <Texto variante="cuerpoChico" color="error" accessibilityRole="alert">
+            {avisoServidor}
+          </Texto>
+        ) : null}
         <Boton texto="Iniciar sesión" onPress={entrar} cargando={enviando} />
       </Tarjeta>
       <View style={styles.registrate}>

@@ -27,6 +27,7 @@ export function TarjetaTalento({
     <View style={styles.tarjeta}>
       <View style={styles.cabecera}>
         <Pressable
+          hitSlop={8}
           onPress={onVerPerfil}
           disabled={!onVerPerfil}
           accessibilityRole={onVerPerfil ? 'link' : undefined}

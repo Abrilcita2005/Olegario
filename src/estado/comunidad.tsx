@@ -50,6 +50,9 @@ type EstadoComunidad = {
   enviarSolicitud: (id: string, mensaje: string) => Promise<boolean>;
   publicar: (datos: NuevaPublicacion) => Promise<boolean>;
   eliminarPublicacion: (id: string) => Promise<void>;
+  // Vuelve a leer del servidor; sinConexion: la última lectura falló.
+  actualizar: () => Promise<void>;
+  sinConexion: boolean;
 };
 
 const ContextoComunidad = createContext<EstadoComunidad | null>(null);
@@ -62,6 +65,8 @@ export function ProveedorComunidad({ children }: { children: ReactNode }) {
   );
 }
 
+const sinServidor = async () => {};
+
 const COMUNIDAD_VACIA: DatosComunidad = {
   modo: 'abierta',
   personas: [],
@@ -73,9 +78,11 @@ const COMUNIDAD_VACIA: DatosComunidad = {
 function ProveedorComunidadServidor({ children }: { children: ReactNode }) {
   const { tipoAcceso } = useSesion();
   const [datos, setDatos] = useState<DatosComunidad>(COMUNIDAD_VACIA);
+  const [sinConexion, setSinConexion] = useState(false);
 
   const recargar = useCallback(async () => {
     const leidos = await leerComunidadServidor();
+    setSinConexion(!leidos);
     if (leidos) setDatos(leidos);
   }, []);
 
@@ -84,7 +91,9 @@ function ProveedorComunidadServidor({ children }: { children: ReactNode }) {
     if (tipoAcceso !== 'miembro') return;
     let activo = true;
     leerComunidadServidor().then((leidos) => {
-      if (activo && leidos) setDatos(leidos);
+      if (!activo) return;
+      setSinConexion(!leidos);
+      if (leidos) setDatos(leidos);
     });
     return () => {
       activo = false;
@@ -142,8 +151,19 @@ function ProveedorComunidadServidor({ children }: { children: ReactNode }) {
       enviarSolicitud,
       publicar,
       eliminarPublicacion,
+      actualizar: recargar,
+      sinConexion,
     }),
-    [datos, cambiarModo, solicitudEnviada, enviarSolicitud, publicar, eliminarPublicacion],
+    [
+      datos,
+      cambiarModo,
+      solicitudEnviada,
+      enviarSolicitud,
+      publicar,
+      eliminarPublicacion,
+      recargar,
+      sinConexion,
+    ],
   );
 
   return <ContextoComunidad.Provider value={valor}>{children}</ContextoComunidad.Provider>;
@@ -234,6 +254,8 @@ function ProveedorComunidadLocal({ children }: { children: ReactNode }) {
       enviarSolicitud,
       publicar,
       eliminarPublicacion,
+      actualizar: sinServidor,
+      sinConexion: false,
     }),
     [
       guardado.modo,

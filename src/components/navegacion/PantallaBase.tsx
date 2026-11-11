@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { colores, espacio } from '@/theme';
 
+import { AvisoSinConexion } from './AvisoSinConexion';
 import { Encabezado } from './Encabezado';
 import { ESPACIO_INFERIOR_CONTENIDO } from './medidas';
 
@@ -19,6 +20,7 @@ export function PantallaBase({ children, conEncabezado = true }: Props) {
     <SafeAreaView edges={['top']} style={styles.pantalla}>
       <ScrollView contentContainerStyle={styles.contenido}>
         {conEncabezado ? <Encabezado /> : null}
+        <AvisoSinConexion />
         {children}
       </ScrollView>
     </SafeAreaView>

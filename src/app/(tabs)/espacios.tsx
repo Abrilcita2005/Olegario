@@ -45,7 +45,7 @@ const DURACION_INICIAL_MINUTOS = 120;
 export default function EspaciosScreen() {
   const ahora = useAhora();
   const { tipoAcceso, salir } = useSesion();
-  const { espacios, reservas, horas, reservar, actualizar } = useReservas();
+  const { espacios, reservas, horas, reservar, actualizar, sinConexion } = useReservas();
   const { eventos } = useAgenda();
   const marcas = marcasDeActividad(reservas, eventos);
   const parametros = useLocalSearchParams<{ servicio?: string }>();
@@ -139,11 +139,13 @@ export default function EspaciosScreen() {
       <View style={styles.lista}>
         {visibles.length === 0 ? (
           <EstadoVacio
-            titulo="No encontramos espacios"
+            titulo={sinConexion ? 'No pudimos cargar los espacios' : 'No encontramos espacios'}
             texto={
-              busqueda
-                ? 'Probá con otra búsqueda o elegí otro servicio.'
-                : `Todavía no hay espacios de ${servicio ? NOMBRE_SERVICIO[servicio] : 'Olegario'} para reservar.`
+              sinConexion
+                ? 'Revisá tu conexión a internet y tocá "Reintentar" arriba.'
+                : busqueda
+                  ? 'Probá con otra búsqueda o elegí otro servicio.'
+                  : `Todavía no hay espacios de ${servicio ? NOMBRE_SERVICIO[servicio] : 'Olegario'} para reservar.`
             }
             accion={{
               texto: 'Ver todos los espacios',
@@ -259,6 +261,7 @@ function Filtro({
 }) {
   return (
     <Pressable
+      hitSlop={8}
       onPress={onPress}
       accessibilityRole="button"
       accessibilityState={{ selected: activo }}

@@ -36,6 +36,8 @@ import {
 } from '@/utils/disponibilidad';
 import { DIAS_ANTICIPACION, inicioDelDia, sumarDias } from '@/utils/fechas';
 
+import { useSesion } from './sesion';
+
 import { espaciosDePrueba, planDePrueba } from '../../data/mock/espaciosOlegario';
 import { reservasDePrueba } from '../../data/mock/reservas';
 
@@ -58,6 +60,8 @@ type EstadoReservas = {
   cargarHorasExtra: (horas: number) => Promise<void>;
   // Vuelve a leer del servidor (por ejemplo, al volver del plano de reservas). Sin servidor no hace nada.
   actualizar: () => Promise<void>;
+  // true si la última lectura del servidor falló (sin conexión): las pantallas lo avisan.
+  sinConexion: boolean;
 };
 
 const ContextoReservas = createContext<EstadoReservas | null>(null);
@@ -98,25 +102,32 @@ function leerReservasDelDia(claveDia: number) {
 }
 
 function ProveedorReservasServidor({ children }: { children: ReactNode }) {
+  const { tipoAcceso } = useSesion();
   const ahora = useAhora();
   const claveDia = inicioDelDia(ahora).getTime();
   const [datos, setDatos] = useState<DatosReservas>(SIN_DATOS);
+  const [sinConexion, setSinConexion] = useState(false);
 
   // Ocupación desde hoy hasta el último día reservable (se vuelve a leer al cambiar de día).
   const recargar = useCallback(async () => {
     const leidos = await leerReservasDelDia(claveDia);
+    setSinConexion(!leidos);
     if (leidos) setDatos(leidos);
   }, [claveDia]);
 
+  // Solo con sesión (sin sesión el servidor respondería "no autorizado").
   useEffect(() => {
+    if (!tipoAcceso) return;
     let activo = true;
     leerReservasDelDia(claveDia).then((leidos) => {
-      if (activo && leidos) setDatos(leidos);
+      if (!activo) return;
+      setSinConexion(!leidos);
+      if (leidos) setDatos(leidos);
     });
     return () => {
       activo = false;
     };
-  }, [claveDia]);
+  }, [claveDia, tipoAcceso]);
 
   const horas = useMemo(
     () => datos.horas ?? { totales: 0, usadas: 0, disponibles: 0 },
@@ -170,8 +181,9 @@ function ProveedorReservasServidor({ children }: { children: ReactNode }) {
       cancelar,
       cargarHorasExtra,
       actualizar: recargar,
+      sinConexion,
     }),
-    [datos, horas, reservar, cancelar, cargarHorasExtra, recargar],
+    [datos, horas, reservar, cancelar, cargarHorasExtra, recargar, sinConexion],
   );
 
   return <ContextoReservas.Provider value={valor}>{children}</ContextoReservas.Provider>;
@@ -277,6 +289,7 @@ function ProveedorReservasLocal({ children }: { children: ReactNode }) {
       cancelar,
       cargarHorasExtra,
       actualizar: sinServidor,
+      sinConexion: false,
     }),
     [espacios, reservas, horas, reservar, cancelar, cargarHorasExtra],
   );

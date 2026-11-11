@@ -45,7 +45,7 @@ export function CampoFormulario({
             onPress={() => setVisible((v) => !v)}
             accessibilityRole="button"
             accessibilityLabel={visible ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-            hitSlop={8}
+            hitSlop={13}
             style={styles.botonOjo}
           >
             {visible ? (

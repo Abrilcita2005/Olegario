@@ -4,7 +4,7 @@ import { PantallaSecundaria } from '@/components/navegacion/PantallaSecundaria';
 import { Tarjeta, Texto } from '@/components/ui';
 import { espacio } from '@/theme';
 
-// Recuperar contraseña: no hay diseño en Figma ni servidor todavía (Etapa 13). Pantalla provisoria.
+// Recuperar contraseña: no hay diseño en Figma y el servidor todavía no envía correos (P-48). Provisoria.
 export default function RecuperarContrasenaScreen() {
   return (
     <PantallaSecundaria>
@@ -17,8 +17,8 @@ export default function RecuperarContrasenaScreen() {
             Muy pronto
           </Texto>
           <Texto variante="cuerpoChico" color="textoSecundario">
-            Vas a poder recuperar tu contraseña desde acá cuando las cuentas estén conectadas al
-            servidor de Olegario.
+            Todavía no se puede recuperar la contraseña desde la app. Vamos a sumarlo cuando el
+            servidor de Olegario pueda enviar correos.
           </Texto>
         </Tarjeta>
       </View>

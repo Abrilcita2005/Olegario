@@ -168,6 +168,7 @@ type PropsFiltro = { texto: string; activo: boolean; cantidad?: number; onPress:
 function Filtro({ texto, activo, cantidad, onPress }: PropsFiltro) {
   return (
     <Pressable
+      hitSlop={8}
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={cantidad !== undefined ? `${texto} (${cantidad})` : texto}

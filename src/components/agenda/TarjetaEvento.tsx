@@ -77,6 +77,7 @@ export function TarjetaEvento({ evento, inscripto, onInscribir }: Props) {
           </Texto>
         </View>
         <Pressable
+          hitSlop={8}
           onPress={onInscribir}
           accessibilityRole="button"
           accessibilityLabel={

@@ -130,6 +130,7 @@ function Historial() {
 
   const fila = (r: (typeof reservas)[number]) => (
     <Pressable
+      hitSlop={8}
       key={r.id}
       onPress={() => router.push(`/reserva/${r.id}`)}
       accessibilityRole="button"
@@ -191,6 +192,7 @@ function Valoraciones() {
       <View style={styles.opciones}>
         {espacios.map((e) => (
           <Pressable
+            hitSlop={8}
             key={e.id}
             onPress={() => setEspacioId(e.id)}
             accessibilityRole="radio"

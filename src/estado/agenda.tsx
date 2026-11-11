@@ -19,6 +19,8 @@ import {
 } from '@/services/datosServidor';
 import { inicioDelDia } from '@/utils/fechas';
 
+import { useSesion } from './sesion';
+
 import { eventosDePrueba } from '../../data/mock/agenda';
 
 // Eventos e inscripciones (las efemérides salen de `data/efemerides.ts`). Con la API configurada
@@ -30,6 +32,9 @@ type EstadoAgenda = {
   estaInscripto: (id: string) => boolean;
   // Inscribe o da de baja (alterna). Devuelve el nuevo estado.
   alternarInscripcion: (id: string) => Promise<boolean>;
+  // Vuelve a leer del servidor; sinConexion: la última lectura falló.
+  actualizar: () => Promise<void>;
+  sinConexion: boolean;
 };
 
 const ContextoAgenda = createContext<EstadoAgenda | null>(null);
@@ -42,28 +47,37 @@ export function ProveedorAgenda({ children }: { children: ReactNode }) {
   );
 }
 
+const sinServidor = async () => {};
+
 const AGENDA_VACIA: DatosAgenda = { eventos: [], inscripciones: [] };
 
 function ProveedorAgendaServidor({ children }: { children: ReactNode }) {
+  const { tipoAcceso } = useSesion();
   const ahora = useAhora();
   const claveDia = inicioDelDia(ahora).getTime();
   const [datos, setDatos] = useState<DatosAgenda>(AGENDA_VACIA);
+  const [sinConexion, setSinConexion] = useState(false);
 
   const recargar = useCallback(async () => {
     const leidos = await leerAgendaServidor();
+    setSinConexion(!leidos);
     if (leidos) setDatos(leidos);
   }, []);
 
   // Se vuelve a leer al cambiar de día (los eventos pasados dejan de mostrarse).
+  // Solo con sesión (sin sesión el servidor respondería "no autorizado").
   useEffect(() => {
+    if (!tipoAcceso) return;
     let activo = true;
     leerAgendaServidor().then((leidos) => {
-      if (activo && leidos) setDatos(leidos);
+      if (!activo) return;
+      setSinConexion(!leidos);
+      if (leidos) setDatos(leidos);
     });
     return () => {
       activo = false;
     };
-  }, [claveDia]);
+  }, [claveDia, tipoAcceso]);
 
   const estaInscripto = useCallback(
     (id: string) => datos.inscripciones.includes(id),
@@ -94,8 +108,14 @@ function ProveedorAgendaServidor({ children }: { children: ReactNode }) {
   );
 
   const valor = useMemo(
-    () => ({ eventos: datos.eventos, estaInscripto, alternarInscripcion }),
-    [datos.eventos, estaInscripto, alternarInscripcion],
+    () => ({
+      eventos: datos.eventos,
+      estaInscripto,
+      alternarInscripcion,
+      actualizar: recargar,
+      sinConexion,
+    }),
+    [datos.eventos, estaInscripto, alternarInscripcion, recargar, sinConexion],
   );
 
   return <ContextoAgenda.Provider value={valor}>{children}</ContextoAgenda.Provider>;
@@ -130,7 +150,13 @@ function ProveedorAgendaLocal({ children }: { children: ReactNode }) {
   );
 
   const valor = useMemo(
-    () => ({ eventos, estaInscripto, alternarInscripcion }),
+    () => ({
+      eventos,
+      estaInscripto,
+      alternarInscripcion,
+      actualizar: sinServidor,
+      sinConexion: false,
+    }),
     [eventos, estaInscripto, alternarInscripcion],
   );
 

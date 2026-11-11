@@ -282,7 +282,7 @@ export default function PerfilScreen() {
         <Pressable
           onPress={() => setPanel('eliminar')}
           accessibilityRole="button"
-          hitSlop={8}
+          hitSlop={10}
           style={styles.eliminar}
         >
           <Texto variante="enlaceChico" color="error">

@@ -269,6 +269,7 @@ function OpcionModo({
 }) {
   return (
     <Pressable
+      hitSlop={8}
       onPress={onPress}
       accessibilityRole="radio"
       accessibilityLabel={texto}
@@ -307,6 +308,7 @@ function ChipFiltro({
 }) {
   return (
     <Pressable
+      hitSlop={8}
       onPress={onPress}
       accessibilityRole="button"
       accessibilityState={{ selected: activo }}

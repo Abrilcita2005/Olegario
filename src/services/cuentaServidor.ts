@@ -1,5 +1,5 @@
 import type { PerfilBasico, TipoAcceso } from './almacenamiento';
-import { guardarToken, pedirApi } from './api';
+import { guardarToken, leerToken, pedirApi } from './api';
 
 // Cuentas reales con la API de Olegario (Etapa 13, D-68). La contraseña viaja solo al servidor, que la
 // guarda cifrada: la app nunca la guarda. Solo se usa cuando la API está configurada (ver services/api.ts).
@@ -118,6 +118,8 @@ export async function cambiarFotoServidor(
 // Sesión guardada al abrir la app. null si no hay sesión válida (venció o se eliminó la cuenta).
 // Si no hay conexión, devuelve 'sin_conexion' para no cerrar la sesión por un corte de internet.
 export async function leerCuentaActual(): Promise<CuentaActual | null | 'sin_conexion'> {
+  // Sin sesión guardada no hace falta preguntarle al servidor.
+  if (!(await leerToken().catch(() => null))) return null;
   const respuesta = await pedirApi<CuentaApi>('GET', '/cuentas/yo');
   if (respuesta.ok) return cuentaDesdeApi(respuesta.datos);
   if (respuesta.estado === 401) await guardarToken(null);

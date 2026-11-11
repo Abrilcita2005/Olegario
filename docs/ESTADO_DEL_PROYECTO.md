@@ -2,19 +2,20 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                                                                                                                         |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Última actualización     | 2026-11-11                                                                                                                                                                                    |
-| Rama de trabajo          | `claude/gallant-fermi-66n1rh`                                                                                                                                                                 |
-| Etapa actual             | **Etapa 13 — Integraciones, persistencia y backend**                                                                                                                                          |
-| Estado                   | **Completada (pendiente de autorización)** el 2026-11-11: la app usa el servidor Docker + PHP + MySQL en todas sus secciones. Pendientes de la responsable: probar Docker y subir a Hostinger |
-| Autorización de avance   | Etapa 13: concedida ("avancemos", 2026-11-04). **Etapa 14: NO concedida.**                                                                                                                    |
-| Próxima acción permitida | Esperar la autorización explícita de la responsable para la Etapa 14. Mientras tanto, solo correcciones de la Etapa 13 si las pide.                                                           |
+| Campo                    | Valor                                                                                                        |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| Última actualización     | 2026-11-11                                                                                                   |
+| Rama de trabajo          | `claude/gallant-fermi-66n1rh`                                                                                |
+| Etapa actual             | **Etapa 14 — Pruebas funcionales, visuales, de accesibilidad y de uso**                                      |
+| Estado                   | En curso (desde 2026-11-11). Etapa 13 completada (servidor Docker + PHP + MySQL; Hostinger pendiente)        |
+| Autorización de avance   | Etapa 14: concedida ("Avancemos a la siguiente etapa", 2026-11-11). **Etapa 15: NO concedida.**              |
+| Próxima acción permitida | Trabajar en la Etapa 14 (pruebas y correcciones). **No** empezar la Etapa 15 sin una autorización explícita. |
 
 ## Historial de autorizaciones
 
 | Fecha         | Mensaje de la responsable                                                                                  | Qué autorizó                                                                                                                                                                     |
 | ------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-11    | "Bueno eso dsp lo vemos. Avancemos a la siguiente etapa"                                                   | Etapa 14: Pruebas funcionales, visuales, de accesibilidad y de uso (Hostinger queda para después)                                                                                |
 | 2026-11-11    | "Es MySQL"                                                                                                 | Hostinger usa MySQL (base `U275204779_Olegario`; falta confirmar mayúsculas/minúsculas)                                                                                          |
 | 2026-11-11    | "Quiero unir los dos sistemas" + respuestas                                                                | Plano de Vercel al servidor (deja Firebase), los 21 espacios del plano, entrada directa con código (tabla `codigos_acceso` aprobada) (D-73)                                      |
 | 2026-11-11    | "Antes de avanzar… incorporar 2 cosas" + respuestas                                                        | "Conocé Olegario" y el plano de Vercel con poco protagonismo (D-72); instalar `expo-web-browser`; reservas del plano aparte "por ahora"                                          |
