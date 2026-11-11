@@ -158,7 +158,7 @@
 
 ## Etapa 15 — Optimización, documentación final y entrega
 
-- **Estado:** `Pendiente`
+- **Estado:** `En curso` (autorizada el 2026-11-11)
 - **Tareas:** optimizar imágenes y tamaño · README probado desde cero · documentación final · compilaciones (EAS, APK o tiendas **según lo que apruebes y con aviso de costos**) · lista de pendientes final.
 - **Criterios de aceptación:** lista de control final cumplida.
 

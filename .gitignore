@@ -66,3 +66,8 @@ expo-env.d.ts
 
 # Fotos de perfil que sube la gente al servidor local (no van a GitHub).
 servidor/api/public/fotos/
+
+# Firma de la app de Android (privada: nunca a GitHub)
+*.jks
+*.keystore
+!android/app/debug.keystore

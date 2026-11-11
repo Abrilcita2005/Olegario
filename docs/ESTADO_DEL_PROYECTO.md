@@ -2,19 +2,20 @@
 
 > Leer este archivo al retomar una sesión. **Solo se trabaja dentro de la etapa autorizada.** Si hay dudas sobre el estado o la autorización, se consulta antes de avanzar.
 
-| Campo                    | Valor                                                                                           |
-| ------------------------ | ----------------------------------------------------------------------------------------------- |
-| Última actualización     | 2026-11-11                                                                                      |
-| Rama de trabajo          | `claude/gallant-fermi-66n1rh`                                                                   |
-| Etapa actual             | **Etapa 14 — Pruebas funcionales, visuales, de accesibilidad y de uso** (completada)            |
-| Estado                   | Completada 2026-11-11 ("La etapa 14 finalizala"). Servidor en Hostinger funcionando (84 de 84). |
-| Autorización de avance   | Etapa 14: concedida ("Avancemos a la siguiente etapa", 2026-11-11). **Etapa 15: NO concedida.** |
-| Próxima acción permitida | Esperar la autorización explícita para la Etapa 15 (la responsable quiere la APK de Android).   |
+| Campo                    | Valor                                                                                  |
+| ------------------------ | -------------------------------------------------------------------------------------- |
+| Última actualización     | 2026-11-11                                                                             |
+| Rama de trabajo          | `claude/gallant-fermi-66n1rh`                                                          |
+| Etapa actual             | **Etapa 14 — Pruebas funcionales, visuales, de accesibilidad y de uso** (completada)   |
+| Estado                   | En curso (desde 2026-11-11). Primera APK de Android lista (D-81). Etapa 14 completada. |
+| Autorización de avance   | Etapa 15: concedida ("Podés comenzar la etapa 15", 2026-11-11).                        |
+| Próxima acción permitida | Trabajar en la Etapa 15 (APK, optimización, documentación final y entrega).            |
 
 ## Historial de autorizaciones
 
 | Fecha         | Mensaje de la responsable                                                                                           | Qué autorizó                                                                                                                                                                                                                                 |
 | ------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-11    | "Podés comenzar la etapa 15" (para la APK)                                                                          | Etapa 15: Optimización, documentación final y entrega; primero la APK de Android (D-81)                                                                                                                                                      |
 | 2026-11-11    | "La etapa 14 finalizala. Ya podés realizar la prueba de hostinger" · "olegario-api dentro de olegario, versión 8.1" | Cerrar la Etapa 14; probar Hostinger; carpeta privada dentro de `olegario/` (D-80). Para la APK: identificador `com.olegario.enmovimiento`, servidor de Hostinger, compilar en la nube (abrir `dl.google.com`). **No autoriza la Etapa 15.** |
 | 2026-11-11    | Datos de Hostinger (compartido, subcarpeta `/olegario`, base `u275204779_olegario`, PHP 8.3, casilla)               | Preparar la subida a Hostinger (D-79): API en subcarpeta, configuración fuera de `public_html`, paquete y guía                                                                                                                               |
 | 2026-11-12    | Tercera lista ("no modifiques nada más")                                                                            | Solo: cerrar sesión → Bienvenida, panel de Novedades, interlineado del título de Comunidad (D-77)                                                                                                                                            |
