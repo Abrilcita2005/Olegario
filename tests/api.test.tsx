@@ -281,4 +281,56 @@ const URL_PRUEBA = process.env.OLEGARIO_API_PRUEBA;
     expect(await datos.eliminarPublicacionServidor(proyecto!.id)).toBe(true);
     expect(await cuentas.eliminarCuentaServidor()).toEqual({ ok: true });
   });
+
+  it('foto de perfil y perfil profesional que ve la Comunidad', async () => {
+    const { cuentas, datos } = cargar(URL_PRUEBA ?? '');
+    globalThis.fetch = fetchPorHttp as typeof fetch;
+    const sello = Date.now();
+    const png =
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+
+    await cuentas.registrarCuenta(
+      { nombre: 'Clara Foto', correo: `clara+${sello}@ejemplo.com`, profesion: 'Dev' },
+      'clave-3-segura',
+    );
+    expect(await cuentas.cambiarFotoServidor('file:///foto.jpg')).toMatchObject({ ok: false });
+    const subida = await cuentas.cambiarFotoServidor(png);
+    expect(subida).toMatchObject({
+      ok: true,
+      fotoUrl: expect.stringMatching(/\/fotos\/[a-f0-9]{32}\.png$/),
+    });
+    expect(
+      await cuentas.actualizarPerfilServidor({
+        nombre: 'Clara Foto',
+        correo: '',
+        profesion: 'Dev',
+        sobreMi: 'Hago apps.',
+        ofrezco: 'Código',
+      }),
+    ).toEqual({ ok: true });
+    const cuenta = await cuentas.leerCuentaActual();
+    expect(cuenta).toMatchObject({
+      perfil: { sobreMi: 'Hago apps.', ofrezco: 'Código' },
+      fotoUrl: subida.ok ? subida.fotoUrl : '',
+    });
+    expect(cuenta !== 'sin_conexion' && cuenta?.perfil && 'busco' in cuenta.perfil).toBe(false);
+    await cuentas.cerrarSesionServidor();
+
+    // Otra persona la ve en Comunidad, con foto, y en "Talentos disponibles".
+    await cuentas.registrarCuenta(
+      { nombre: 'Dani Mira', correo: `dani+${sello}@ejemplo.com`, profesion: '' },
+      'clave-4-segura',
+    );
+    const clara = (await datos.leerComunidadServidor())?.personas.find(
+      (p) => p.nombre === 'Clara Foto',
+    );
+    expect(clara).toMatchObject({
+      ofrezco: 'Código',
+      disponible: true,
+      foto: { uri: subida.ok ? subida.fotoUrl : '' },
+    });
+    expect(await cuentas.eliminarCuentaServidor()).toEqual({ ok: true });
+    await cuentas.ingresarConCorreo(`clara+${sello}@ejemplo.com`, 'clave-3-segura');
+    expect(await cuentas.eliminarCuentaServidor()).toEqual({ ok: true });
+  });
 });

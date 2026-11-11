@@ -9,3 +9,6 @@ RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-avail
   && sed -ri 's!AllowOverride None!AllowOverride All!g' /etc/apache2/apache2.conf
 
 COPY . /var/www/html
+
+# Carpeta de fotos de perfil, con permiso de escritura para Apache.
+RUN mkdir -p /var/www/html/public/fotos && chown www-data:www-data /var/www/html/public/fotos

@@ -15,6 +15,7 @@
 
 | Fecha         | Mensaje de la responsable                                                                                  | Qué autorizó                                                                                                                                                                     |
 | ------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-11    | "No entendí esto, solucionalo vos" (P-47)                                                                  | Corrección de la Etapa 13: foto de perfil en el servidor y sobre mí/ofrezco/busco en Editar perfil (D-71)                                                                        |
 | 2026-11-10/11 | "Continuamos?" · "Avancemos así terminamos"                                                                | Terminar la Etapa 13 (reservas, agenda, Comunidad y servicios del Perfil con la API); no autoriza la Etapa 14                                                                    |
 | 2026-11-04    | "SI" (esquema) · "SI" (Supabase) · Hostinger                                                               | Esquema MySQL aprobado; borrar Supabase y desinstalar `@supabase/supabase-js`; servidor final en Hostinger (base `U275204779_Olegario`), por ahora en local                      |
 | 2026-11-04    | "Olvida supabase, vamos a utilizar Docker… php, mysql, phpmyadmin"                                         | Cambiar el servidor a Docker + PHP + MySQL + phpMyAdmin (D-68). El esquema MySQL queda pendiente de aprobación                                                                   |
@@ -61,7 +62,7 @@
 
 - Etapa 6: bienvenidas (collage interactivo), acceso, registro e inicio de sesión con validaciones; 45 pruebas. Capturas en `docs/capturas-app/etapa-6/`.
 - Etapa 7: Home con saludo, banner, reserva actual (en curso / próxima / sin reserva / invitado) y servicios; 60 pruebas. Capturas en `docs/capturas-app/etapa-7/`.
-- Etapa 13: servidor Docker + PHP + MySQL + phpMyAdmin (`servidor/`); cuentas, reservas, horas, agenda, Comunidad y servicios del Perfil con la API (sin servidor, datos de prueba); 139 pruebas de la app y 67 comprobaciones de la API. Detalle en `docs/BACKEND.md`.
+- Etapa 13: servidor Docker + PHP + MySQL + phpMyAdmin (`servidor/`); cuentas, reservas, horas, agenda, Comunidad y servicios del Perfil con la API (sin servidor, datos de prueba); 139 pruebas de la app y 76 comprobaciones de la API. Detalle en `docs/BACKEND.md`.
 - Etapa 12: Novedades con las tarjetas de Figma, carta del café, inscripción simulada y contador siempre activo; 112 pruebas. Capturas en `docs/capturas-app/etapa-12/`.
 - Etapa 11: Perfil de cuenta según la captura de Figma: membresía, bolsa de horas, horas extras simuladas, 6 servicios provisorios, editar perfil y eliminar cuenta; 108 pruebas. Capturas en `docs/capturas-app/etapa-11/`.
 - Etapa 10: Comunidad con Modo Foco, publicar (provisorio), filtros, solicitudes simuladas y perfil público provisorio; 99 pruebas. Capturas en `docs/capturas-app/etapa-10/`.
@@ -77,16 +78,14 @@
 
 1. La Etapa 13 está terminada en local; **no** empezar la Etapa 14 sin autorización explícita.
 2. Servidor: `docs/BACKEND.md`. Para probar en la nube sin Docker: instalar `mysql-server-8.0` con apt,
-   cargar `servidor/db/` y correr la API con `php -S 127.0.0.1:8090 servidor/api/public/index.php`
+   cargar `servidor/db/` y correr la API con `php -S 127.0.0.1:8090 -t servidor/api/public servidor/api/public/index.php`
    (con `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`). Comprobar con `php servidor/pruebas/probar_api.php`
    y `OLEGARIO_API_PRUEBA=http://127.0.0.1:8090 npx jest tests/api.test.tsx`.
-3. Pendientes de la responsable: probar `docker compose up`, datos de Hostinger, P-47 (perfil
-   profesional con servidor). Limitaciones L-08 a L-10 en `DECISIONES_Y_PENDIENTES.md`.
+3. Pendientes de la responsable: probar `docker compose up`, datos de Hostinger. Limitaciones L-08 y L-10 en `DECISIONES_Y_PENDIENTES.md`.
 
 ## Preguntas abiertas para la responsable
 
 - Hostinger: ¿el nombre exacto de la base es `U275204779_Olegario` o en minúsculas? ¿Usa MySQL o MariaDB?
-- P-47: ¿cómo se cargan foto, "sobre mí", "ofrezco", "busco" y "disponible para colaborar" con servidor?
 
 - ¿Alguna efeméride lleva beneficio en OLE/CAFÉ? ¿Aprobás los textos de `data/efemerides.ts`?
 - P-46: ¿sumamos la Vendimia (fecha variable)?

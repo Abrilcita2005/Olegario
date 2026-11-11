@@ -91,6 +91,27 @@ function aIso(?string $mysql): ?string
     return $mysql === null ? null : (new DateTimeImmutable($mysql, new DateTimeZone('UTC')))->format('Y-m-d\TH:i:s\Z');
 }
 
+/** Dirección completa de un archivo público de la API (por ejemplo, una foto de perfil). */
+function urlPublica(?string $ruta): ?string
+{
+    if ($ruta === null || $ruta === '') {
+        return null;
+    }
+    $esquema = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    return "{$esquema}://{$host}/" . ltrim($ruta, '/');
+}
+
+/** Texto opcional: vacío → null. */
+function textoOpcional(array $datos, string $campo, int $maximo): ?string
+{
+    if (!array_key_exists($campo, $datos) || $datos[$campo] === null) {
+        return null;
+    }
+    $valor = texto($datos, $campo, 0, $maximo);
+    return $valor === '' ? null : $valor;
+}
+
 function ahoraUtc(): DateTimeImmutable
 {
     return new DateTimeImmutable('now', new DateTimeZone('UTC'));

@@ -27,7 +27,7 @@ function usuarioActual(): array
     $token = tokenDeLaPeticion();
     if ($token !== null) {
         $consulta = db()->prepare(
-            'SELECT p.id, p.rol, p.nombre, p.profesion, u.correo FROM sesiones s
+            'SELECT p.id, p.rol, p.nombre, p.profesion, p.foto_url, p.sobre_mi, p.ofrezco, p.busco, u.correo FROM sesiones s
              JOIN usuarios u ON u.id = s.usuario_id JOIN perfiles p ON p.id = u.id
              WHERE s.token_hash = ? AND s.vence > UTC_TIMESTAMP()'
         );
@@ -45,8 +45,15 @@ function cuentaPublica(array $u): array
     return [
         'id' => $u['id'],
         'tipoAcceso' => $u['rol'] === 'invitado' ? 'invitado' : 'miembro',
-        'perfil' => $u['rol'] === 'invitado' ? null
-            : ['nombre' => $u['nombre'], 'profesion' => $u['profesion'], 'correo' => $u['correo'] ?? ''],
+        'perfil' => $u['rol'] === 'invitado' ? null : [
+            'nombre' => $u['nombre'],
+            'profesion' => $u['profesion'],
+            'correo' => $u['correo'] ?? '',
+            'fotoUrl' => urlPublica($u['foto_url'] ?? null),
+            'sobreMi' => $u['sobre_mi'] ?? null,
+            'ofrezco' => $u['ofrezco'] ?? null,
+            'busco' => $u['busco'] ?? null,
+        ],
     ];
 }
 
@@ -99,7 +106,7 @@ function ingresar(): never
     $datos = cuerpo();
     $correo = mb_strtolower(trim((string) ($datos['correo'] ?? '')));
     $consulta = db()->prepare(
-        'SELECT u.id, u.correo, u.contrasena_hash, p.rol, p.nombre, p.profesion
+        'SELECT u.id, u.correo, u.contrasena_hash, p.rol, p.nombre, p.profesion, p.foto_url, p.sobre_mi, p.ofrezco, p.busco
          FROM usuarios u JOIN perfiles p ON p.id = u.id WHERE u.correo = ?'
     );
     $consulta->execute([$correo]);
@@ -137,21 +144,78 @@ function verMiCuenta(): never
     responder(cuentaPublica(usuarioActual()));
 }
 
+/** PATCH /cuentas/yo {nombre, profesion, sobreMi?, ofrezco?, busco?} — lo que ve la Comunidad. */
 function actualizarMiPerfil(): never
 {
     $usuario = usuarioActual();
     $datos = cuerpo();
-    $nombre = texto($datos, 'nombre', 2, 60);
-    $profesion = texto($datos, 'profesion', 0, 80);
-    db()->prepare('UPDATE perfiles SET nombre = ?, profesion = ? WHERE id = ?')
-        ->execute([$nombre, $profesion, $usuario['id']]);
-    responder(cuentaPublica([...$usuario, 'nombre' => $nombre, 'profesion' => $profesion]));
+    $cambios = [
+        'nombre' => texto($datos, 'nombre', 2, 60),
+        'profesion' => texto($datos, 'profesion', 0, 80),
+    ];
+    // Los textos de la Comunidad solo cambian si llegan (vacío = se borra).
+    foreach (['sobreMi' => ['sobre_mi', 600], 'ofrezco' => ['ofrezco', 300], 'busco' => ['busco', 300]] as $campo => [$columna, $maximo]) {
+        if (array_key_exists($campo, $datos)) {
+            $cambios[$columna] = textoOpcional($datos, $campo, $maximo);
+        }
+    }
+    $columnas = implode(', ', array_map(fn ($c) => "{$c} = ?", array_keys($cambios)));
+    db()->prepare("UPDATE perfiles SET {$columnas} WHERE id = ?")->execute([...array_values($cambios), $usuario['id']]);
+    responder(cuentaPublica([...$usuario, ...$cambios]));
+}
+
+// Fotos de perfil: se guardan como archivo en public/fotos/ (con nombre al azar) y en la base solo
+// queda la ruta. Solo JPG, PNG o WEBP de hasta 2 MB.
+const CARPETA_FOTOS = __DIR__ . '/../public/fotos';
+const TIPOS_FOTO = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+
+function borrarArchivoDeFoto(?string $ruta): void
+{
+    if ($ruta && preg_match('#^fotos/[a-f0-9]{32}\.(jpg|png|webp)$#', $ruta)) {
+        @unlink(__DIR__ . '/../public/' . $ruta);
+    }
+}
+
+/** PUT /cuentas/foto {foto: "data:image/jpeg;base64,..."} — o null para quitarla. */
+function cambiarMiFoto(): never
+{
+    $usuario = usuarioActual();
+    if ($usuario['rol'] === 'invitado') {
+        throw new ErrorApi(403, 'La foto de perfil es para miembros.', 'invitado');
+    }
+    $foto = cuerpo()['foto'] ?? null;
+    $ruta = null;
+    if ($foto !== null) {
+        if (!is_string($foto) || !preg_match('#^data:image/[a-z]+;base64,(.+)$#s', $foto, $m)) {
+            throw new ErrorApi(422, 'La foto no es válida.', 'foto_invalida');
+        }
+        $bytes = base64_decode($m[1], true);
+        if ($bytes === false || strlen($bytes) > 2 * 1024 * 1024) {
+            throw new ErrorApi(422, 'La foto es demasiado grande (máximo 2 MB).', 'foto_invalida');
+        }
+        // El tipo se comprueba mirando el archivo, no lo que dice la app.
+        $tipo = (new finfo(FILEINFO_MIME_TYPE))->buffer($bytes);
+        if (!isset(TIPOS_FOTO[$tipo])) {
+            throw new ErrorApi(422, 'La foto tiene que ser JPG, PNG o WEBP.', 'foto_invalida');
+        }
+        if (!is_dir(CARPETA_FOTOS) && !mkdir(CARPETA_FOTOS, 0755, true)) {
+            throw new RuntimeException('No se pudo crear la carpeta de fotos.');
+        }
+        $ruta = 'fotos/' . bin2hex(random_bytes(16)) . '.' . TIPOS_FOTO[$tipo];
+        if (file_put_contents(__DIR__ . '/../public/' . $ruta, $bytes) === false) {
+            throw new RuntimeException('No se pudo guardar la foto.');
+        }
+    }
+    borrarArchivoDeFoto($usuario['foto_url']);
+    db()->prepare('UPDATE perfiles SET foto_url = ? WHERE id = ?')->execute([$ruta, $usuario['id']]);
+    responder(['fotoUrl' => urlPublica($ruta)]);
 }
 
 // Eliminar cuenta (obligatorio en App Store): borra el usuario y, en cascada, todos sus datos.
 function eliminarMiCuenta(): never
 {
     $usuario = usuarioActual();
+    borrarArchivoDeFoto($usuario['foto_url']);
     db()->prepare('DELETE FROM usuarios WHERE id = ?')->execute([$usuario['id']]);
     responder(['ok' => true]);
 }

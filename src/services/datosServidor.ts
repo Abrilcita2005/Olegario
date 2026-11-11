@@ -243,7 +243,9 @@ export function personaDesdeApi(p: PersonaApi): Persona {
     sobreMi: p.sobreMi ?? undefined,
     ofrezco: p.ofrezco ?? undefined,
     busco: p.busco ?? undefined,
-    disponible: p.disponible,
+    // La API solo manda personas en "Conexión abierta", que en la app es "Disponible para colaborar"
+    // (D-64): por eso todas aparecen en "Talentos disponibles".
+    disponible: true,
   };
 }
 

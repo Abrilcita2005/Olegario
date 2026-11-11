@@ -3,6 +3,12 @@
 // La app se comunica solo con esta API; nunca directo con MySQL.
 declare(strict_types=1);
 
+// Con el servidor de prueba de PHP (php -S), los archivos que existen (fotos) se entregan tal cual,
+// como hace Apache con el .htaccess.
+if (PHP_SAPI === 'cli-server' && is_file(__DIR__ . (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/'))) {
+    return false;
+}
+
 require __DIR__ . '/../src/Base.php';
 require __DIR__ . '/../src/Cuentas.php';
 require __DIR__ . '/../src/Reservas.php';
@@ -13,7 +19,7 @@ require __DIR__ . '/../src/Perfil.php';
 // Permite probar desde la versión web de la app (Expo en el navegador).
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Authorization, Content-Type');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit;
@@ -32,6 +38,7 @@ $rutas = [
     ['GET', '/cuentas/yo', 'verMiCuenta'],
     ['PATCH', '/cuentas/yo', 'actualizarMiPerfil'],
     ['DELETE', '/cuentas/yo', 'eliminarMiCuenta'],
+    ['PUT', '/cuentas/foto', 'cambiarMiFoto'],
     ['GET', '/espacios', 'listarEspacios'],
     ['GET', '/horas', 'verHoras'],
     ['POST', '/horas/extra', 'sumarHorasExtraSimuladas'],

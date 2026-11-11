@@ -63,3 +63,6 @@ expo-env.d.ts
 # Carpetas nativas generadas (Continuous Native Generation)
 /ios
 /android
+
+# Fotos de perfil que sube la gente al servidor local (no van a GitHub).
+servidor/api/public/fotos/

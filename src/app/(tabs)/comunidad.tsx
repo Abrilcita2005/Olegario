@@ -72,6 +72,8 @@ export default function ComunidadScreen() {
           id: 'vos',
           nombre: perfilBasico.nombre,
           profesion: perfilBasico.profesion,
+          ofrezco: perfilBasico.ofrezco,
+          busco: perfilBasico.busco,
           foto: fotoPerfil ? { uri: fotoPerfil } : undefined,
           ubicacion: reservaEnCurso
             ? `${NOMBRE_SERVICIO[reservaEnCurso.servicio]} · ${reservaEnCurso.espacio}`

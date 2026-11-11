@@ -19,7 +19,7 @@ function filaPersona(array $f): array
         'id' => $f['id'],
         'nombre' => $f['nombre'],
         'profesion' => $f['profesion'],
-        'fotoUrl' => $f['foto_url'],
+        'fotoUrl' => urlPublica($f['foto_url']),
         'sobreMi' => $f['sobre_mi'],
         'ofrezco' => $f['ofrezco'],
         'busco' => $f['busco'],

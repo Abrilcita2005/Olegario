@@ -21,7 +21,13 @@ export type PerfilBasico = {
   nombre: string;
   correo: string;
   profesion: string;
+  // Perfil profesional que ve la Comunidad (opcional, se edita en "Editar perfil").
+  sobreMi?: string;
+  ofrezco?: string;
+  busco?: string;
 };
+
+const TEXTOS_COMUNIDAD = ['sobreMi', 'ofrezco', 'busco'] as const;
 
 export type EstadoGuardado = {
   bienvenidaVista: boolean;
@@ -71,7 +77,17 @@ function leerPerfil(texto: string | null): PerfilBasico | null {
     return typeof datos.nombre === 'string' &&
       typeof datos.correo === 'string' &&
       typeof datos.profesion === 'string'
-      ? { nombre: datos.nombre, correo: datos.correo, profesion: datos.profesion }
+      ? {
+          nombre: datos.nombre,
+          correo: datos.correo,
+          profesion: datos.profesion,
+          ...Object.fromEntries(
+            TEXTOS_COMUNIDAD.filter((c) => typeof datos[c] === 'string' && datos[c]).map((c) => [
+              c,
+              datos[c],
+            ]),
+          ),
+        }
       : null;
   } catch {
     return null;

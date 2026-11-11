@@ -36,7 +36,7 @@ export type RespuestaApi<T> =
 const SIN_CONEXION = 'No pudimos conectarnos. Revisá tu conexión a internet.';
 
 export async function pedirApi<T>(
-  metodo: 'GET' | 'POST' | 'PATCH' | 'DELETE',
+  metodo: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
   ruta: string,
   datos?: unknown,
 ): Promise<RespuestaApi<T>> {

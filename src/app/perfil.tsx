@@ -61,7 +61,10 @@ export default function PerfilScreen() {
     setAviso(null);
     try {
       const resultado = await elegirFotoPerfil(origen);
-      if (resultado.estado === 'elegida') await cambiarFotoPerfil(resultado.foto);
+      if (resultado.estado === 'elegida') {
+        const subida = await cambiarFotoPerfil(resultado.foto);
+        if (!subida.ok) setAviso(subida.error);
+      }
       if (resultado.estado === 'sinPermiso') {
         setAviso(
           origen === 'camara'
@@ -78,7 +81,16 @@ export default function PerfilScreen() {
     { texto: 'Elegir de la galería', onPress: () => cambiarFoto('galeria') },
     { texto: 'Sacar una foto', onPress: () => cambiarFoto('camara') },
     ...(fotoPerfil
-      ? [{ texto: 'Quitar foto', onPress: () => cambiarFotoPerfil(null), destructiva: true }]
+      ? [
+          {
+            texto: 'Quitar foto',
+            onPress: async () => {
+              const quitada = await cambiarFotoPerfil(null);
+              if (!quitada.ok) setAviso(quitada.error);
+            },
+            destructiva: true,
+          },
+        ]
       : []),
   ];
 

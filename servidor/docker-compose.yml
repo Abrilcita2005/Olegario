@@ -42,6 +42,8 @@ services:
       - '8080:80'
     volumes:
       - ./api:/var/www/html
+      # Las fotos de perfil se guardan aparte, en un volumen que Apache puede escribir.
+      - fotos_perfil:/var/www/html/public/fotos
 
   phpmyadmin:
     image: phpmyadmin:5.2
@@ -55,3 +57,4 @@ services:
 
 volumes:
   datos_mysql:
+  fotos_perfil:

@@ -24,6 +24,7 @@ import {
   eliminarCuentaServidor,
   ingresarComoInvitado,
   ingresarConCorreo,
+  cambiarFotoServidor,
   leerCuentaActual,
   registrarCuenta,
   type ResultadoCuenta,
@@ -41,7 +42,8 @@ type Sesion = {
   // Con la API (Etapa 13) crea la cuenta real; sin servidor, simula el registro en el teléfono.
   // La contraseña nunca se guarda en la app.
   registrarse: (perfil: PerfilBasico, contrasena: string) => Promise<ResultadoCuenta>;
-  cambiarFotoPerfil: (foto: string | null) => Promise<void>;
+  // Con la API también la sube al servidor (para que la vea la Comunidad). Devuelve el error si falló.
+  cambiarFotoPerfil: (foto: string | null) => Promise<ResultadoCuenta>;
   marcarBienvenidaVista: () => Promise<void>;
   // Con la API: miembro con correo y contraseña, invitado sin correo. Sin servidor: simulado.
   ingresar: (
@@ -83,6 +85,8 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
             setTipoAcceso(cuenta?.tipoAcceso ?? null);
             setIdUsuario(cuenta?.id ?? null);
             if (cuenta?.perfil) setPerfilBasico(cuenta.perfil);
+            // Con servidor, la foto que vale es la guardada ahí.
+            if (cuenta?.tipoAcceso === 'miembro') setFotoPerfil(cuenta.fotoUrl);
           }
         }
       })
@@ -110,6 +114,10 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
           setPerfilBasico(cuenta.perfil);
           await guardarPerfilBasico(cuenta.perfil);
         }
+        if (cuenta) {
+          setFotoPerfil(cuenta.fotoUrl);
+          await guardarFotoPerfil(cuenta.fotoUrl);
+        }
         tipo = cuenta?.tipoAcceso ?? tipo;
       }
       setTipoAcceso(tipo);
@@ -132,8 +140,13 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
   }, []);
 
   const cambiarFotoPerfil = useCallback(async (foto: string | null) => {
+    if (apiConfigurada) {
+      const resultado = await cambiarFotoServidor(foto);
+      if (!resultado.ok) return resultado;
+    }
     setFotoPerfil(foto);
     await guardarFotoPerfil(foto);
+    return OK;
   }, []);
 
   const salir = useCallback(async () => {
