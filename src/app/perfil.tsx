@@ -285,7 +285,11 @@ export default function PerfilScreen() {
           variante="contorno"
           onPress={() => router.push('/editar-perfil')}
         />
-        <Boton texto="Cerrar sesión" variante="secundario" onPress={salir} />
+        <Boton
+          texto="Cerrar sesión"
+          variante="secundario"
+          onPress={() => salir({ volverABienvenida: true })}
+        />
         <Pressable
           onPress={() => setPanel('eliminar')}
           accessibilityRole="button"

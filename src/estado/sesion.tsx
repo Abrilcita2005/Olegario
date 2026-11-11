@@ -63,7 +63,8 @@ type Sesion = {
     tipo: TipoAcceso,
     credenciales?: { correo: string; contrasena: string },
   ) => Promise<ResultadoCuenta>;
-  salir: () => Promise<void>;
+  // volverABienvenida: solo "Cerrar sesión" del Perfil vuelve a la bienvenida (Etapa 14).
+  salir: (opciones?: { volverABienvenida?: boolean }) => Promise<void>;
   actualizarPerfil: (perfil: PerfilBasico) => Promise<ResultadoCuenta>;
   // Eliminar cuenta: en el servidor (si está) y los datos del teléfono; vuelve a Acceso.
   eliminarCuenta: () => Promise<ResultadoCuenta>;
@@ -178,9 +179,15 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
     return OK;
   }, []);
 
-  const salir = useCallback(async () => {
+  // "Cerrar sesión" del Perfil vuelve a la bienvenida (pedido de la responsable, Etapa 14); los demás
+  // usos (por ejemplo, un invitado que va a crear su cuenta) vuelven a Acceso, como antes.
+  const salir = useCallback(async (opciones?: { volverABienvenida?: boolean }) => {
     setTipoAcceso(null);
     setIdUsuario(null);
+    if (opciones?.volverABienvenida) {
+      setBienvenidaVista(false);
+      await borrarBienvenidaVista();
+    }
     await Promise.all([guardarTipoAcceso(null), cerrarSesionServidor()]);
   }, []);
 

@@ -104,7 +104,7 @@ export default function ComunidadScreen() {
           Colaborá, sumate
         </Texto>
         <View style={styles.filaTitulo}>
-          <Texto variante="tituloAcceso" style={styles.mayusculas}>
+          <Texto variante="tituloAcceso" style={styles.soloMayusculas}>
             y{' '}
           </Texto>
           <TextoDegradado variante="tituloAcceso">CONECTÁ</TextoDegradado>
@@ -389,6 +389,8 @@ const styles = StyleSheet.create({
   ayudaModo: { textAlign: 'right' },
   marca: { flexDirection: 'row', alignItems: 'center', gap: espacio.m, marginTop: espacio.grande },
   mayusculas: { textTransform: 'uppercase', marginTop: espacio.l },
+  // Segundo renglón del título, sin margen arriba (si no, quedaba muy separado del primero).
+  soloMayusculas: { textTransform: 'uppercase' },
   bajada: { marginVertical: espacio.l },
   tituloFiltros: { marginTop: espacio.grande, marginBottom: espacio.m },
   filtros: { flexDirection: 'row', flexWrap: 'wrap', gap: espacio.m },

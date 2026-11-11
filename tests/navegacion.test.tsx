@@ -154,15 +154,16 @@ describe('App principal', () => {
     await waitFor(() => expect(screen).toHavePathname('/'));
   });
 
-  it('cerrar sesión vuelve a Acceso', async () => {
+  it('cerrar sesión desde el Perfil vuelve a la bienvenida', async () => {
     await abrirApp({ bienvenida: true, acceso: 'miembro' });
     await waitFor(() => expect(screen).toHavePathname('/'));
 
     await tocar(screen.getByRole('button', { name: 'Mi perfil y membresía' }));
     await tocar(screen.getByRole('button', { name: 'Cerrar sesión' }));
 
-    await waitFor(() => expect(screen).toHavePathname('/acceso'));
+    await waitFor(() => expect(screen).toHavePathname('/bienvenida'));
     expect(await AsyncStorage.getItem('olegario.tipoAcceso')).toBeNull();
+    expect(await AsyncStorage.getItem('olegario.bienvenidaVista')).toBeNull();
   });
 
   it('sin sesión no se puede entrar a la app por enlace directo', async () => {

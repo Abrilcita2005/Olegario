@@ -19,26 +19,30 @@ export default function NovedadesScreen() {
 
   return (
     <View style={styles.panel}>
-      <Pressable
-        onPress={() => router.back()}
-        accessibilityRole="button"
-        accessibilityLabel="Cerrar novedades"
-        hitSlop={8}
-        style={styles.cerrar}
-      >
-        <Texto variante="chip">Cerrar</Texto>
-      </Pressable>
-      <View style={styles.barraSuperior}>
-        <View style={styles.titulo}>
-          <View style={styles.punto} />
-          <Texto variante="tituloSeccion" color="acento" accessibilityRole="header">
-            Pulso de Olegario
-          </Texto>
-        </View>
-        <Texto variante="cuerpoChico">Novedades y eventos</Texto>
-      </View>
-
+      {/* En el iPhone, el panel pega la lista desplazable a su borde: por eso el encabezado y los
+          márgenes van DENTRO de la lista (antes las tarjetas tapaban el título y quedaban corridas). */}
       <ScrollView contentContainerStyle={styles.lista}>
+        <View>
+          <Pressable
+            onPress={() => router.back()}
+            accessibilityRole="button"
+            accessibilityLabel="Cerrar novedades"
+            hitSlop={8}
+            style={styles.cerrar}
+          >
+            <Texto variante="chip">Cerrar</Texto>
+          </Pressable>
+          <View style={styles.barraSuperior}>
+            <View style={styles.titulo}>
+              <View style={styles.punto} />
+              <Texto variante="tituloSeccion" color="acento" accessibilityRole="header">
+                Pulso de Olegario
+              </Texto>
+            </View>
+            <Texto variante="cuerpoChico">Novedades y eventos</Texto>
+          </View>
+        </View>
+
         {novedades.map((novedad) => (
           <TarjetaNovedad
             key={novedad.id}
@@ -69,17 +73,11 @@ export default function NovedadesScreen() {
 }
 
 const styles = StyleSheet.create({
-  panel: {
-    flex: 1,
-    paddingTop: espacio.base,
-    paddingHorizontal: espacio.margenPantalla,
-    backgroundColor: colores.fondo,
-  },
+  panel: { flex: 1, backgroundColor: colores.fondo },
   barraSuperior: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: espacio.base,
   },
   titulo: { flexDirection: 'row', alignItems: 'center', gap: espacio.m },
   punto: { width: 10, height: 10, borderRadius: radios.pastilla, backgroundColor: colores.acento },
@@ -90,5 +88,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: espacio.m,
     borderRadius: radios.pastilla,
   },
-  lista: { gap: espacio.base, paddingBottom: espacio.grande * 2 },
+  lista: {
+    gap: espacio.base,
+    paddingTop: espacio.base,
+    paddingHorizontal: espacio.margenPantalla,
+    paddingBottom: espacio.grande * 2,
+  },
 });
