@@ -18,14 +18,15 @@ App (teléfono o web)  ──►  API en PHP (puerto 8080)  ──►  MySQL (ba
 - Las reglas de reserva (pasos de 30 min, hasta 3 días, lugar libre, horas suficientes, cancelar hasta
   30 min antes) se controlan **también en el servidor**, dentro de una transacción.
 
-| Carpeta / archivo                      | Qué es                                                         |
-| -------------------------------------- | -------------------------------------------------------------- |
-| `servidor/docker-compose.yml`          | Los tres servicios: MySQL, la API y phpMyAdmin                 |
-| `servidor/.env.example`                | Plantilla de contraseñas (se copia como `servidor/.env`)       |
-| `servidor/db/01_esquema.sql`           | Tablas (**pendiente de aprobación**)                           |
-| `servidor/db/02_contenido_inicial.sql` | Contenido de ejemplo de Figma y efemérides reales              |
-| `servidor/api/`                        | La API en PHP (`public/index.php` lista todas las direcciones) |
-| `servidor/pruebas/probar_api.php`      | 76 comprobaciones de punta a punta (solo en una base local)    |
+| Carpeta / archivo                      | Qué es                                                           |
+| -------------------------------------- | ---------------------------------------------------------------- |
+| `servidor/docker-compose.yml`          | Los tres servicios: MySQL, la API y phpMyAdmin                   |
+| `servidor/.env.example`                | Plantilla de contraseñas (se copia como `servidor/.env`)         |
+| `servidor/db/01_esquema.sql`           | Tablas (**pendiente de aprobación**)                             |
+| `servidor/db/02_contenido_inicial.sql` | Los 21 espacios reales del plano, ejemplos de Figma y efemérides |
+| `servidor/db/03_codigos_acceso.sql`    | Códigos de un solo uso para entrar al plano desde la app (D-73)  |
+| `servidor/api/`                        | La API en PHP (`public/index.php` lista todas las direcciones)   |
+| `servidor/pruebas/probar_api.php`      | 83 comprobaciones de punta a punta (solo en una base local)      |
 
 ## Qué guarda el servidor
 
@@ -45,7 +46,8 @@ App (teléfono o web)  ──►  API en PHP (puerto 8080)  ──►  MySQL (ba
 
 Cuentas: `POST /cuentas/registro` · `POST /cuentas/ingreso` · `POST /cuentas/invitado` ·
 `POST /cuentas/salir` · `GET`, `PATCH` (nombre, profesión, sobre mí, ofrezco, busco) y `DELETE /cuentas/yo` ·
-`PUT /cuentas/foto` (foto de perfil; se guarda en `servidor/api/public/fotos/`).
+`PUT /cuentas/foto` (foto de perfil; se guarda en `servidor/api/public/fotos/`) ·
+`POST /cuentas/codigo` y `POST /cuentas/canjear-codigo` (entrada directa al plano de reservas, D-73).
 Reservas: `GET /espacios?desde=…&hasta=…` · `GET /horas` · `POST /horas/extra` (compra simulada) · `GET` y `POST /reservas` ·
 `POST /reservas/{id}/cancelar`.
 Agenda y contenido: `GET /eventos` · `POST` y `DELETE /eventos/{id}/inscripcion` · `GET /contenido`.
@@ -75,7 +77,7 @@ Para cuando se suba (todavía no se hizo):
 - Hostinger no usa Docker: se suben los archivos de `servidor/api/` y la carpeta `public/` va dentro de
   `public_html` (el resto del código queda fuera, sin acceso desde internet).
 - Las tablas se cargan desde el phpMyAdmin de Hostinger (pestaña Importar): primero
-  `01_esquema.sql` y después `02_contenido_inicial.sql`. El contenido inicial funciona con MySQL y con
+  `01_esquema.sql`, después `02_contenido_inicial.sql` y por último `03_codigos_acceso.sql`. El contenido inicial funciona con MySQL y con
   MariaDB.
 - Confirmar en hPanel el nombre exacto de la base con mayúsculas y minúsculas (en Hostinger suelen
   verse en minúsculas, por ejemplo `u275204779_olegario`), el usuario y si el motor es MySQL o MariaDB.
@@ -90,7 +92,7 @@ Para cuando se suba (todavía no se hizo):
 - [x] Docker (MySQL 8.4, PHP 8.3 con Apache, phpMyAdmin 5.2) escrito.
 - [x] Esquema MySQL **aprobado por la responsable (2026-11-04)**. Esquema y contenido inicial cargan
       sin errores (también dos veces seguidas) en un MySQL 8.0 de la nube.
-- [x] API de cuentas, reservas, agenda y contenido: 76 de 76 comprobaciones correctas en la nube.
+- [x] API de cuentas, reservas, agenda y contenido: 83 de 83 comprobaciones correctas en la nube.
 - [x] Supabase eliminado (archivos y paquete `@supabase/supabase-js`), con aprobación (2026-11-04).
 - [x] Cuentas de la app conectadas a la API (`src/services/api.ts` y `cuentaServidor.ts`): registro,
       ingreso, invitado, salir, editar perfil y eliminar cuenta. Probado contra la API real
@@ -108,4 +110,8 @@ Para cuando se suba (todavía no se hizo):
       MySQL).
 - [x] Foto de perfil y perfil profesional (sobre mí, ofrezco, busco) con servidor (D-71). Probado contra
       la API real y en la versión web con dos cuentas (foto y "Ofrezco" visibles en Talentos disponibles).
-- [ ] Subir a Hostinger (ver arriba).
+- [x] Reservas de la app y del plano unidas en el servidor (D-73): probado en local (reserva en la app y
+      en el plano, misma cuenta, horas descontadas por las dos).
+- [ ] Subir a Hostinger (ver arriba). Después: completar `API_URL` en `config.js` del plano
+      (`olegario-reservas`), publicar su rama `claude/gallant-fermi-66n1rh` y poner
+      `PLANO_CONECTADO_AL_SERVIDOR = true` en `data/enlaces.ts` de la app.

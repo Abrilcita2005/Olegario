@@ -16,7 +16,8 @@ import { useAgenda } from '@/estado/agenda';
 import { useReservas } from '@/estado/reservas';
 import { useSesion } from '@/estado/sesion';
 import { useAhora } from '@/hooks/useAhora';
-import { abrirEnlace } from '@/services/enlacesExternos';
+import { apiConfigurada } from '@/services/api';
+import { abrirPlanoDeReservas } from '@/services/enlacesExternos';
 import type { Espacio } from '@/models/espacio';
 import { colores, espacio, radios, tipografia } from '@/theme';
 import { marcasDeActividad } from '@/utils/agenda';
@@ -33,7 +34,7 @@ import {
 } from '@/utils/fechas';
 import { NOMBRE_SERVICIO, SERVICIOS, esServicio, filtrarEspacios } from '@/utils/espacios';
 
-import { ENLACE_PLANO_RESERVAS } from '../../../data/enlaces';
+import { PLANO_CONECTADO_AL_SERVIDOR } from '../../../data/enlaces';
 import { puede } from '@/utils/permisos';
 
 const DURACION_INICIAL_MINUTOS = 120;
@@ -44,7 +45,7 @@ const DURACION_INICIAL_MINUTOS = 120;
 export default function EspaciosScreen() {
   const ahora = useAhora();
   const { tipoAcceso, salir } = useSesion();
-  const { espacios, reservas, horas, reservar } = useReservas();
+  const { espacios, reservas, horas, reservar, actualizar } = useReservas();
   const { eventos } = useAgenda();
   const marcas = marcasDeActividad(reservas, eventos);
   const parametros = useLocalSearchParams<{ servicio?: string }>();
@@ -200,12 +201,18 @@ export default function EspaciosScreen() {
           fondo={colores.fondoIconoNaranja}
           titulo="Ver plano de Olegario"
           detalle="El coworking visto desde arriba"
-          onPress={() => abrirEnlace(ENLACE_PLANO_RESERVAS)}
+          onPress={async () => {
+            await abrirPlanoDeReservas();
+            // Al volver del plano, se leen de nuevo las reservas (lo reservado ahí aparece acá).
+            await actualizar();
+          }}
         />
-        <Texto variante="cuerpoChico" color="textoTerciario">
-          Las reservas que hagas en el plano se guardan aparte: no aparecen en tus reservas de la
-          app.
-        </Texto>
+        {PLANO_CONECTADO_AL_SERVIDOR && apiConfigurada ? null : (
+          <Texto variante="cuerpoChico" color="textoTerciario">
+            Las reservas que hagas en el plano se guardan aparte: no aparecen en tus reservas de la
+            app.
+          </Texto>
+        )}
       </View>
 
       {selectorAbierto ? (

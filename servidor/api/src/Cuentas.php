@@ -130,6 +130,52 @@ function ingresarComoInvitado(): never
         'nombre' => 'Invitado', 'profesion' => '', 'correo' => null])], 201);
 }
 
+// ───── Entrada directa al plano de reservas (olegario-reservas) ─────
+const SEGUNDOS_CODIGO = 60;
+
+/** POST /cuentas/codigo — código de un solo uso para abrir el plano con esta misma cuenta. */
+function pedirCodigoDeAcceso(): never
+{
+    $usuario = usuarioActual();
+    $codigo = bin2hex(random_bytes(16));
+    $pdo = db();
+    $pdo->exec('DELETE FROM codigos_acceso WHERE vence < UTC_TIMESTAMP()');
+    $pdo->prepare('INSERT INTO codigos_acceso (codigo_hash, usuario_id, vence) VALUES (?, ?, ?)')
+        ->execute([hash('sha256', $codigo), $usuario['id'], aMysql(ahoraUtc()->modify('+' . SEGUNDOS_CODIGO . ' seconds'))]);
+    responder(['codigo' => $codigo, 'venceEnSegundos' => SEGUNDOS_CODIGO], 201);
+}
+
+/** POST /cuentas/canjear-codigo {codigo} — lo usa el plano: devuelve una sesión y el código deja de servir. */
+function canjearCodigoDeAcceso(): never
+{
+    $codigo = strtolower(trim((string) (cuerpo()['codigo'] ?? '')));
+    if (!preg_match('/^[a-f0-9]{32}$/', $codigo)) {
+        throw new ErrorApi(401, 'El enlace venció. Volvé a abrir el plano desde la app.', 'codigo_invalido');
+    }
+    $pdo = db();
+    $pdo->beginTransaction();
+    try {
+        $consulta = $pdo->prepare('SELECT usuario_id FROM codigos_acceso WHERE codigo_hash = ? AND vence > UTC_TIMESTAMP() FOR UPDATE');
+        $consulta->execute([hash('sha256', $codigo)]);
+        $usuarioId = $consulta->fetchColumn();
+        // Un solo uso: se borra aunque esté vencido.
+        $pdo->prepare('DELETE FROM codigos_acceso WHERE codigo_hash = ?')->execute([hash('sha256', $codigo)]);
+        $pdo->commit();
+    } catch (Throwable $e) {
+        $pdo->rollBack();
+        throw $e;
+    }
+    if (!$usuarioId) {
+        throw new ErrorApi(401, 'El enlace venció. Volvé a abrir el plano desde la app.', 'codigo_invalido');
+    }
+    $consulta = db()->prepare(
+        'SELECT u.id, u.correo, p.rol, p.nombre, p.profesion, p.foto_url, p.sobre_mi, p.ofrezco, p.busco
+         FROM usuarios u JOIN perfiles p ON p.id = u.id WHERE u.id = ?'
+    );
+    $consulta->execute([$usuarioId]);
+    responder(['token' => abrirSesion($usuarioId), 'cuenta' => cuentaPublica($consulta->fetch())]);
+}
+
 function salir(): never
 {
     $token = tokenDeLaPeticion();

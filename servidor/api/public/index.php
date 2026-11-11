@@ -39,6 +39,8 @@ $rutas = [
     ['PATCH', '/cuentas/yo', 'actualizarMiPerfil'],
     ['DELETE', '/cuentas/yo', 'eliminarMiCuenta'],
     ['PUT', '/cuentas/foto', 'cambiarMiFoto'],
+    ['POST', '/cuentas/codigo', 'pedirCodigoDeAcceso'],
+    ['POST', '/cuentas/canjear-codigo', 'canjearCodigoDeAcceso'],
     ['GET', '/espacios', 'listarEspacios'],
     ['GET', '/horas', 'verHoras'],
     ['POST', '/horas/extra', 'sumarHorasExtraSimuladas'],

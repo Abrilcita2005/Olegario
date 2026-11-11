@@ -6,6 +6,11 @@
 export const ENLACE_CONOCE_OLEGARIO =
   'https://conoce-olegario-9mno5ib05-abrilcita.vercel.app/?_vercel_share=PVJVZVLt02DaKV9VRdwWCBLGr3XoNytZ';
 
-// Plano visto desde arriba para reservar. Sus reservas se guardan aparte (en el teléfono): no aparecen
-// en "Mis reservas" ni descuentan horas del plan (aceptado por la responsable "por ahora", 2026-11-11).
+// Plano visto desde arriba para reservar (proyecto olegario-reservas). Unido al servidor de la app (D-73):
+// sus reservas son las mismas que las de la app. PENDIENTE: la versión publicada en Vercel pasa a usar el
+// servidor cuando esté en Hostinger (hasta entonces sigue con sus reservas aparte, en Firebase).
 export const ENLACE_PLANO_RESERVAS = 'https://olegario-reservas.vercel.app/';
+
+// true cuando la versión publicada del plano ya guarda en el servidor de Olegario (después de Hostinger):
+// la app lo abre con la sesión (código de un solo uso) y deja de mostrar el aviso de "reservas aparte".
+export const PLANO_CONECTADO_AL_SERVIDOR = false;

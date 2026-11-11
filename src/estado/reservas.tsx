@@ -56,6 +56,8 @@ type EstadoReservas = {
   cancelar: (id: string) => Promise<boolean>;
   // SIMULACIÓN de compra de horas extras (decisión de la responsable, 2026-11-04): no se cobra nada.
   cargarHorasExtra: (horas: number) => Promise<void>;
+  // Vuelve a leer del servidor (por ejemplo, al volver del plano de reservas). Sin servidor no hace nada.
+  actualizar: () => Promise<void>;
 };
 
 const ContextoReservas = createContext<EstadoReservas | null>(null);
@@ -85,6 +87,8 @@ export function ProveedorReservas({ children }: { children: ReactNode }) {
     <ProveedorReservasLocal>{children}</ProveedorReservasLocal>
   );
 }
+
+const sinServidor = async () => {};
 
 const SIN_DATOS: DatosReservas = { espacios: [], reservas: [], horas: null };
 
@@ -165,8 +169,9 @@ function ProveedorReservasServidor({ children }: { children: ReactNode }) {
       reservar,
       cancelar,
       cargarHorasExtra,
+      actualizar: recargar,
     }),
-    [datos, horas, reservar, cancelar, cargarHorasExtra],
+    [datos, horas, reservar, cancelar, cargarHorasExtra, recargar],
   );
 
   return <ContextoReservas.Provider value={valor}>{children}</ContextoReservas.Provider>;
@@ -264,7 +269,15 @@ function ProveedorReservasLocal({ children }: { children: ReactNode }) {
   );
 
   const valor = useMemo(
-    () => ({ espacios, reservas, horas, reservar, cancelar, cargarHorasExtra }),
+    () => ({
+      espacios,
+      reservas,
+      horas,
+      reservar,
+      cancelar,
+      cargarHorasExtra,
+      actualizar: sinServidor,
+    }),
     [espacios, reservas, horas, reservar, cancelar, cargarHorasExtra],
   );
 

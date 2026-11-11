@@ -15,6 +15,7 @@
 
 | Fecha         | Mensaje de la responsable                                                                                  | Qué autorizó                                                                                                                                                                     |
 | ------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-11    | "Quiero unir los dos sistemas" + respuestas                                                                | Plano de Vercel al servidor (deja Firebase), los 21 espacios del plano, entrada directa con código (tabla `codigos_acceso` aprobada) (D-73)                                      |
 | 2026-11-11    | "Antes de avanzar… incorporar 2 cosas" + respuestas                                                        | "Conocé Olegario" y el plano de Vercel con poco protagonismo (D-72); instalar `expo-web-browser`; reservas del plano aparte "por ahora"                                          |
 | 2026-11-11    | "No entendí esto, solucionalo vos" (P-47)                                                                  | Corrección de la Etapa 13: foto de perfil en el servidor y sobre mí/ofrezco/busco en Editar perfil (D-71)                                                                        |
 | 2026-11-10/11 | "Continuamos?" · "Avancemos así terminamos"                                                                | Terminar la Etapa 13 (reservas, agenda, Comunidad y servicios del Perfil con la API); no autoriza la Etapa 14                                                                    |
@@ -63,7 +64,7 @@
 
 - Etapa 6: bienvenidas (collage interactivo), acceso, registro e inicio de sesión con validaciones; 45 pruebas. Capturas en `docs/capturas-app/etapa-6/`.
 - Etapa 7: Home con saludo, banner, reserva actual (en curso / próxima / sin reserva / invitado) y servicios; 60 pruebas. Capturas en `docs/capturas-app/etapa-7/`.
-- Etapa 13: servidor Docker + PHP + MySQL + phpMyAdmin (`servidor/`); cuentas, reservas, horas, agenda, Comunidad y servicios del Perfil con la API (sin servidor, datos de prueba); 139 pruebas de la app y 76 comprobaciones de la API. Detalle en `docs/BACKEND.md`.
+- Etapa 13: servidor Docker + PHP + MySQL + phpMyAdmin (`servidor/`); cuentas, reservas, horas, agenda, Comunidad y servicios del Perfil con la API (sin servidor, datos de prueba); 139 pruebas de la app y 83 comprobaciones de la API. Detalle en `docs/BACKEND.md`.
 - Etapa 12: Novedades con las tarjetas de Figma, carta del café, inscripción simulada y contador siempre activo; 112 pruebas. Capturas en `docs/capturas-app/etapa-12/`.
 - Etapa 11: Perfil de cuenta según la captura de Figma: membresía, bolsa de horas, horas extras simuladas, 6 servicios provisorios, editar perfil y eliminar cuenta; 108 pruebas. Capturas en `docs/capturas-app/etapa-11/`.
 - Etapa 10: Comunidad con Modo Foco, publicar (provisorio), filtros, solicitudes simuladas y perfil público provisorio; 99 pruebas. Capturas en `docs/capturas-app/etapa-10/`.
@@ -84,7 +85,9 @@
    y `OLEGARIO_API_PRUEBA=http://127.0.0.1:8090 npx jest tests/api.test.tsx`.
 3. Entorno "Olegario" (2026-11-11): permite las dos páginas de Vercel y prepara solo `npm ci` y MySQL
    (sin probar todavía en una sesión nueva).
-4. Pendientes de la responsable: probar `docker compose up`, datos de Hostinger. Limitaciones L-08 y L-10 en `DECISIONES_Y_PENDIENTES.md`.
+4. Plano de reservas: repositorio `Abrilcita2005/olegario-reservas`, cambios en su rama
+   `claude/gallant-fermi-66n1rh` (sin publicar hasta Hostinger, D-73).
+5. Pendientes de la responsable: probar `docker compose up`, datos de Hostinger. Limitaciones L-08 y L-10 en `DECISIONES_Y_PENDIENTES.md`.
 
 ## Preguntas abiertas para la responsable
 

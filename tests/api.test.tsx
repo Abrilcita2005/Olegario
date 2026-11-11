@@ -198,21 +198,21 @@ const URL_PRUEBA = process.env.OLEGARIO_API_PRUEBA;
     hoy.setHours(0, 0, 0, 0);
     const enCuatroDias = new Date(hoy.getTime() + 4 * 86_400_000);
     const inicial = await datos.leerReservasServidor(hoy, enCuatroDias);
-    expect(inicial?.espacios.map((e) => e.id)).toContain('sala-acustica-focus');
-    expect(inicial?.espacios.find((e) => e.id === 'mesa-luz-natural')?.foto).toBeDefined();
+    expect(inicial?.espacios.map((e) => e.id)).toContain('streaming-1');
+    expect(inicial?.espacios.find((e) => e.id === 'puesto-1')?.foto).toBeDefined();
     expect(inicial?.horas).toEqual({ totales: 80, usadas: 0, disponibles: 80 });
 
     const inicio = new Date(hoy.getTime() + 86_400_000 + 10 * 3_600_000); // mañana 10 hs
     const fin = new Date(inicio.getTime() + 3_600_000);
-    const creada = await datos.crearReservaServidor('sala-acustica-focus', inicio, fin);
+    const creada = await datos.crearReservaServidor('streaming-1', inicio, fin);
     expect(creada.ok).toBe(true);
-    expect(await datos.crearReservaServidor('sala-acustica-focus', inicio, fin)).toEqual({
+    expect(await datos.crearReservaServidor('streaming-1', inicio, fin)).toEqual({
       ok: false,
       error: 'sinLugar',
     });
     const conReserva = await datos.leerReservasServidor(hoy, enCuatroDias);
     expect(conReserva?.reservas).toHaveLength(1);
-    expect(conReserva?.reservas[0].espacio).toBe('Sala Acústica Focus');
+    expect(conReserva?.reservas[0].espacio).toBe('Streaming 1 · Estudio');
     expect(conReserva?.horas?.disponibles).toBe(79);
     expect((await datos.sumarHorasExtraServidor(5))?.disponibles).toBe(84);
     expect(await datos.cancelarReservaServidor(creada.ok ? creada.reserva.id : '')).toBe(true);
@@ -268,7 +268,7 @@ const URL_PRUEBA = process.env.OLEGARIO_API_PRUEBA;
     expect(await datos.leerMembresiaServidor()).toMatchObject({ plan: 'Plan Pro Creativo' });
     expect(await datos.leerPaquetesServidor()).toEqual([]);
     expect((await datos.leerBeneficiosServidor())?.map((b) => b.id)).toEqual(['promo-cafeteria']);
-    expect(await datos.valorarEspacioServidor('sala-acustica-focus', 5, 'Excelente')).toBe(true);
+    expect(await datos.valorarEspacioServidor('streaming-1', 5, 'Excelente')).toBe(true);
     expect(await datos.enviarMensajeServidor('sugerencia', 'Más enchufes en la terraza.')).toBe(
       true,
     );

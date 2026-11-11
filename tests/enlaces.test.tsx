@@ -51,3 +51,55 @@ it('Espacios tiene el plano minimizado al final, con el aviso de que sus reserva
     expect.anything(),
   );
 });
+
+describe('plano unido al servidor (D-73)', () => {
+  afterEach(() => jest.resetModules());
+
+  function cargar(conectado: boolean, conSesion: boolean) {
+    const pedirApi = jest.fn(() =>
+      Promise.resolve({ ok: true, datos: { codigo: 'c'.repeat(32) } }),
+    );
+    jest.doMock('../data/enlaces', () => ({
+      ...jest.requireActual('../data/enlaces'),
+      PLANO_CONECTADO_AL_SERVIDOR: conectado,
+    }));
+    jest.doMock('@/services/api', () => ({
+      apiConfigurada: true,
+      leerToken: () => Promise.resolve(conSesion ? 't'.repeat(64) : null),
+      pedirApi,
+    }));
+    let modulo!: typeof import('@/services/enlacesExternos');
+    let navegador!: typeof WebBrowser;
+    jest.isolateModules(() => {
+      modulo = require('@/services/enlacesExternos');
+      navegador = require('expo-web-browser');
+    });
+    return { abrir: modulo.abrirPlanoDeReservas, pedirApi, navegador };
+  }
+
+  it('con el plano conectado y sesión, entra directo con un código de un solo uso', async () => {
+    const { abrir, pedirApi, navegador } = cargar(true, true);
+    await abrir();
+    expect(pedirApi).toHaveBeenCalledWith('POST', '/cuentas/codigo');
+    expect(navegador.openBrowserAsync).toHaveBeenCalledWith(
+      `${ENLACE_PLANO_RESERVAS}?codigo=${'c'.repeat(32)}`,
+      expect.anything(),
+    );
+  });
+
+  it('sin sesión, o mientras el plano publicado no está conectado, se abre sin código', async () => {
+    for (const [conectado, conSesion] of [
+      [true, false],
+      [false, true],
+    ]) {
+      const { abrir, pedirApi, navegador } = cargar(conectado, conSesion);
+      await abrir();
+      expect(pedirApi).not.toHaveBeenCalled();
+      expect(navegador.openBrowserAsync).toHaveBeenCalledWith(
+        ENLACE_PLANO_RESERVAS,
+        expect.anything(),
+      );
+      jest.resetModules();
+    }
+  });
+});

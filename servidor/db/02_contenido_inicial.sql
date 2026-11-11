@@ -2,20 +2,44 @@
 -- Docker lo carga solo la primera vez (después de 01_esquema.sql). También se puede ejecutar a mano
 -- desde phpMyAdmin (pestaña SQL) más de una vez: si un dato ya existe, se actualiza.
 -- Compatible con MySQL 8 y MariaDB (Hostinger puede usar cualquiera de los dos).
--- IMPORTANTE: espacios, eventos, novedades, talleres y beneficios son los EJEMPLOS de Figma que usa la
--- app hoy; el equipo de Olegario los reemplaza por los reales desde phpMyAdmin. Las efemérides son
+-- IMPORTANTE: los espacios son los reales del plano (D-73); eventos, novedades, talleres y beneficios son
+-- los EJEMPLOS de Figma que usa la app hoy; el equipo de Olegario los reemplaza por los reales desde phpMyAdmin. Las efemérides son
 -- fechas reales (data/efemerides.ts). Las fotos se suben más adelante (foto_url vacío por ahora).
 -- Horas en UTC: Mendoza es UTC−3 todo el año (por eso las 17 hs de Mendoza se guardan como 20 hs).
 
 SET NAMES utf8mb4;
 SET time_zone = '+00:00';
 
+-- Espacios reales del coworking (los mismos 21 del plano de reservas, olegario-reservas: 13 puestos y
+-- 8 salas), decisión de la responsable del 2026-11-11 (D-73). Submarca: puestos y cubículos → cowork;
+-- streaming y fotografía → stream; reunión y eventos → network. Cada uno se reserva entero (capacidad 1).
 INSERT INTO espacios (id, servicio, nombre, tipo, ubicacion, ambiente, equipamiento, etiqueta, capacidad) VALUES
-  ('rincon-botanico-zen', 'cowork', 'Rincón Botánico Zen', 'Puesto individual', 'Ala Oeste · Nivel 1 · Frente a jardín interior', JSON_ARRAY('Luz natural directa', 'Silencio alto'), JSON_ARRAY('Tomas USB-C 65W', 'Herman Miller Sayl', 'Aire purificado'), NULL, 1),
-  ('mesa-luz-natural', 'cowork', 'Mesa con Luz Natural', 'Puesto individual', 'Sector Jardín · Puesto #14', JSON_ARRAY('Luz natural directa'), JSON_ARRAY('Tomas USB-C 65W', 'WiFi 6E Mesh 500Mbps'), NULL, 1),
-  ('mesa-comunitaria-cafe', 'cafe', 'Mesa Comunitaria Barra Cafetería', 'Mesa compartida', 'Planta Alta', JSON_ARRAY('Murmullo alegre', 'Barra de especialidad'), JSON_ARRAY('WiFi 6E Mesh 500Mbps', 'Espresso bar libre', 'Pérgola bioclimática'), 'Comunidad', 3),
-  ('sala-acustica-focus', 'stream', 'Sala Acústica Focus', 'Sala de stream y llamadas', 'Sala Central · Pods de Stream & Calls', JSON_ARRAY('-32dB aislación', 'Ilum. Broadcast'), JSON_ARRAY('Cámara 4K + Brazo Elgato', 'Mic Rode PodMic'), NULL, 1)
-ON DUPLICATE KEY UPDATE servicio = VALUES(servicio), nombre = VALUES(nombre), tipo = VALUES(tipo), ubicacion = VALUES(ubicacion), ambiente = VALUES(ambiente), equipamiento = VALUES(equipamiento), etiqueta = VALUES(etiqueta), capacidad = VALUES(capacidad);
+  ('puesto-1', 'cowork', 'Puesto 1', 'Puesto individual', 'Cowork · Mesa comunal', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('puesto-2', 'cowork', 'Puesto 2', 'Puesto individual', 'Cowork · Mesa comunal', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('puesto-3', 'cowork', 'Puesto 3', 'Puesto individual', 'Cowork · Mesa comunal', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('puesto-4', 'cowork', 'Puesto 4', 'Puesto individual', 'Cowork · Mesa comunal', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('puesto-5', 'cowork', 'Puesto 5', 'Puesto individual', 'Cowork · Mesa comunal', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('puesto-6', 'cowork', 'Puesto 6', 'Puesto individual', 'Cowork · Mesa comunal', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('puesto-7', 'cowork', 'Puesto 7', 'Puesto individual', 'Cowork · Mesa comunal', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('puesto-8', 'cowork', 'Puesto 8', 'Puesto individual', 'Cowork · Mesa comunal', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('puesto-9', 'cowork', 'Puesto 9', 'Puesto individual', 'Cowork · Mesa comunal', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('puesto-10', 'cowork', 'Puesto 10', 'Puesto individual', 'Cowork · Mesa comunal', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('puesto-11', 'cowork', 'Puesto 11', 'Puesto individual', 'Cowork · Mesa chica', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('puesto-12', 'cowork', 'Puesto 12', 'Puesto individual', 'Cowork · Mesa chica', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('puesto-13', 'cowork', 'Puesto 13', 'Puesto individual', 'Cowork · Mesa chica', JSON_ARRAY('Luz colgante'), JSON_ARRAY('1 persona', 'Wi-Fi', 'Enchufe'), NULL, 1),
+  ('cubiculo-1', 'cowork', 'Cubículo 1', 'Cabina individual insonorizada', 'Cowork · Cubículos', JSON_ARRAY('Insonorizado'), JSON_ARRAY('1 persona', 'Monitor'), NULL, 1),
+  ('cubiculo-2', 'cowork', 'Cubículo 2', 'Cabina individual insonorizada', 'Cowork · Cubículos', JSON_ARRAY('Insonorizado'), JSON_ARRAY('1 persona', 'Monitor'), NULL, 1),
+  ('streaming-1', 'stream', 'Streaming 1 · Estudio', 'Sala de streaming · 1 a 2 personas', 'Salas de streaming', JSON_ARRAY('Paneles acústicos'), JSON_ARRAY('Aro de luz', 'Fondo neutro'), NULL, 1),
+  ('streaming-2', 'stream', 'Streaming 2 · Gaming', 'Sala de streaming · 1 a 2 personas', 'Salas de streaming', JSON_ARRAY('Luces LED'), JSON_ARRAY('Doble monitor', 'Cámara en trípode'), NULL, 1),
+  ('streaming-3', 'stream', 'Streaming 3 · Living', 'Sala de streaming · 2 a 3 personas', 'Salas de streaming', JSON_ARRAY('Luz cálida'), JSON_ARRAY('2 sillones', '2 micrófonos'), NULL, 1),
+  ('fotografia', 'stream', 'Sala de Fotografía', 'Estudio con ciclorama', 'Planta baja · Junto a la terraza', JSON_ARRAY('Ciclorama blanco'), JSON_ARRAY('2 softbox', 'Cámara en trípode'), NULL, 1),
+  ('reunion', 'network', 'Sala de Reunión', 'Sala de reunión · hasta 6 personas', 'Planta baja · Junto a la terraza', JSON_ARRAY('Mesa de roble'), JSON_ARRAY('Pantalla', 'Videollamada'), NULL, 1),
+  ('eventos', 'network', 'Sala de Eventos', 'Sala de eventos · hasta 18 personas', 'Doble altura · Junto al cowork', JSON_ARRAY('Doble altura'), JSON_ARRAY('Proyector y pantalla', 'Atril', 'Sonido', '18 sillas'), NULL, 1)
+ON DUPLICATE KEY UPDATE servicio = VALUES(servicio), nombre = VALUES(nombre), tipo = VALUES(tipo), ubicacion = VALUES(ubicacion), ambiente = VALUES(ambiente), equipamiento = VALUES(equipamiento), etiqueta = VALUES(etiqueta), capacidad = VALUES(capacidad), activo = TRUE;
+
+-- Los 4 espacios de ejemplo de Figma ya no se ofrecen (se desactivan, no se borran: pueden tener reservas).
+UPDATE espacios SET activo = FALSE
+WHERE id IN ('rincon-botanico-zen', 'mesa-luz-natural', 'mesa-comunitaria-cafe', 'sala-acustica-focus');
 
 INSERT INTO efemerides (id, mes, dia, titulo, texto) VALUES
   ('braille', 1, 4, 'Día mundial del Braille', 'Un recordatorio de que la información y la creatividad tienen que llegar a todas las personas.'),
