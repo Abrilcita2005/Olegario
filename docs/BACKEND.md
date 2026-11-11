@@ -74,14 +74,15 @@ Decisión de la responsable (2026-11-04, D-69): el servidor final va a estar en 
 de datos **`U275204779_Olegario`**. Por ahora se trabaja en local con Docker.
 
 Datos (2026-11-11, D-79): hosting **compartido**, dirección `https://www.supervisioncct3.com/olegario`,
-base y usuario `u275204779_olegario`, PHP 8.3, casilla `olegario@supervisioncct3.com` (para P-48).
+base y usuario `u275204779_olegario`, PHP 8.1, casilla `olegario@supervisioncct3.com` (para P-48).
 **Guía paso a paso: `servidor/hostinger/GUIA.md`.** El paquete se arma con
 `bash servidor/hostinger/armar_paquete.sh` (probado en una simulación con Apache + MySQL: 84 de 84).
 
 Para cuando se suba (todavía no se hizo):
 
-- Hostinger no usa Docker: `olegario-publico.zip` va dentro de `public_html` (crea `olegario/`) y
-  `olegario-api.zip` al lado de `public_html` (código y `config.php`, sin acceso desde internet).
+- Hostinger no usa Docker: `olegario.zip` se descomprime dentro de `public_html` y crea `olegario/`,
+  con `olegario-api/` adentro (código y `config.php`, bloqueados para internet con dos barreras, D-80).
+  PHP del sitio: 8.1 (el código no usa nada de 8.2 o 8.3).
 - Las tablas se cargan desde el phpMyAdmin de Hostinger (pestaña Importar): primero
   `01_esquema.sql`, después `02_contenido_inicial.sql`, `03_codigos_acceso.sql` y por último
   `04_descripcion_eventos.sql`. El contenido inicial funciona con MySQL y con
@@ -90,7 +91,7 @@ Para cuando se suba (todavía no se hizo):
   base con mayúsculas y minúsculas (en Hostinger suelen verse en minúsculas, por ejemplo
   `u275204779_olegario`) y el usuario.
 - La contraseña de la base **no va en el chat ni en GitHub**: la responsable la escribe en
-  `olegario-api/config.php` desde el Administrador de archivos (plantilla: `config.ejemplo.php`).
+  `olegario/olegario-api/config.php` desde el Administrador de archivos (plantilla: `config.ejemplo.php`).
   En Docker la API sigue leyendo las variables de entorno.
 - La carpeta `public_html/olegario/fotos/` tiene que permitir que PHP escriba (fotos de perfil).
 - La app de producción apunta a `EXPO_PUBLIC_API_URL=https://www.supervisioncct3.com/olegario`.

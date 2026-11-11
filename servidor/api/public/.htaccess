@@ -1,5 +1,7 @@
 # Todas las direcciones pasan por index.php (el "enrutador" de la API).
 RewriteEngine On
+# La carpeta privada (código y contraseña) nunca se entrega a internet.
+RewriteRule ^olegario-api(/|$) - [F,L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]
 # El encabezado Authorization tiene que llegar a PHP (lleva el token de sesión).

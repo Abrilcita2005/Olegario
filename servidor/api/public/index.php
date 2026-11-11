@@ -12,10 +12,18 @@ if (PHP_SAPI === 'cli-server' && is_file(__DIR__ . (parse_url($_SERVER['REQUEST_
 // Carpeta pública (esta): index.php, .htaccess y fotos/.
 const CARPETA_PUBLICA = __DIR__;
 
-// Carpeta privada (código y configuración), fuera del alcance de internet:
-//  * En Hostinger: `olegario-api/`, al lado de `public_html/` (ver servidor/hostinger/GUIA.md).
+// Carpeta privada (código y configuración). Se busca, en este orden:
+//  * En Hostinger: `olegario-api/` dentro de esta carpeta (decisión de la responsable, D-80). Está
+//    bloqueada para internet dos veces: por el .htaccess de aquí y por el suyo propio.
+//  * `olegario-api/` al lado de `public_html/` (la ubicación anterior, sigue funcionando).
 //  * En Docker o en local: la carpeta de arriba (`servidor/api/`).
-$carpetaPrivada = is_dir(__DIR__ . '/../../olegario-api/src') ? __DIR__ . '/../../olegario-api' : __DIR__ . '/..';
+$carpetaPrivada = __DIR__ . '/..';
+foreach ([__DIR__ . '/olegario-api', __DIR__ . '/../../olegario-api'] as $candidata) {
+    if (is_dir($candidata . '/src')) {
+        $carpetaPrivada = $candidata;
+        break;
+    }
+}
 
 // Configuración del servidor (datos de la base). En Hostinger vive en olegario-api/config.php;
 // en Docker no existe y se usan las variables de entorno.

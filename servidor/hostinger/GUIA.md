@@ -1,10 +1,10 @@
 # Subir el servidor de Olegario a Hostinger (paso a paso)
 
 Datos (D-79): hosting compartido · dirección `https://www.supervisioncct3.com/olegario` ·
-base y usuario `u275204779_olegario` · PHP 8.3.
+base y usuario `u275204779_olegario` · PHP 8.1 o más nuevo.
 
-Vas a necesitar 6 archivos (te los paso yo; también se arman con `bash servidor/hostinger/armar_paquete.sh`):
-`olegario-publico.zip`, `olegario-api.zip` y `01_esquema.sql`, `02_contenido_inicial.sql`,
+Vas a necesitar 5 archivos (te los paso yo; también se arman con `bash servidor/hostinger/armar_paquete.sh`):
+`olegario.zip` y `01_esquema.sql`, `02_contenido_inicial.sql`,
 `03_codigos_acceso.sql`, `04_descripcion_eventos.sql`.
 
 > 🔒 La contraseña de la base **no** se manda por el chat ni se sube a GitHub. Solo la escribís vos en el
@@ -26,30 +26,26 @@ pará y avisame.
 ## 2. Subir los archivos (Administrador de archivos)
 
 1. hPanel → **Sitios web** → `supervisioncct3.com` → **Administrador de archivos**.
-2. Entrá a la carpeta **`public_html`**. Subí `olegario-publico.zip` (botón de subir, arriba a la
-   derecha). Clic derecho sobre el zip → **Extraer** → aceptar. Tiene que aparecer la carpeta
-   `olegario` (con `index.php`, `.htaccess` y `fotos`). Después borrá el zip.
-3. Volvé **una carpeta atrás** (la que contiene `public_html`). Subí ahí `olegario-api.zip`, extraelo y
-   borrá el zip. Tiene que aparecer la carpeta `olegario-api`, **al lado** de `public_html`, no adentro.
+2. Entrá a la carpeta **`public_html`**. Subí `olegario.zip` (botón de subir, arriba a la derecha).
+   Clic derecho sobre el zip → **Extraer** → aceptar. Después borrá el zip.
 
-Así queda:
+Así queda (D-80: todo dentro de `olegario`):
 
 ```
-supervisioncct3.com/
-├── public_html/
-│   ├── (tu sitio actual, sin cambios)
-│   └── olegario/          ← lo que se ve desde internet
-│       ├── index.php
-│       ├── .htaccess
-│       └── fotos/
-└── olegario-api/          ← privado: código y contraseña
-    ├── config.php
-    └── src/
+public_html/
+├── (tu sitio actual, sin cambios)
+└── olegario/
+    ├── index.php
+    ├── .htaccess
+    ├── fotos/
+    └── olegario-api/      ← privado: código y contraseña (bloqueado para internet)
+        ├── config.php
+        └── src/
 ```
 
 ## 3. Escribir la contraseña (solo vos)
 
-1. Abrí `olegario-api/config.php` (doble clic o clic derecho → **Editar**).
+1. Abrí `public_html/olegario/olegario-api/config.php` (doble clic o clic derecho → **Editar**).
 2. En la línea `'DB_PASSWORD' => '',` escribí la contraseña de la base **entre las dos comillas**, por
    ejemplo `'DB_PASSWORD' => 'tu-contraseña',`. No cambies nada más.
 3. **Guardar**.
@@ -65,7 +61,7 @@ Si sale otra cosa, mandame una captura (sin la contraseña):
 | ------------------------------------ | -------------------------------------------------------------------- |
 | "No pudimos completar la operación…" | La contraseña o el nombre de la base no coinciden (revisá el paso 3) |
 | Página de error 404 de Hostinger     | La carpeta `olegario` no quedó dentro de `public_html`               |
-| Error 500                            | La carpeta `olegario-api` no quedó al lado de `public_html`          |
+| Error 500                            | La carpeta `olegario-api` no quedó dentro de `olegario`              |
 | El navegador avisa que no es seguro  | Falta activar el SSL del dominio (hPanel → Seguridad → SSL)          |
 
 ## 5. Después (lo hago yo, con tu aprobación)

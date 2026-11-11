@@ -1,7 +1,7 @@
 <?php
 // Configuración del servidor de Olegario en Hostinger.
 //
-// Este archivo va en olegario-api/config.php (FUERA de public_html), nunca en GitHub ni en el chat.
+// Este archivo va en public_html/olegario/olegario-api/config.php (bloqueada para internet), nunca en GitHub ni en el chat.
 // La contraseña la escribe la responsable directamente en el Administrador de archivos de Hostinger.
 return [
     'DB_HOST' => 'localhost',
