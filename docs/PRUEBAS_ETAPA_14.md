@@ -29,7 +29,7 @@ la consola, revisando accesibilidad básica y pantalla angosta.
 
 Capturas lado a lado en `docs/capturas-app/etapa-14/figma-vs-app-*.png` (11 pantallas). La estructura,
 los colores, las tipografías y los componentes coinciden. Diferencias, todas ya decididas o por datos:
-sin Face ID, Google ni Apple (D-31); "Cambiar" en lugar de "Confirmar" en el horario de Espacios;
+sin Face ID, Google ni Apple (decisión del 2026-11-03); "Cambiar" en lugar de "Confirmar" en el horario de Espacios;
 espacios reales del plano en lugar de los de Figma (D-73); perfil sin foto muestra el círculo vacío.
 
 ## 3. Lo que no se puede probar en la nube (necesita a la responsable)
