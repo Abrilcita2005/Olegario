@@ -10,7 +10,7 @@ import { TarjetaTaller } from '@/components/comunidad/TarjetaTaller';
 import { IconoAuriculares, IconoMasCirculo, IconoRayo } from '@/components/iconos/Iconos';
 import { IconoSubmarca } from '@/components/marca/IconoSubmarca';
 import { PantallaBase } from '@/components/navegacion/PantallaBase';
-import { Boton, EstadoVacio, PanelInferior, Texto } from '@/components/ui';
+import { Boton, EstadoVacio, PanelInferior, Texto, TextoDegradado } from '@/components/ui';
 import { useComunidad } from '@/estado/comunidad';
 import { useReservas } from '@/estado/reservas';
 import { useSesion } from '@/estado/sesion';
@@ -92,13 +92,15 @@ export default function ComunidadScreen() {
         <IconoSubmarca submarca="network" tamano={28} />
         <Texto variante="categoria">OLE/NETWORK • Comunidad</Texto>
       </View>
+      {/* Tres renglones y "CONECTÁ" en degradado, como los otros títulos (pedido de la responsable). */}
       <View accessible accessibilityRole="header" accessibilityLabel="Colaborá, sumate, conectá">
         <Texto variante="tituloAcceso" style={styles.mayusculas}>
-          Colaborá, sumate,
+          Colaborá,
         </Texto>
-        <Texto variante="tituloAcceso" color="naranjaTitulo">
-          CONECTÁ
+        <Texto variante="tituloAcceso" style={styles.mayusculas}>
+          Sumate,
         </Texto>
+        <TextoDegradado variante="tituloAcceso">CONECTÁ</TextoDegradado>
       </View>
       <Texto variante="cuerpo" style={styles.bajada}>
         Proyectos que buscan tu talento, iniciativas de la comunidad y sinergias en Olegario.
@@ -248,9 +250,7 @@ function ModoActivo({
         />
       </View>
       <Texto variante="meta" color="textoTerciario" style={styles.ayudaModo}>
-        {modo === 'abierta'
-          ? 'Visible para matches y charlas'
-          : 'No aparecés en las listas ni se muestra dónde estás'}
+        {modo === 'abierta' ? 'Visible para matches y charlas' : 'Oculto para la comunidad'}
       </Texto>
     </View>
   );

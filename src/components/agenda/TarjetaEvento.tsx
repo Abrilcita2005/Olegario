@@ -14,6 +14,8 @@ type Props = {
   evento: Evento;
   inscripto: boolean;
   onInscribir: () => void;
+  // Abre la pantalla de detalle del evento (Etapa 14).
+  onVerDetalle?: () => void;
 };
 
 const ETIQUETA: Record<Evento['submarca'], { texto: string; color: 'acento' | 'acentoNaranja' }> = {
@@ -22,7 +24,7 @@ const ETIQUETA: Record<Evento['submarca'], { texto: string; color: 'acento' | 'a
 };
 
 // Evento abierto de la comunidad (Figma: AGENDA, "NOVEDADES"). Inscribirse alterna el estado.
-export function TarjetaEvento({ evento, inscripto, onInscribir }: Props) {
+export function TarjetaEvento({ evento, inscripto, onInscribir, onVerDetalle }: Props) {
   const total = evento.inscriptos + (inscripto ? 1 : 0);
   const etiqueta = ETIQUETA[evento.submarca];
   return (
@@ -38,7 +40,13 @@ export function TarjetaEvento({ evento, inscripto, onInscribir }: Props) {
         </View>
       </View>
 
-      <View style={styles.contenido}>
+      <Pressable
+        onPress={onVerDetalle}
+        disabled={!onVerDetalle}
+        accessibilityRole="button"
+        accessibilityLabel={`${evento.titulo}. Ver más información`}
+        style={({ pressed }) => [styles.contenido, pressed && styles.presionado]}
+      >
         {evento.foto ? (
           <Image
             source={evento.foto}
@@ -59,8 +67,13 @@ export function TarjetaEvento({ evento, inscripto, onInscribir }: Props) {
           <Texto variante="cuerpoChico" color="textoTerciario" numberOfLines={1}>
             {evento.detalle}
           </Texto>
+          {onVerDetalle ? (
+            <Texto variante="cuerpoChicoDestacado" color="acento">
+              Ver más
+            </Texto>
+          ) : null}
         </View>
-      </View>
+      </Pressable>
 
       <View style={styles.pie}>
         <View style={styles.personas} accessible accessibilityLabel={`${total} inscriptos`}>

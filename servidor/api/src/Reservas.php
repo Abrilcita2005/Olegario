@@ -6,6 +6,9 @@ declare(strict_types=1);
 
 const DIAS_ANTICIPACION = 3;
 const MINUTOS_LIMITE_CANCELACION = 30;
+// Horario de reservas en hora de Mendoza (Etapa 14, igual que la app y el plano): de 8 a 20 hs.
+const HORA_APERTURA = 8;
+const HORA_CIERRE = 20;
 
 function filaEspacio(array $f): array
 {
@@ -146,6 +149,10 @@ function crearReserva(): never
     }
     if ($inicio >= inicioDelDiaMendoza($ahora)->modify('+' . (DIAS_ANTICIPACION + 1) . ' days')) {
         throw new ErrorApi(422, 'Podés reservar con hasta ' . DIAS_ANTICIPACION . ' días de anticipación.', 'anticipacion');
+    }
+    $dia = inicioDelDiaMendoza($inicio);
+    if ($inicio < $dia->setTime(HORA_APERTURA, 0) || $fin > $dia->setTime(HORA_CIERRE, 0)) {
+        throw new ErrorApi(422, 'Se reserva de ' . HORA_APERTURA . ' a ' . HORA_CIERRE . ' hs.', 'fueraDeHorario');
     }
 
     $pdo = db();

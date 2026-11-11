@@ -45,6 +45,14 @@ export default function NovedadesScreen() {
             novedad={novedad}
             fotoPerfil={fotoPerfil}
             inscripto={estaInscripto(novedad.eventoId ?? novedad.id)}
+            onVerDetalle={
+              novedad.accion.tipo === 'inscripcion'
+                ? () => {
+                    router.back();
+                    router.push(`/evento/${novedad.eventoId ?? novedad.id}`);
+                  }
+                : undefined
+            }
             onAccion={() => {
               if (novedad.accion.tipo === 'carta') {
                 router.back();

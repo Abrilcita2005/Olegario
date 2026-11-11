@@ -1,20 +1,21 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
+  AccessibilityInfo,
   Animated,
+  Easing,
   Image,
-  PanResponder,
   Platform,
+  Pressable,
   StyleSheet,
-  View,
   type ImageSourcePropType,
 } from 'react-native';
 
 import { radios } from '@/theme';
 
-// Collage interactivo de la Bienvenida 2 (pedido de la responsable): las fotos están apiladas como en Figma;
-// la de arriba se arrastra con el dedo y las demás se mueven y giran levemente, cada una hacia un lado
-// distinto, como un juego de cartas que se desordena. Al soltar todas vuelven a su lugar y, si la de
-// arriba se soltó lejos, pasa al fondo de la pila, dejando ver la siguiente.
+// Collage de la Bienvenida 2: las fotos están apiladas como en Figma y se reparten solas, como cartas
+// (pedido de la responsable en la Etapa 14, en lugar de arrastrarlas): cada unos segundos la de arriba
+// sale hacia un costado girando y vuelve al fondo de la pila, dejando ver la siguiente. Tocar el mazo
+// reparte la siguiente enseguida. Con "Reducir movimiento" activado en el teléfono no se anima solo.
 
 export type FotoMazo = {
   fuente: ImageSourcePropType;
@@ -29,29 +30,22 @@ type Props = {
   fotos: FotoMazo[];
   ancho: number;
   alto: number;
+  // Milisegundos entre una carta y la siguiente (0 = no se reparte solo).
+  intervalo?: number;
 };
 
 const ANCHO_FOTO = 149;
 const ALTO_FOTO = 193;
 const ANCHO_FIGMA = 402;
-const DISTANCIA_PARA_PASAR = 60;
+const DURACION_REPARTO = 650;
 const usarDriverNativo = Platform.OS !== 'web';
 
-// Cuánto acompaña cada foto al dedo según su profundidad en la pila (1 = la de abajo de la de arriba):
-// proporción del arrastre en X e Y y giro extra máximo en grados. Signos distintos = se desordenan.
-const MOVIMIENTO_POR_PROFUNDIDAD = [
-  { x: 1, y: 1, giro: 10 },
-  { x: 0.32, y: 0.22, giro: -7 },
-  { x: -0.2, y: 0.28, giro: 6 },
-  { x: 0.24, y: -0.16, giro: -5 },
-  { x: -0.14, y: -0.2, giro: 4 },
-];
-const RECORRIDO_PARA_GIRO = 200;
-
-export function MazoFotos({ fotos, ancho, alto }: Props) {
+export function MazoFotos({ fotos, ancho, alto, intervalo = 2500 }: Props) {
   // Orden de dibujo: el último índice queda arriba.
   const [orden, setOrden] = useState(() => fotos.map((_, i) => i));
-  const [arrastre] = useState(() => new Animated.ValueXY());
+  const [salida] = useState(() => new Animated.Value(0));
+  const [repartiendo, setRepartiendo] = useState(false);
+  const [sinMovimiento, setSinMovimiento] = useState(false);
   const escala = Math.min(1, ancho / ANCHO_FIGMA);
   const desplazamiento = (ancho - ANCHO_FIGMA * escala) / 2;
 
@@ -60,85 +54,92 @@ export function MazoFotos({ fotos, ancho, alto }: Props) {
     [],
   );
 
-  const gestos = useMemo(
-    () =>
-      PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onMoveShouldSetPanResponder: (_, g) => Math.abs(g.dx) + Math.abs(g.dy) > 4,
-        onPanResponderMove: Animated.event([null, { dx: arrastre.x, dy: arrastre.y }], {
-          useNativeDriver: false,
-        }),
-        onPanResponderRelease: (_, g) => {
-          const lejos = Math.hypot(g.dx, g.dy) > DISTANCIA_PARA_PASAR;
-          // Todas vuelven a su lugar; recién entonces la de arriba pasa al fondo (sin saltos).
-          Animated.spring(arrastre, {
-            toValue: { x: 0, y: 0 },
-            friction: 7,
-            tension: 50,
-            useNativeDriver: usarDriverNativo,
-          }).start(() => {
-            if (lejos) enviarAlFondo();
-          });
-        },
-      }),
-    [arrastre, enviarAlFondo],
-  );
+  // Reparte la carta de arriba: sale hacia la derecha girando y, al terminar, pasa al fondo.
+  const repartir = useCallback(() => {
+    if (repartiendo) return;
+    if (sinMovimiento) {
+      enviarAlFondo();
+      return;
+    }
+    setRepartiendo(true);
+    Animated.timing(salida, {
+      toValue: 1,
+      duration: DURACION_REPARTO,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: usarDriverNativo,
+    }).start(() => {
+      enviarAlFondo();
+      salida.setValue(0);
+      setRepartiendo(false);
+    });
+  }, [enviarAlFondo, repartiendo, salida, sinMovimiento]);
+
+  useEffect(() => {
+    let activo = true;
+    AccessibilityInfo.isReduceMotionEnabled()
+      .then((reducir) => activo && setSinMovimiento(reducir))
+      .catch(() => {});
+    const sub = AccessibilityInfo.addEventListener('reduceMotionChanged', setSinMovimiento);
+    return () => {
+      activo = false;
+      sub.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!intervalo || sinMovimiento) return;
+    const id = setInterval(repartir, intervalo);
+    return () => clearInterval(id);
+  }, [intervalo, repartir, sinMovimiento]);
 
   const indiceArriba = orden[orden.length - 1];
 
   return (
-    <View
+    <Pressable
+      onPress={repartir}
       style={{ width: ancho, height: alto }}
       accessible
       accessibilityRole="adjustable"
       accessibilityLabel={`Fotos de Olegario. ${fotos[indiceArriba].descripcion}`}
-      accessibilityHint="Deslizá la foto de arriba para ver la siguiente"
+      accessibilityHint="Tocá para ver la siguiente foto"
       accessibilityActions={[{ name: 'increment' }, { name: 'activate' }]}
       onAccessibilityAction={enviarAlFondo}
     >
-      {orden.map((indice, posicionEnPila) => {
+      {orden.map((indice) => {
         const foto = fotos[indice];
         const esArriba = indice === indiceArriba;
-        const profundidad = orden.length - 1 - posicionEnPila;
-        const movimiento =
-          MOVIMIENTO_POR_PROFUNDIDAD[profundidad % MOVIMIENTO_POR_PROFUNDIDAD.length];
-        const giroExtra = arrastre.x.interpolate({
-          inputRange: [-RECORRIDO_PARA_GIRO, 0, RECORRIDO_PARA_GIRO],
-          outputRange: [
-            `${foto.rotacion - movimiento.giro}deg`,
-            `${foto.rotacion}deg`,
-            `${foto.rotacion + movimiento.giro}deg`,
-          ],
-          extrapolate: 'clamp',
-        });
         const posicion = {
           left: desplazamiento + (foto.centroX - ANCHO_FOTO / 2) * escala,
           top: (foto.centroY - ALTO_FOTO / 2) * escala,
           width: ANCHO_FOTO * escala,
           height: ALTO_FOTO * escala,
         };
+        // Solo se mueve la de arriba: hacia la derecha y un poco arriba, girando como una carta.
+        const transform = esArriba
+          ? [
+              {
+                translateX: salida.interpolate({ inputRange: [0, 1], outputRange: [0, ancho] }),
+              },
+              { translateY: salida.interpolate({ inputRange: [0, 1], outputRange: [0, -40] }) },
+              {
+                rotate: salida.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [`${foto.rotacion}deg`, `${foto.rotacion + 25}deg`],
+                }),
+              },
+            ]
+          : [{ rotate: `${foto.rotacion}deg` }];
         return (
           <Animated.View
             key={indice}
             testID={esArriba ? 'foto-arriba' : undefined}
-            {...(esArriba ? gestos.panHandlers : {})}
-            style={[
-              styles.foto,
-              posicion,
-              {
-                transform: [
-                  { translateX: Animated.multiply(arrastre.x, movimiento.x) },
-                  { translateY: Animated.multiply(arrastre.y, movimiento.y) },
-                  { rotate: giroExtra },
-                ],
-              },
-            ]}
+            style={[styles.foto, posicion, { transform }]}
           >
             <Image source={foto.fuente} style={styles.imagen} resizeMode="cover" />
           </Animated.View>
         );
       })}
-    </View>
+    </Pressable>
   );
 }
 

@@ -11,17 +11,25 @@ type Props = {
   inscripto: boolean;
   fotoPerfil: string | null;
   onAccion: () => void;
+  // Abre el detalle (novedades con inscripción, como el coworkeo itinerante; Etapa 14).
+  onVerDetalle?: () => void;
 };
 
 const COLORES_INICIALES = [colores.acento, colores.acentoNaranja];
 
 // Tarjeta de novedad (Figma: NOVEDADES): foto, descuento, título, texto y botón con flecha.
-export function TarjetaNovedad({ novedad, inscripto, fotoPerfil, onAccion }: Props) {
+export function TarjetaNovedad({ novedad, inscripto, fotoPerfil, onAccion, onVerDetalle }: Props) {
   const esInscripcion = novedad.accion.tipo === 'inscripcion';
   const mas = (novedad.participantes?.mas ?? 0) + (inscripto ? 1 : 0);
   return (
     <View style={styles.tarjeta}>
-      <View style={styles.marcoFoto}>
+      <Pressable
+        onPress={onVerDetalle}
+        disabled={!onVerDetalle}
+        accessibilityRole={onVerDetalle ? 'button' : undefined}
+        accessibilityLabel={onVerDetalle ? `${novedad.titulo}. Ver más información` : undefined}
+        style={styles.marcoFoto}
+      >
         <Image
           source={novedad.foto}
           resizeMode="cover"
@@ -61,7 +69,7 @@ export function TarjetaNovedad({ novedad, inscripto, fotoPerfil, onAccion }: Pro
             </View>
           </View>
         ) : null}
-      </View>
+      </Pressable>
 
       <View style={styles.fila}>
         {novedad.descuento ? (

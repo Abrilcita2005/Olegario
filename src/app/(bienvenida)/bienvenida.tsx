@@ -36,7 +36,9 @@ export default function BienvenidaScreen() {
     return () => sub.remove();
   }, [paso]);
 
-  const siguiente = () => (paso < 3 ? setPaso(paso + 1) : marcarBienvenidaVista());
+  // Se avanza un instante después de tocar, para que se vea el cambio de color del botón.
+  const siguiente = () =>
+    setTimeout(() => (paso < 3 ? setPaso(paso + 1) : marcarBienvenidaVista()), 180);
   const oscuro = paso !== 2;
 
   return (

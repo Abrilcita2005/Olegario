@@ -108,11 +108,7 @@ export default function AgendaScreen() {
 
         {verEfemerides
           ? efemeridesHoy.map((efemeride) => (
-              <TarjetaEfemeride
-                key={efemeride.id}
-                efemeride={efemeride}
-                onConocerMas={() => router.navigate('/comunidad')}
-              />
+              <TarjetaEfemeride key={efemeride.id} efemeride={efemeride} />
             ))
           : null}
 
@@ -130,6 +126,7 @@ export default function AgendaScreen() {
                 evento={evento}
                 inscripto={estaInscripto(evento.id)}
                 onInscribir={() => alternarInscripcion(evento.id)}
+                onVerDetalle={() => router.push(`/evento/${evento.id}`)}
               />
             ))}
           </>

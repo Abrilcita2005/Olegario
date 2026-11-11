@@ -1,6 +1,13 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import type { ReactNode } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, View, type ViewStyle } from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  Pressable,
+  StyleSheet,
+  View,
+  type ViewStyle,
+} from 'react-native';
 
 import { colores, degradados, espacio, radios, sombras, type NombreColor } from '@/theme';
 
@@ -51,7 +58,9 @@ export function Boton({
       : tamano === 'chico'
         ? radios.sm
         : radios.lg;
-  const contenido = (
+  // Bienvenida: al tocar "Siguiente" el botón se pone rosa con el texto blanco (pedido de la responsable,
+  // Etapa 14: el cambio de antes casi no se notaba).
+  const contenido = (presionado: boolean) => (
     <View style={styles.contenido}>
       {cargando ? <ActivityIndicator color={colores[colorTexto[variante]]} /> : icono}
       <Texto
@@ -64,8 +73,8 @@ export function Boton({
                 ? 'botonSecundario'
                 : 'boton'
         }
-        color={colorTexto[variante]}
-        style={styles.texto}
+        color={esSiguiente && presionado ? 'textoBoton' : colorTexto[variante]}
+        style={[styles.texto, esSiguiente && styles.textoSiguiente]}
       >
         {texto}
       </Texto>
@@ -85,21 +94,25 @@ export function Boton({
         { borderRadius: radio },
         estilosVariante[variante],
         variante === 'primario' && !inactivo && sombras.accion,
-        pressed && styles.presionado,
+        pressed && (esSiguiente ? styles.siguientePresionado : styles.presionado),
         inactivo && styles.inactivo,
         style,
       ]}
     >
-      {variante === 'primario' ? (
-        <LinearGradient
-          colors={degradados.accion.colores}
-          locations={degradados.accion.posiciones}
-          start={{ x: 0, y: 0.5 }}
-          end={{ x: 1, y: 0.5 }}
-          style={[StyleSheet.absoluteFill, { borderRadius: radio }]}
-        />
-      ) : null}
-      {contenido}
+      {({ pressed }) => (
+        <>
+          {variante === 'primario' ? (
+            <LinearGradient
+              colors={degradados.accion.colores}
+              locations={degradados.accion.posiciones}
+              start={{ x: 0, y: 0.5 }}
+              end={{ x: 1, y: 0.5 }}
+              style={[StyleSheet.absoluteFill, { borderRadius: radio }]}
+            />
+          ) : null}
+          {contenido(pressed)}
+        </>
+      )}
     </Pressable>
   );
 }
@@ -129,5 +142,13 @@ const styles = StyleSheet.create({
   contenido: { flexDirection: 'row', alignItems: 'center', gap: espacio.m },
   texto: { textAlign: 'center', flexShrink: 1 },
   presionado: { opacity: 0.85 },
+  siguientePresionado: { backgroundColor: colores.acento, transform: [{ scale: 0.97 }] },
+  // Poppins tiene más espacio arriba que abajo: sin este ajuste "SIGUIENTE" se veía corrido del centro.
+  textoSiguiente: {
+    lineHeight: 34,
+    includeFontPadding: false,
+    textAlignVertical: 'center',
+    ...Platform.select({ ios: { paddingTop: 4 }, default: {} }),
+  },
   inactivo: { opacity: 0.4 },
 });

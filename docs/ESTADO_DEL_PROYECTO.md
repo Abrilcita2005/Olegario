@@ -15,6 +15,7 @@
 
 | Fecha         | Mensaje de la responsable                                                                                  | Qué autorizó                                                                                                                                                                     |
 | ------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-11    | Lista de cambios tras probar en el teléfono + respuestas                                                   | Correcciones de D-75; instalar `react-native-view-shot` y `expo-sharing`; columna `eventos.descripcion`; pedido del café simulado; la barra de Espacios abre el plano            |
 | 2026-11-11    | "1. dejalo como está 2. Mañana te paso el hostinger 3. Expo go"                                            | Textos de 9–10 px como Figma (D-74); Hostinger mañana (P-48 espera); pruebas de uso con Expo Go                                                                                  |
 | 2026-11-11    | "Bueno eso dsp lo vemos. Avancemos a la siguiente etapa"                                                   | Etapa 14: Pruebas funcionales, visuales, de accesibilidad y de uso (Hostinger queda para después)                                                                                |
 | 2026-11-11    | "Es MySQL"                                                                                                 | Hostinger usa MySQL (base `U275204779_Olegario`; falta confirmar mayúsculas/minúsculas)                                                                                          |
@@ -51,7 +52,7 @@
 - Encabezado: isotipo → Home · ícono OLE/CAFÉ → carta del café · avatar → perfil de cuenta (no el de comunidad).
 - Novedades: panel que sube desde abajo.
 - Bienvenida: solo la primera vez.
-- Dependencias aprobadas: `@react-native-async-storage/async-storage`, `expo-image-picker`. Etapa 8: `@react-native-masked-view/masked-view`. Etapa 9: `expo-clipboard`. Etapa 13: `expo-secure-store`, `expo-web-browser` (`@supabase/supabase-js` se desinstaló al dejar Supabase, D-68).
+- Dependencias aprobadas: `@react-native-async-storage/async-storage`, `expo-image-picker`. Etapa 8: `@react-native-masked-view/masked-view`. Etapa 9: `expo-clipboard`. Etapa 13: `expo-secure-store`, `expo-web-browser`. Etapa 14: `react-native-view-shot`, `expo-sharing` (`@supabase/supabase-js` se desinstaló al dejar Supabase, D-68).
 - Revisión 1: avatar con foto personal (galería o cámara) · carta del café con diseño provisional propio.
 - Revisión 2: un solo botón "Cambiar foto" con menú · carta con foto y etiquetas, sin aviso de ejemplo, márgenes corregidos.
 - Revisión 3: ilustraciones de productos y promo en la carta · tarjeta con el precio en recuadro claro y texto negro.

@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
+
+import { PanelPedido } from '@/components/cafe/PanelPedido';
 
 import { IconoSubmarca } from '@/components/marca/IconoSubmarca';
 import { PantallaSecundaria } from '@/components/navegacion/PantallaSecundaria';
@@ -14,7 +16,8 @@ import {
   type EtiquetaProducto,
 } from '../../data/mock/cartaCafe';
 
-// Carta del café (OLE/CAFÉ). DISEÑO PROVISIONAL propuesto por el equipo (no está en Figma, P-38),
+// Carta de OLE/CAFÉ. Tocar un producto o la promo abre el pedido (simulado, components/cafe/PanelPedido).
+// DISEÑO PROVISIONAL propuesto por el equipo (no está en Figma, P-38),
 // armado con el sistema de diseño. Productos y precios: datos de ejemplo (marcados en data/mock;
 // la responsable pidió no mostrar el aviso en pantalla). Reemplazar antes de publicar (P-38).
 const FILTROS = [
@@ -35,19 +38,18 @@ const NOMBRE_ETIQUETA: Record<EtiquetaProducto, string> = {
 export default function CartaCafeScreen() {
   const [filtro, setFiltro] = useState<Filtro>('todo');
   const productos = productosDePrueba.filter((p) => filtro === 'todo' || p.categoria === filtro);
+  // Pedido en curso (simulado): se elige tocando un producto o la promo.
+  const [pedido, setPedido] = useState<string | null>(null);
 
   return (
     <PantallaSecundaria>
       <View style={styles.cabecera}>
         <IconoSubmarca submarca="cafe" tamano={64} />
         <View style={styles.titulos}>
-          <Texto variante="categoria" color="acentoNaranja">
-            OLE/CAFÉ
-          </Texto>
           <Texto variante="tituloDestacado" accessibilityRole="header">
-            Carta del{' '}
+            Carta de{' '}
             <Texto variante="tituloDestacado" color="acento">
-              café
+              OLE/CAFÉ
             </Texto>
           </Texto>
         </View>
@@ -56,24 +58,34 @@ export default function CartaCafeScreen() {
         Café de especialidad para acompañar tu jornada en Olegario.
       </Texto>
 
-      <Tarjeta elevada style={styles.promo}>
-        <Image
-          source={fotoPromoCafeteria}
-          style={styles.fotoPromo}
-          accessibilityLabel="Flat White y cookie"
-        />
-        <View style={styles.textosPromo}>
-          <View style={styles.filaChips}>
-            <Chip texto="20% OFF" variante="descuento" />
-            <Texto variante="categoria" color="textoSobreOscuro">
-              Promo cafetería
+      <Pressable
+        onPress={() => setPedido('Promo cafetería: Flat White + Cookie casera de chocolate')}
+        accessibilityRole="button"
+        accessibilityLabel="Pedir la promo cafetería: Flat White y cookie casera de chocolate, 20% off"
+        style={({ pressed }) => pressed && styles.presionado}
+      >
+        <Tarjeta elevada style={styles.promo}>
+          <Image
+            source={fotoPromoCafeteria}
+            style={styles.fotoPromo}
+            accessibilityLabel="Flat White y cookie"
+          />
+          <View style={styles.textosPromo}>
+            <View style={styles.filaChips}>
+              <Chip texto="20% OFF" variante="descuento" />
+              <Texto variante="categoria" color="textoSobreOscuro">
+                Promo cafetería
+              </Texto>
+            </View>
+            <Texto variante="cuerpoChico" color="textoSecundario">
+              Flat White de especialidad + Cookie casera de chocolate
+            </Texto>
+            <Texto variante="cuerpoChicoDestacado" color="acentoLima">
+              Tocá para pedir
             </Texto>
           </View>
-          <Texto variante="cuerpoChico" color="textoSecundario">
-            Flat White de especialidad + Cookie casera de chocolate
-          </Texto>
-        </View>
-      </Tarjeta>
+        </Tarjeta>
+      </Pressable>
 
       <SelectorSegmentado
         opciones={FILTROS}
@@ -84,7 +96,13 @@ export default function CartaCafeScreen() {
 
       <View style={styles.lista}>
         {productos.map((producto) => (
-          <View key={producto.id} style={styles.producto}>
+          <Pressable
+            key={producto.id}
+            onPress={() => setPedido(producto.nombre)}
+            accessibilityRole="button"
+            accessibilityLabel={`Pedir ${producto.nombre}, ${formatearPrecio(producto.precioDeEjemplo)}`}
+            style={({ pressed }) => [styles.producto, pressed && styles.presionado]}
+          >
             <View style={styles.cuerpoProducto}>
               <Image
                 source={producto.foto}
@@ -116,9 +134,10 @@ export default function CartaCafeScreen() {
                 {formatearPrecio(producto.precioDeEjemplo)}
               </Texto>
             </View>
-          </View>
+          </Pressable>
         ))}
       </View>
+      <PanelPedido pedido={pedido} onCerrar={() => setPedido(null)} />
     </PantallaSecundaria>
   );
 }
@@ -139,6 +158,7 @@ const styles = StyleSheet.create({
   filaChips: { flexDirection: 'row', alignItems: 'center', gap: espacio.m },
   lista: { gap: espacio.l, marginTop: espacio.base },
   producto: { flexDirection: 'row' },
+  presionado: { opacity: 0.8 },
   cuerpoProducto: {
     flex: 1,
     flexDirection: 'row',

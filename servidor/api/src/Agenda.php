@@ -17,6 +17,8 @@ function listarEventos(): never
         'submarca' => $f['submarca'],
         'titulo' => $f['titulo'],
         'detalle' => $f['detalle'],
+        // Descripción larga (04_descripcion_eventos.sql); null si la columna todavía no existe.
+        'descripcion' => $f['descripcion'] ?? null,
         'inicio' => aIso($f['inicio']),
         'fotoUrl' => $f['foto_url'],
         'cupo' => $f['cupo'] === null ? null : (int) $f['cupo'],

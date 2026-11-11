@@ -36,11 +36,15 @@ function comprobar(string $descripcion, bool $condicion, mixed $detalle = null):
     echo ($condicion ? '  ✓ ' : '  ✗ ') . $descripcion . ($condicion ? '' : ' → ' . json_encode($detalle, JSON_UNESCAPED_UNICODE)) . "\n";
 }
 
-// Primer horario de 30 min (en UTC) a partir de dentro de `horas`.
-function horario(float $horas, float $duracion = 1): array
+// Horario en hora de Mendoza: `dias` desde hoy, a la `hora` (puede tener media hora), de `duracion` horas.
+// Se devuelve en UTC, como lo manda la app. Las reservas van de 8 a 20 hs de Mendoza.
+function horario(int $dias, float $hora, float $duracion = 1): array
 {
-    $inicio = (int) (ceil((time() + $horas * 3600) / 1800) * 1800);
-    return [gmdate('Y-m-d\TH:i:s\Z', $inicio), gmdate('Y-m-d\TH:i:s\Z', $inicio + (int) ($duracion * 3600))];
+    $mza = new DateTimeZone('America/Argentina/Mendoza');
+    $inicio = (new DateTimeImmutable('today', $mza))->modify(sprintf('%+d days', $dias))->modify('+' . (int) ($hora * 60) . ' minutes');
+    $fin = $inicio->modify('+' . (int) ($duracion * 60) . ' minutes');
+    $utc = new DateTimeZone('UTC');
+    return [$inicio->setTimezone($utc)->format('Y-m-d\TH:i:s\Z'), $fin->setTimezone($utc)->format('Y-m-d\TH:i:s\Z')];
 }
 
 $correo = 'prueba+' . bin2hex(random_bytes(4)) . '@ejemplo.com';
@@ -98,7 +102,7 @@ comprobar('la sesión del plano es la cuenta de Ana (ve sus horas)', $e === 200 
 echo "Reservas\n";
 [$e, $r] = pedir('GET', '/horas', null, $ana);
 comprobar('horas del plan: 80 disponibles', $e === 200 && $r['disponibles'] == 80, $r);
-[$i, $f] = horario(2, 2);
+[$i, $f] = horario(1, 10, 2);
 [$e, $r] = pedir('POST', '/reservas', ['espacioId' => 'streaming-1', 'inicio' => $i, 'fin' => $f], $ana);
 comprobar('reserva un espacio libre', $e === 201, $r);
 $reservaAna = $r['id'] ?? '';
@@ -108,19 +112,22 @@ comprobar('otra persona no puede ocupar el mismo lugar', $e === 409 && $r['codig
 comprobar('a la misma hora, otro espacio libre sí se puede reservar', $e === 201);
 [$e, $r] = pedir('POST', '/reservas', ['espacioId' => 'puesto-1', 'inicio' => $i, 'fin' => $f], $invitado);
 comprobar('el invitado no puede reservar', $e === 403, $r);
-[$i2, $f2] = horario(-2);
+[$i2, $f2] = horario(-1, 10);
 [$e, $r] = pedir('POST', '/reservas', ['espacioId' => 'puesto-1', 'inicio' => $i2, 'fin' => $f2], $ana);
 comprobar('no reserva en el pasado', $e === 422 && $r['codigo'] === 'pasado', $r);
-[$i3, $f3] = horario(24 * 5);
+[$i3, $f3] = horario(5, 10);
 [$e, $r] = pedir('POST', '/reservas', ['espacioId' => 'puesto-1', 'inicio' => $i3, 'fin' => $f3], $ana);
 comprobar('no reserva con más de 3 días', $e === 422 && $r['codigo'] === 'anticipacion', $r);
-[$i4] = horario(3);
+[$i4] = horario(1, 14);
 $fin4 = gmdate('Y-m-d\TH:i:s\Z', strtotime($i4) + 15 * 60);
 [$e] = pedir('POST', '/reservas', ['espacioId' => 'puesto-1', 'inicio' => $i4, 'fin' => $fin4], $ana);
 comprobar('solo pasos de 30 minutos', $e === 422);
-[$i5, $f5] = horario(30, 79);
+[$i5, $f5] = horario(1, 7);
 [$e, $r] = pedir('POST', '/reservas', ['espacioId' => 'puesto-1', 'inicio' => $i5, 'fin' => $f5], $ana);
-comprobar('no alcanza con las horas del plan', $e === 422 && $r['codigo'] === 'horasInsuficientes', $r);
+comprobar('no reserva antes de las 8 (Mendoza)', $e === 422 && $r['codigo'] === 'fueraDeHorario', $r);
+[$i6, $f6] = horario(1, 19.5, 1);
+[$e, $r] = pedir('POST', '/reservas', ['espacioId' => 'puesto-1', 'inicio' => $i6, 'fin' => $f6], $ana);
+comprobar('no reserva después de las 20 (Mendoza)', $e === 422 && $r['codigo'] === 'fueraDeHorario', $r);
 [$e, $r] = pedir('GET', '/horas', null, $ana);
 comprobar('la reserva descuenta horas (78 disponibles)', $r['disponibles'] == 78, $r);
 [$e, $r] = pedir('POST', '/horas/extra', ['horas' => 5], $ana);

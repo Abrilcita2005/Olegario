@@ -60,6 +60,7 @@ function Navegacion() {
         <Stack.Screen name="carta-cafe" />
         <Stack.Screen name="reserva/[id]" />
         <Stack.Screen name="persona/[id]" />
+        <Stack.Screen name="evento/[id]" />
         <Stack.Screen name="publicar" />
         <Stack.Screen name="editar-perfil" />
         <Stack.Screen name="servicio/[id]" />

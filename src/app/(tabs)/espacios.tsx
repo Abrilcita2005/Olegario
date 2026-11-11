@@ -1,16 +1,15 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { BarraHorario } from '@/components/espacios/BarraHorario';
 import { ConfirmarReserva } from '@/components/espacios/ConfirmarReserva';
 import { SelectorHorario } from '@/components/espacios/SelectorHorario';
 import { SelectorSemana } from '@/components/espacios/SelectorSemana';
 import { TarjetaEspacio } from '@/components/espacios/TarjetaEspacio';
-import { IconoCamara, IconoUbicacion } from '@/components/iconos/Iconos';
+import { IconoCamara } from '@/components/iconos/Iconos';
 import type { Submarca } from '@/components/marca/IconoSubmarca';
 import { PantallaBase } from '@/components/navegacion/PantallaBase';
-import { FilaServicio } from '@/components/perfil/FilaServicio';
 import { Chip, EstadoVacio, Texto, TextoDegradado } from '@/components/ui';
 import { useAgenda } from '@/estado/agenda';
 import { useReservas } from '@/estado/reservas';
@@ -19,7 +18,7 @@ import { useAhora } from '@/hooks/useAhora';
 import { apiConfigurada } from '@/services/api';
 import { abrirPlanoDeReservas } from '@/services/enlacesExternos';
 import type { Espacio } from '@/models/espacio';
-import { colores, espacio, radios, tipografia } from '@/theme';
+import { colores, espacio, radios } from '@/theme';
 import { marcasDeActividad } from '@/utils/agenda';
 import { diaReservable, estadoEspacio, lugaresLibres } from '@/utils/disponibilidad';
 import {
@@ -27,10 +26,11 @@ import {
   diasVisibles,
   duracionHoras,
   inicioDelDia,
+  primerDiaConHorario,
   proximoPaso,
   sumarMinutos,
-  textoHoras,
   textoHorarioElegido,
+  textoHoras,
 } from '@/utils/fechas';
 import { NOMBRE_SERVICIO, SERVICIOS, esServicio, filtrarEspacios } from '@/utils/espacios';
 
@@ -52,10 +52,11 @@ export default function EspaciosScreen() {
   const servicio = esServicio(parametros.servicio) ? parametros.servicio : null;
   const puedeReservar = puede(tipoAcceso, 'reservarEspacio');
 
-  const [busqueda, setBusqueda] = useState('');
+  // Primer turno libre de 8 a 20 hs: hoy desde el próximo paso de 30 min o, si ya cerró, mañana a las 8.
   const [horario, setHorario] = useState(() => {
+    const dia = primerDiaConHorario(ahora);
     const inicio = proximoPaso(ahora);
-    return ajustarHorario(inicio, inicio, sumarMinutos(inicio, DURACION_INICIAL_MINUTOS), ahora);
+    return ajustarHorario(dia, inicio, sumarMinutos(inicio, DURACION_INICIAL_MINUTOS), ahora);
   });
   const [selectorAbierto, setSelectorAbierto] = useState(false);
   const [aReservar, setAReservar] = useState<Espacio | null>(null);
@@ -64,10 +65,7 @@ export default function EspaciosScreen() {
   const textoHorario = textoHorarioElegido(horario.inicio, horario.fin, ahora);
   const horasReserva = duracionHoras(horario.inicio, horario.fin);
 
-  const visibles = useMemo(
-    () => filtrarEspacios(espacios, servicio, busqueda),
-    [espacios, servicio, busqueda],
-  );
+  const visibles = useMemo(() => filtrarEspacios(espacios, servicio, ''), [espacios, servicio]);
   const puestosLibres = espacios.reduce(
     (total, e) => total + lugaresLibres(e, horario.inicio, horario.fin, reservas),
     0,
@@ -104,18 +102,31 @@ export default function EspaciosScreen() {
           onElegir={elegirDia}
         />
 
-        <View style={styles.buscador}>
+        {/* "Buscá tu mesa en tiempo real" abre el plano en vivo (pedido de la responsable, Etapa 14). */}
+        <Pressable
+          onPress={async () => {
+            await abrirPlanoDeReservas();
+            // Al volver del plano, se leen de nuevo las reservas (lo reservado ahí aparece acá).
+            await actualizar();
+          }}
+          accessibilityRole="button"
+          accessibilityLabel="Buscá tu mesa en tiempo real: abrir el plano de Olegario"
+          style={({ pressed }) => [styles.buscador, pressed && styles.presionado]}
+        >
           <IconoCamara color={colores.textoTerciario} />
-          <TextInput
-            value={busqueda}
-            onChangeText={setBusqueda}
-            placeholder="Buscá tu mesa en tiempo real"
-            placeholderTextColor={colores.textoTerciario}
-            accessibilityLabel="Buscar espacios"
-            returnKeyType="search"
-            style={styles.textoBuscador}
-          />
-        </View>
+          <Texto variante="cuerpo" color="textoTerciario" style={styles.textoBuscador}>
+            Buscá tu mesa en tiempo real
+          </Texto>
+          <Texto variante="cuerpoChicoDestacado" color="acentoLima">
+            Ver plano
+          </Texto>
+        </Pressable>
+        {PLANO_CONECTADO_AL_SERVIDOR && apiConfigurada ? null : (
+          <Texto variante="meta" color="textoTerciario">
+            Las reservas que hagas en el plano se guardan aparte: no aparecen en tus reservas de la
+            app.
+          </Texto>
+        )}
 
         <ScrollView
           horizontal
@@ -144,16 +155,11 @@ export default function EspaciosScreen() {
             texto={
               sinConexion
                 ? 'Revisá tu conexión a internet y tocá "Reintentar" arriba.'
-                : busqueda
-                  ? 'Probá con otra búsqueda o elegí otro servicio.'
-                  : `Todavía no hay espacios de ${servicio ? NOMBRE_SERVICIO[servicio] : 'Olegario'} para reservar.`
+                : `Todavía no hay espacios de ${servicio ? NOMBRE_SERVICIO[servicio] : 'Olegario'} para reservar.`
             }
             accion={{
               texto: 'Ver todos los espacios',
-              onPress: () => {
-                setBusqueda('');
-                filtrar(null);
-              },
+              onPress: () => filtrar(null),
             }}
           />
         ) : (
@@ -193,28 +199,6 @@ export default function EspaciosScreen() {
                     };
             return <TarjetaEspacio key={e.id} espacio={e} estado={estado} accion={accion} />;
           })
-        )}
-      </View>
-
-      {/* Plano visto desde arriba (Vercel): minimizado al final; se abre solo si lo tocan. */}
-      <View style={styles.plano}>
-        <FilaServicio
-          icono={IconoUbicacion}
-          color={colores.acentoNaranja}
-          fondo={colores.fondoIconoNaranja}
-          titulo="Ver plano de Olegario"
-          detalle="El coworking visto desde arriba"
-          onPress={async () => {
-            await abrirPlanoDeReservas();
-            // Al volver del plano, se leen de nuevo las reservas (lo reservado ahí aparece acá).
-            await actualizar();
-          }}
-        />
-        {PLANO_CONECTADO_AL_SERVIDOR && apiConfigurada ? null : (
-          <Texto variante="cuerpoChico" color="textoTerciario">
-            Las reservas que hagas en el plano se guardan aparte: no aparecen en tus reservas de la
-            app.
-          </Texto>
         )}
       </View>
 
@@ -289,12 +273,8 @@ const styles = StyleSheet.create({
     borderRadius: radios.xxl,
     backgroundColor: colores.superficie,
   },
-  textoBuscador: {
-    flex: 1,
-    ...tipografia.input,
-    color: colores.textoSobreOscuro,
-    paddingVertical: espacio.l,
-  },
+  textoBuscador: { flex: 1, paddingVertical: espacio.l },
+  presionado: { opacity: 0.85 },
   filtros: { gap: espacio.m, paddingVertical: espacio.xxs },
   filtro: {
     minHeight: 32,

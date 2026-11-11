@@ -36,13 +36,13 @@ it('el Home tiene "Conocé Olegario" al final y abre el recorrido en video', asy
   );
 });
 
-it('Espacios tiene el plano minimizado al final, con el aviso de que sus reservas van aparte', async () => {
+it('en Espacios, la barra "Buscá tu mesa en tiempo real" abre el plano (con el aviso de que sus reservas van aparte)', async () => {
   await abrir('/espacios');
   expect(screen.getByText(/se guardan aparte/)).toBeTruthy();
   await act(async () => {
     fireEvent.press(
       screen.getByRole('button', {
-        name: 'Ver plano de Olegario. El coworking visto desde arriba',
+        name: 'Buscá tu mesa en tiempo real: abrir el plano de Olegario',
       }),
     );
   });

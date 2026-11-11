@@ -1,6 +1,10 @@
 export const MINUTOS_PASO = 30;
 export const DIAS_ANTICIPACION = 3;
 export const MINUTOS_LIMITE_CANCELACION = 30;
+// Horario de reservas: de 8 a 20 hs (pedido de la responsable en la Etapa 14, igual que el plano de
+// reservas; reemplaza el horario libre de 24 hs del 2026-11-04).
+export const HORA_APERTURA = 8;
+export const HORA_CIERRE = 20;
 
 const DIAS_CORTOS = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
 
@@ -67,13 +71,41 @@ export function textoHorarioElegido(inicio: Date, fin: Date, ahora: Date): strin
   return `${dia}, ${horaTexto(inicio)} - ${finTexto} (${String(horas).replace('.', ',')} ${horas === 1 ? 'hr' : 'hrs'})`;
 }
 
-// Límites del horario elegible en un día: desde el próximo paso de 30 min (si es hoy) o las 00:00,
-// hasta las 24:00. El horario es libre las 24 hs (decisión de la responsable, 2026-11-04).
+function aLaHora(dia: Date, hora: number): Date {
+  const d = inicioDelDia(dia);
+  d.setHours(hora);
+  return d;
+}
+
+// Límites del horario elegible en un día: de 8 a 20 hs; si es hoy, desde el próximo paso de 30 min.
 export function limitesHorario(dia: Date, ahora: Date): { minInicio: Date; finDelDia: Date } {
-  const inicio = inicioDelDia(dia);
-  const finDelDia = sumarDias(inicio, 1);
-  const minInicio = mismoDia(inicio, ahora) ? proximoPaso(ahora) : inicio;
+  const apertura = aLaHora(dia, HORA_APERTURA);
+  const finDelDia = aLaHora(dia, HORA_CIERRE);
+  const desdeAhora = proximoPaso(ahora);
+  const minInicio = mismoDia(dia, ahora) && desdeAhora > apertura ? desdeAhora : apertura;
   return { minInicio, finDelDia };
+}
+
+// ¿Queda algún turno de 30 min para reservar ese día?
+export function quedaHorarioEnElDia(dia: Date, ahora: Date): boolean {
+  const { minInicio, finDelDia } = limitesHorario(dia, ahora);
+  return sumarMinutos(minInicio, MINUTOS_PASO) <= finDelDia;
+}
+
+// Primer horario disponible: hoy si todavía hay turnos, si no mañana a las 8.
+export function primerDiaConHorario(ahora: Date): Date {
+  return quedaHorarioEnElDia(ahora, ahora)
+    ? inicioDelDia(ahora)
+    : sumarDias(inicioDelDia(ahora), 1);
+}
+
+// ¿El horario está dentro de la apertura (8 a 20 hs del mismo día)?
+export function dentroDelHorario(inicio: Date, fin: Date): boolean {
+  return (
+    mismoDia(inicio, sumarMinutos(fin, -1)) &&
+    inicio >= aLaHora(inicio, HORA_APERTURA) &&
+    fin <= aLaHora(inicio, HORA_CIERRE)
+  );
 }
 
 // Ajusta un horario para que quede dentro del día y respete los límites (al menos 30 min de duración).

@@ -3,14 +3,18 @@ import type { Reserva } from '@/models/reserva';
 
 import {
   DIAS_ANTICIPACION,
+  HORA_APERTURA,
+  HORA_CIERRE,
   MINUTOS_LIMITE_CANCELACION,
+  dentroDelHorario,
   duracionHoras,
   horaTexto,
   inicioDelDia,
+  quedaHorarioEnElDia,
   sumarDias,
 } from './fechas';
 
-// Reglas de reserva (decisión de la responsable, 2026-11-04): horario libre las 24 hs en pasos de 30 min,
+// Reglas de reserva (decisión de la responsable, 2026-11-04; horario de 8 a 20 hs desde la Etapa 14) en pasos de 30 min,
 // hasta 3 días de anticipación, cancelación hasta 30 min antes y toda reserva descuenta horas del plan.
 
 function seSuperponen(a: { inicio: Date; fin: Date }, b: { inicio: Date; fin: Date }): boolean {
@@ -60,12 +64,19 @@ export function estadoEspacio(
 }
 
 export type ErrorReserva =
-  'duracion' | 'pasado' | 'anticipacion' | 'horasInsuficientes' | 'sinLugar' | 'servidor';
+  | 'duracion'
+  | 'pasado'
+  | 'anticipacion'
+  | 'fueraDeHorario'
+  | 'horasInsuficientes'
+  | 'sinLugar'
+  | 'servidor';
 
 export const MENSAJES_ERROR_RESERVA: Record<ErrorReserva, string> = {
   duracion: 'El horario de fin tiene que ser posterior al de inicio.',
   pasado: 'Elegí un horario que todavía no haya empezado.',
   anticipacion: `Podés reservar con hasta ${DIAS_ANTICIPACION} días de anticipación.`,
+  fueraDeHorario: `Se reserva de ${HORA_APERTURA} a ${HORA_CIERRE} hs.`,
   horasInsuficientes: 'No te alcanzan las horas disponibles de tu plan.',
   sinLugar: 'Ese espacio ya no tiene lugar en el horario elegido.',
   servidor: 'No pudimos guardar la reserva. Revisá tu conexión y probá de nuevo.',
@@ -83,6 +94,7 @@ export function validarReserva(params: {
   if (fin <= inicio) return 'duracion';
   if (inicio < ahora) return 'pasado';
   if (inicio >= sumarDias(inicioDelDia(ahora), DIAS_ANTICIPACION + 1)) return 'anticipacion';
+  if (!dentroDelHorario(inicio, fin)) return 'fueraDeHorario';
   if (duracionHoras(inicio, fin) > horasDisponibles) return 'horasInsuficientes';
   if (lugaresLibres(espacio, inicio, fin, reservas) === 0) return 'sinLugar';
   return null;
@@ -90,7 +102,9 @@ export function validarReserva(params: {
 
 export function diaReservable(dia: Date, ahora: Date): boolean {
   const hoy = inicioDelDia(ahora);
-  return dia >= hoy && dia < sumarDias(hoy, DIAS_ANTICIPACION + 1);
+  return (
+    dia >= hoy && dia < sumarDias(hoy, DIAS_ANTICIPACION + 1) && quedaHorarioEnElDia(dia, ahora)
+  );
 }
 
 export function puedeCancelar(reserva: Reserva, ahora: Date): boolean {

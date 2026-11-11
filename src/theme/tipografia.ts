@@ -39,7 +39,8 @@ export const tipografia = {
   tituloDestacado: {
     fontFamily: familias.poppinsBlackItalic,
     fontSize: 25,
-    lineHeight: 25,
+    // 31 y no 25 (Figma): con 25, en el iPhone se cortaba arriba la cursiva y las tildes (Etapa 14).
+    lineHeight: 31,
     letterSpacing: -0.625,
     textTransform: 'uppercase',
   },

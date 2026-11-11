@@ -124,7 +124,14 @@ export function TarjetaEspacio({ espacio: datos, estado, accion }: Props) {
 
       <View style={styles.pie}>
         <View style={styles.flex}>
-          <Texto variante="meta" color="textoTerciario">
+          {/* En una sola línea (si no entra, la letra se achica un poco): antes cortaba en "plan". */}
+          <Texto
+            variante="meta"
+            color="textoTerciario"
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.8}
+          >
             {accion.etiqueta}
           </Texto>
           <Texto

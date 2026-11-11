@@ -1,6 +1,6 @@
 import type { ImageSourcePropType } from 'react-native';
 
-import type { Evento } from '@/models/agenda';
+import type { Evento, EventoDetalle } from '@/models/agenda';
 import type { Novedad } from '@/models/novedad';
 import type { ModoComunidad, Persona, Publicacion, Taller } from '@/models/comunidad';
 import type { Espacio } from '@/models/espacio';
@@ -45,6 +45,7 @@ export type EventoApi = {
   submarca: string;
   titulo: string;
   detalle: string;
+  descripcion?: string | null;
   inicio: string;
   fotoUrl: string | null;
   inscriptos: number; // Total, contando a la persona si está inscripta.
@@ -95,6 +96,7 @@ const ERRORES_RESERVA: ErrorReserva[] = [
   'duracion',
   'pasado',
   'anticipacion',
+  'fueraDeHorario',
   'horasInsuficientes',
   'sinLugar',
 ];
@@ -112,6 +114,7 @@ export function eventoDesdeApi(e: EventoApi): Evento | null {
     submarca: e.submarca,
     titulo: e.titulo,
     detalle: e.detalle,
+    descripcion: e.descripcion ?? undefined,
     inicio: new Date(e.inicio),
     foto: foto(e.fotoUrl, fotosDeEventos[e.id]),
     // El modelo cuenta los inscriptos sin la persona (la tarjeta la suma si está inscripta).
@@ -397,4 +400,28 @@ export async function leerNovedadesServidor(): Promise<Novedad[] | null> {
         : undefined,
     };
   });
+}
+
+const ETIQUETA_SUBMARCA: Record<string, string> = {
+  evento: 'OLE / Evento',
+  afterOffice: 'OLE / After office',
+  itinerante: 'OLE / Itinerante',
+};
+
+// Detalle de un evento (incluye los de Novedades, como el coworkeo itinerante).
+export async function leerEventoServidor(id: string): Promise<EventoDetalle | null> {
+  const respuesta = await pedirApi<EventoApi[]>('GET', '/eventos');
+  if (!respuesta.ok) return null;
+  const e = respuesta.datos.find((x) => x.id === id);
+  if (!e) return null;
+  return {
+    id: e.id,
+    etiqueta: ETIQUETA_SUBMARCA[e.submarca] ?? 'OLE / Evento',
+    titulo: e.titulo,
+    detalle: e.detalle,
+    descripcion: e.descripcion ?? undefined,
+    inicio: new Date(e.inicio),
+    foto: foto(e.fotoUrl, fotosDeEventos[e.id] ?? fotosDeNovedades[e.id]),
+    inscriptos: Math.max(0, e.inscriptos - (e.inscripto ? 1 : 0)),
+  };
 }

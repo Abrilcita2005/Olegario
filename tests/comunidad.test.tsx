@@ -67,7 +67,7 @@ describe('pantalla Comunidad', () => {
     await screen.findByRole('header', { name: 'Sofía Prueba (vos)' });
     await fireEvent.press(screen.getByRole('radio', { name: 'Modo Foco' }));
     expect(screen.queryByRole('header', { name: 'Sofía Prueba (vos)' })).toBeNull();
-    expect(screen.getByText('No aparecés en las listas ni se muestra dónde estás')).toBeTruthy();
+    expect(screen.getByText('Oculto para la comunidad')).toBeTruthy();
     expect(JSON.parse((await AsyncStorage.getItem('olegario.comunidad')) ?? '{}').modo).toBe(
       'foco',
     );

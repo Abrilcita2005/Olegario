@@ -19,8 +19,9 @@ describe('Primera apertura', () => {
     await abrirApp({});
     await waitFor(() => expect(screen).toHavePathname('/bienvenida'));
 
+    // Cada paso avanza un instante después del toque (se ve el cambio de color del botón).
     for (const paso of [1, 2, 3]) {
-      await tocar(screen.getByRole('button', { name: `Siguiente, paso ${paso} de 3` }));
+      await tocar(await screen.findByRole('button', { name: `Siguiente, paso ${paso} de 3` }));
     }
 
     await waitFor(() => expect(screen).toHavePathname('/acceso'));
@@ -132,7 +133,7 @@ describe('App principal', () => {
     await tocar(screen.getByRole('button', { name: 'Volver' }));
     await waitFor(() => expect(screen).toHavePathname('/'));
 
-    await tocar(screen.getByRole('button', { name: 'Carta del café' }));
+    await tocar(screen.getByRole('button', { name: 'Carta de OLE/CAFÉ' }));
     await waitFor(() => expect(screen).toHavePathname('/carta-cafe'));
     await tocar(screen.getByRole('button', { name: 'Volver' }));
     await waitFor(() => expect(screen).toHavePathname('/'));
@@ -174,7 +175,7 @@ describe('App principal', () => {
   it('la carta del café filtra por categoría', async () => {
     await abrirApp({ bienvenida: true, acceso: 'miembro' });
     await waitFor(() => expect(screen).toHavePathname('/'));
-    await tocar(screen.getByRole('button', { name: 'Carta del café' }));
+    await tocar(screen.getByRole('button', { name: 'Carta de OLE/CAFÉ' }));
     await waitFor(() => expect(screen.getByText('Cold brew')).toBeTruthy());
 
     await tocar(screen.getByRole('radio', { name: 'PASTELERÍA' }));

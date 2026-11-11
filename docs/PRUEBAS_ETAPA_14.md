@@ -32,7 +32,17 @@ los colores, las tipografías y los componentes coinciden. Diferencias, todas ya
 sin Face ID, Google ni Apple (decisión del 2026-11-03); "Cambiar" en lugar de "Confirmar" en el horario de Espacios;
 espacios reales del plano en lugar de los de Figma (D-73); perfil sin foto muestra el círculo vacío.
 
-## 3. Lo que no se puede probar en la nube (necesita a la responsable)
+## 3. Prueba en el teléfono de la responsable (Expo Go, iPhone, 2026-11-11)
+
+La app abrió bien. Pedidos de la responsable, todos aplicados (D-75): títulos que se cortaban arriba
+("Ecosistema Creativo", "Tu rincón perfecto", carta), Bienvenida (botones con color al tocar, "Siguiente"
+centrado, fotos que se reparten solas), "Carta de OLE/CAFÉ" con pedido simulado, reservas de 8 a 20 hs,
+"Descuenta de tu plan" en una línea, la barra de Espacios abre el plano, efemérides para compartir,
+detalle de eventos y del coworkeo itinerante, y Comunidad (Modo Foco en una línea, título en 3
+renglones con "CONECTÁ" en degradado). Captura: `docs/capturas-app/etapa-14/correcciones-prueba-telefono.png`.
+A revisar en el iPhone: el centrado de "Siguiente" y los títulos (no se pueden ver desde la nube).
+
+## 4. Lo que no se puede probar en la nube (necesita a la responsable)
 
 - Recorrido en un **teléfono real** iOS y Android (L-04).
 - **VoiceOver** (iPhone) y **TalkBack** (Android).

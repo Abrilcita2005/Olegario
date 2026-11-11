@@ -7,12 +7,27 @@ export type Evento = {
   submarca: Extract<Submarca, 'evento' | 'afterOffice'>;
   titulo: string;
   detalle: string;
+  // Descripción larga para la pantalla de detalle (opcional).
+  descripcion?: string;
   inicio: Date;
   foto?: ImageSourcePropType;
   // Inscriptos sin contar a la persona (que se suma si se inscribe).
   inscriptos: number;
   personas: ImageSourcePropType[];
   esDatoDePrueba?: boolean;
+};
+
+// Detalle de un evento (Agenda) o de una novedad con inscripción (Novedades: coworkeo itinerante).
+export type EventoDetalle = {
+  id: string;
+  etiqueta: string; // "OLE / Evento", "OLE / After office", "OLE / Itinerante"
+  titulo: string;
+  detalle: string;
+  descripcion?: string;
+  inicio?: Date;
+  foto?: ImageSourcePropType;
+  // Inscriptos sin contar a la persona.
+  inscriptos: number;
 };
 
 // Efeméride del calendario anual (se repite cada año el mismo día).

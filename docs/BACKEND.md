@@ -15,18 +15,19 @@ App (teléfono o web)  ──►  API en PHP (puerto 8080)  ──►  MySQL (ba
 - La app **nunca** se conecta directo a MySQL: siempre pasa por la API, que controla quién ve qué.
 - Las contraseñas se guardan cifradas (`password_hash` de PHP). La sesión es un token que la app
   guardará cifrado en el teléfono (`expo-secure-store`); en la base solo queda su huella.
-- Las reglas de reserva (pasos de 30 min, hasta 3 días, lugar libre, horas suficientes, cancelar hasta
+- Las reglas de reserva (de 8 a 20 hs de Mendoza, pasos de 30 min, hasta 3 días, lugar libre, horas suficientes, cancelar hasta
   30 min antes) se controlan **también en el servidor**, dentro de una transacción.
 
-| Carpeta / archivo                      | Qué es                                                           |
-| -------------------------------------- | ---------------------------------------------------------------- |
-| `servidor/docker-compose.yml`          | Los tres servicios: MySQL, la API y phpMyAdmin                   |
-| `servidor/.env.example`                | Plantilla de contraseñas (se copia como `servidor/.env`)         |
-| `servidor/db/01_esquema.sql`           | Tablas (aprobado 2026-11-04)                                     |
-| `servidor/db/02_contenido_inicial.sql` | Los 21 espacios reales del plano, ejemplos de Figma y efemérides |
-| `servidor/db/03_codigos_acceso.sql`    | Códigos de un solo uso para entrar al plano desde la app (D-73)  |
-| `servidor/api/`                        | La API en PHP (`public/index.php` lista todas las direcciones)   |
-| `servidor/pruebas/probar_api.php`      | 83 comprobaciones de punta a punta (solo en una base local)      |
+| Carpeta / archivo                        | Qué es                                                           |
+| ---------------------------------------- | ---------------------------------------------------------------- |
+| `servidor/docker-compose.yml`            | Los tres servicios: MySQL, la API y phpMyAdmin                   |
+| `servidor/.env.example`                  | Plantilla de contraseñas (se copia como `servidor/.env`)         |
+| `servidor/db/01_esquema.sql`             | Tablas (aprobado 2026-11-04)                                     |
+| `servidor/db/02_contenido_inicial.sql`   | Los 21 espacios reales del plano, ejemplos de Figma y efemérides |
+| `servidor/db/03_codigos_acceso.sql`      | Códigos de un solo uso para entrar al plano desde la app (D-73)  |
+| `servidor/db/04_descripcion_eventos.sql` | Descripción larga de los eventos (D-75)                          |
+| `servidor/api/`                          | La API en PHP (`public/index.php` lista todas las direcciones)   |
+| `servidor/pruebas/probar_api.php`        | 84 comprobaciones de punta a punta (solo en una base local)      |
 
 ## Qué guarda el servidor
 
@@ -77,7 +78,8 @@ Para cuando se suba (todavía no se hizo):
 - Hostinger no usa Docker: se suben los archivos de `servidor/api/` y la carpeta `public/` va dentro de
   `public_html` (el resto del código queda fuera, sin acceso desde internet).
 - Las tablas se cargan desde el phpMyAdmin de Hostinger (pestaña Importar): primero
-  `01_esquema.sql`, después `02_contenido_inicial.sql` y por último `03_codigos_acceso.sql`. El contenido inicial funciona con MySQL y con
+  `01_esquema.sql`, después `02_contenido_inicial.sql`, `03_codigos_acceso.sql` y por último
+  `04_descripcion_eventos.sql`. El contenido inicial funciona con MySQL y con
   MariaDB.
 - Motor: **MySQL** (confirmado por la responsable, 2026-11-11). Confirmar en hPanel el nombre exacto de la
   base con mayúsculas y minúsculas (en Hostinger suelen verse en minúsculas, por ejemplo
@@ -93,7 +95,7 @@ Para cuando se suba (todavía no se hizo):
 - [x] Docker (MySQL 8.4, PHP 8.3 con Apache, phpMyAdmin 5.2) escrito.
 - [x] Esquema MySQL **aprobado por la responsable (2026-11-04)**. Esquema y contenido inicial cargan
       sin errores (también dos veces seguidas) en un MySQL 8.0 de la nube.
-- [x] API de cuentas, reservas, agenda y contenido: 83 de 83 comprobaciones correctas en la nube.
+- [x] API de cuentas, reservas, agenda y contenido: 84 de 84 comprobaciones correctas en la nube.
 - [x] Supabase eliminado (archivos y paquete `@supabase/supabase-js`), con aprobación (2026-11-04).
 - [x] Cuentas de la app conectadas a la API (`src/services/api.ts` y `cuentaServidor.ts`): registro,
       ingreso, invitado, salir, editar perfil y eliminar cuenta. Probado contra la API real

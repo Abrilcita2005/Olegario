@@ -13,6 +13,7 @@ import {
   ajustarHorario,
   diaCorto,
   diasVisibles,
+  primerDiaConHorario,
   proximoPaso,
   textoHorarioElegido,
 } from '@/utils/fechas';
@@ -54,14 +55,38 @@ describe('fechas', () => {
     );
   });
 
-  it('al cambiar de día conserva el horario y lo recorta a las 24:00', () => {
+  it('al cambiar de día conserva el horario y lo deja entre las 8 y las 20', () => {
     const manana = ajustarHorario(a(0, 0, 1), a(10), a(12), a(9));
     expect(manana.inicio).toEqual(a(10, 0, 1));
     expect(manana.fin).toEqual(a(12, 0, 1));
-    const tarde = ajustarHorario(DIA, a(23), a(1, 0, 1), a(9));
-    expect(tarde.fin).toEqual(a(0, 0, 1));
-    // Hoy no se puede empezar antes de ahora.
+    const tarde = ajustarHorario(DIA, a(19), a(22), a(9));
+    expect(tarde.fin).toEqual(a(20));
+    // Antes de abrir se corre a las 8; hoy no se puede empezar antes de ahora.
+    expect(ajustarHorario(a(0, 0, 1), a(6), a(7), a(9)).inicio).toEqual(a(8, 0, 1));
     expect(ajustarHorario(DIA, a(7), a(8), a(9, 10)).inicio).toEqual(a(9, 30));
+  });
+
+  it('de noche, el primer horario disponible es mañana a las 8', () => {
+    expect(primerDiaConHorario(a(0, 14))).toEqual(DIA);
+    expect(primerDiaConHorario(a(19, 45))).toEqual(a(0, 0, 1));
+    expect(
+      validarReserva({
+        espacio: porId('rincon-botanico-zen'),
+        inicio: a(20, 0, 1),
+        fin: a(21, 0, 1),
+        ahora: a(9),
+        horasDisponibles: 40,
+      }),
+    ).toBe('fueraDeHorario');
+    expect(
+      validarReserva({
+        espacio: porId('rincon-botanico-zen'),
+        inicio: a(7, 30, 1),
+        fin: a(8, 30, 1),
+        ahora: a(9),
+        horasDisponibles: 40,
+      }),
+    ).toBe('fueraDeHorario');
   });
 });
 

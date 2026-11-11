@@ -27,7 +27,7 @@ export function Encabezado() {
         <Pressable
           onPress={() => router.push('/carta-cafe')}
           accessibilityRole="button"
-          accessibilityLabel="Carta del café"
+          accessibilityLabel="Carta de OLE/CAFÉ"
           hitSlop={4}
         >
           <IconoSubmarca submarca="cafe" tamano={TAMANO} />
