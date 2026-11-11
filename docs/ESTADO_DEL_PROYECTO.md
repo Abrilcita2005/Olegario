@@ -80,6 +80,18 @@
 - Resto de preguntas abiertas en `DECISIONES_Y_PENDIENTES.md`.
 - Prueba en un teléfono real (L-04).
 
+## Pendiente para la próxima sesión (pedido de la responsable, 2026-11-11, después de probar en el iPhone)
+
+No empezar hasta que la responsable diga "avanzamos". Los títulos ya no se cortan (OK).
+
+1. **Bienvenida**: ya no deja ver las pantallas de bienvenida (aunque use `--clear`). Revisar si se rompió algo.
+2. **Inicio**: la frase en exactamente 4 líneas: "Impulsamos personas, / conectamos oportunidades / y expandimos experiencias / de trabajo". "VER DETALLES Y CHECK-IN" (tu reserva actual) en una sola línea.
+3. **Novedades**: el panel se rompió (aparece cortado y no centrado); la versión anterior estaba perfecta. Los detalles (pedido de café y coworkeo itinerante) están bien, pero la foto del coworkeo itinerante se corta al ras: ponerla en un cuadrado con márgenes y esquinas redondeadas.
+4. **Espacios**: la barra dice "Buscá tu espacio en tiempo real", sin "Ver plano", con aspecto de botón.
+5. **Agenda**: en Sunset Beats & Vinyl Session la foto se corta al ras del costado: mismo arreglo (cuadrado con márgenes y esquinas redondeadas).
+6. **Comunidad**: título en 2 líneas: "COLABORÁ, SUMATE / Y CONECTÁ" (achicar si hace falta; cuidar el interlineado).
+7. **Perfil**: al iniciar sesión, mostrar el nombre con el que la persona ingresó.
+
 ## Cómo retomar (para la próxima sesión)
 
 1. Etapa 14 en curso. Hecho (2026-11-11): recorrido automático y correcciones, comparación con Figma,
