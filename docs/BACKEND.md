@@ -79,8 +79,9 @@ Para cuando se suba (todavía no se hizo):
 - Las tablas se cargan desde el phpMyAdmin de Hostinger (pestaña Importar): primero
   `01_esquema.sql`, después `02_contenido_inicial.sql` y por último `03_codigos_acceso.sql`. El contenido inicial funciona con MySQL y con
   MariaDB.
-- Confirmar en hPanel el nombre exacto de la base con mayúsculas y minúsculas (en Hostinger suelen
-  verse en minúsculas, por ejemplo `u275204779_olegario`), el usuario y si el motor es MySQL o MariaDB.
+- Motor: **MySQL** (confirmado por la responsable, 2026-11-11). Confirmar en hPanel el nombre exacto de la
+  base con mayúsculas y minúsculas (en Hostinger suelen verse en minúsculas, por ejemplo
+  `u275204779_olegario`) y el usuario.
 - La contraseña de la base **no va en el chat ni en GitHub**: va en un archivo de configuración del
   servidor fuera de `public_html` (falta definir cómo; hoy la API la lee de las variables de Docker).
 - La carpeta `public_html/fotos/` tiene que existir y permitir que PHP escriba (ahí van las fotos de
